@@ -1,0 +1,81 @@
+apply plugin: 'com.android.application'
+
+android {
+    buildToolsVersion "25.0.2"
+    compileSdkVersion 25 // 最高运行版本
+    defaultConfig {
+        targetSdkVersion 25 // 最高效果版本
+        minSdkVersion 14 // 最低运行版本
+        multiDexEnabled true // 允许分包
+        applicationId "com.user.project" // 要和manifest一致
+        versionCode 1
+        versionName "1.0.0"
+    }
+    signingConfigs { // 签名信息
+        bjxrgz_debug {
+            storeFile file('/Users/gg/Documents/bjxrgz/key/bjxrgz_android_debug.jks')
+            storePassword 'Bjxrgz998'
+            keyAlias 'Bjxrgz'
+            keyPassword 'Bjxrgz998'
+        }
+    }
+    buildTypes { // 打包选项
+        debug { // 测试
+            signingConfig signingConfigs.bjxrgz_debug // 设置签名信息
+            minifyEnabled false // 混淆开关
+            // 指定混淆规则文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release { // 正式
+            signingConfig signingConfigs.bjxrgz_debug // 可以只用一个签名信息
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors { // 发布渠道
+    }
+    sourceSets { // 源码设置
+        main {
+            jniLibs.srcDirs = ['libs'] // 指定lib库目录
+        }
+        instrumentTest.setRoot('tests') // 指定测试所在的路径
+        debug.setRoot('build-types/debug') // 指定debug模式的路径
+        release.setRoot('build-types/release') // 指定release模式的路径
+    }
+    compileOptions { // 编码/JDK等
+        encoding "UTF-8"
+    }
+    lintOptions { // 编译的lint检查
+        disable 'MissingTranslation' // 防止在发布的时候出现因MissingTranslation导致Build Failed!
+        abortOnError false // 移除lint检查的error
+    }
+    packagingOptions { // 解决jar包冲突
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INFTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+    dexOptions { // bug value-2
+        javaMaxHeapSize "4g"
+    }
+    aaptOptions { // 过滤PNG图片检验
+        cruncherEnabled = false
+        useNewCruncher = false
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':AndroidBaseModule')
+    compile project(':PushSDK')
+
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.1'
+    compile 'cn.yipianfengye.android:zxing-library:2.1' // scan
+}
