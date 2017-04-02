@@ -4,61 +4,49 @@ import java.io.Serializable;
 
 /**
  * Created by JiangZhiGuo on 2016-11-25.
- * describe 用来RxBUs传输的实体类
+ * describe 用来RxBus传输的实体类
  */
 public class RxEvent<T> implements Serializable {
+    private int id; // 订阅的频道
+    private T data; // 传输的数据
 
-    /* 相当于频道 */
-    public enum ID {
-        common, log
-    }
-
-    private ID id; // 订阅的id (可以在上面的枚举ID中定义)
-    private T object; // 要传输的数据
-
-    public RxEvent(ID id, T object) {
+    public RxEvent(int id, T data) {
         this.id = id;
-        this.object = object;
+        this.data = data;
     }
 
-    public RxEvent.ID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(RxEvent.ID id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public T getObject() {
-        return object;
+    public T getData() {
+        return data;
     }
 
-    public void setObject(T object) {
-        this.object = object;
-    }
-
-    @Override
-    public String toString() {
-        return "RxEvent{" +
-                "id=" + id +
-                ", object=" + object +
-                '}';
+    public void setData(T data) {
+        this.data = data;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RxEvent)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         RxEvent<?> rxEvent = (RxEvent<?>) o;
 
-        return id == rxEvent.id && (object != null ? object.equals(rxEvent.object) : rxEvent.object == null);
+        if (id != rxEvent.id) return false;
+        return data != null ? data.equals(rxEvent.data) : rxEvent.data == null;
+
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (object != null ? object.hashCode() : 0);
+        int result = id;
+        result = 31 * result + (data != null ? data.hashCode() : 0);
         return result;
     }
 }

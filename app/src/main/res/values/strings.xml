@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">北京祥瑞广泽</string>
+    <string name="app_name">AndroidBase</string>
 
     <string name="press_again_exit">再按一次退出</string>
     <string name="find_new_version" formatted="false">有新版本:%s</string>

@@ -23,6 +23,7 @@ public class MyUtils {
     public static final int REQUEST_CROP = 193;  // 裁剪
     public static final int REQUEST_SCAN = 194;  // 扫描
 
+    public static final int EVENT_COMMON = 1;
 
     public static boolean noLogin() {
         String userToken = SPUtils.getUser().getUserToken();

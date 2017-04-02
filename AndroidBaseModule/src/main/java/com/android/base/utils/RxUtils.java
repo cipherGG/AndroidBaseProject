@@ -1,7 +1,5 @@
 package com.android.base.utils;
 
-import android.support.annotation.NonNull;
-
 import com.android.base.domain.RxEvent;
 
 import java.util.ArrayList;
@@ -19,13 +17,13 @@ import rx.subjects.Subject;
 
 /**
  * Created by JiangZhiGuo on 2016-11-24.
- * describe RxBus管理类
+ * describe RxJava实现的Bus管理类
  */
 public class RxUtils {
 
+    private static RxUtils instance;
     // object是订阅的类型 ,List<Subject>里时候所有订阅此频道的订阅者
     private HashMap<Object, List<Subject>> maps = new HashMap<>();
-    private static RxUtils instance;
 
     public static RxUtils get() {
         if (instance == null) {
@@ -39,11 +37,11 @@ public class RxUtils {
     }
 
     /* 发送频道消息(已注册的频道里的观察者才会收到) */
-    public <T> void post(@NonNull RxEvent<T> rxEvent) {
-        RxEvent.ID id = rxEvent.getId();
-        T object = rxEvent.getObject();
-        if (id != null && object != null) {
-            next(id, object);
+    public <T> void post(RxEvent<T> rxEvent) {
+        int id = rxEvent.getId();
+        T data = rxEvent.getData();
+        if (id != 0 && data != null) {
+            next(id, data);
         }
     }
 
@@ -61,7 +59,7 @@ public class RxUtils {
     }
 
     /* 注册频道 */
-    public <T> Observable<T> register(RxEvent.ID eventId, Action1<? super T> onNext) {
+    public <T> Observable<T> register(int eventId, Action1<? super T> onNext) {
         Observable<T> observable = createObservable(eventId); // 获取观察者
         // Rx最好连着点出来,不连着点，下面全是Bug
         observable.subscribeOn(Schedulers.immediate()) // 当前线程
@@ -72,7 +70,7 @@ public class RxUtils {
         return observable;
     }
 
-    public <T> Observable<T> register(RxEvent.ID eventId, Action1<? super T> onNext,
+    public <T> Observable<T> register(int eventId, Action1<? super T> onNext,
                                       final Action1<Throwable> onError,
                                       final Action0 onCompleted) {
         Observable<T> observable = createObservable(eventId); // 获取观察者
@@ -86,14 +84,14 @@ public class RxUtils {
     }
 
     /* 注销频道里的单个观察者 */
-    public void unregister(RxEvent.ID eventId, Observable observable) {
+    public void unregister(int eventId, Observable observable) {
         if (observable == null) return;
         removeObservable(eventId, observable); // 移除此event绑定的观察者
     }
 
     /* 获取观察者 */
     @SuppressWarnings("unchecked")
-    private <T> Observable<T> createObservable(@NonNull Object tag) {
+    private <T> Observable<T> createObservable(int tag) {
         List<Subject> subjects = maps.get(tag);
         if (subjects == null) { // 这个tag没有订阅者
             subjects = new ArrayList<>();
@@ -106,7 +104,7 @@ public class RxUtils {
 
     /* 观察者发送消息给订阅者 */
     @SuppressWarnings("unchecked")
-    private <T> void next(@NonNull Object tag, @NonNull T t) {
+    private <T> void next(int tag, T t) {
         List<Subject> subjects = maps.get(tag);
         if (subjects != null && !subjects.isEmpty()) {
             for (Subject s : subjects) { // 向所有订阅tag的对象发送消息
@@ -117,7 +115,7 @@ public class RxUtils {
 
     /* 移除观察者 */
     @SuppressWarnings("unchecked")
-    private void removeObservable(@NonNull Object tag, @NonNull Observable observable) {
+    private void removeObservable(int tag, Observable observable) {
         List<Subject> subjects = maps.get(tag);
         if (subjects != null) { // 这个tag的订阅者集合不为空
             subjects.remove((Subject) observable);
