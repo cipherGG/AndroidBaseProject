@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Base</string>
 
     <string name="select_email_sender">Please configure a default email address first.</string>
     <string name="prompt">Prompt</string>
@@ -7,13 +8,12 @@
     <string name="confirm">OK</string>
     <string name="cancel">Cancel</string>
     <string name="wait">Waiting…</string>
-    <string name="push_ing">pushing</string>
     <string name="no_network_title">Network can not access.</string>
 
     <string name="http_error_connect">An unexpected network error occurred</string>
-    <string name="http_error_time">connection timed out</string>
-    <string name="http_error_request">network error request</string>
-    <string name="cannot_location_please_open_service">cannot location please open service</string>
+    <string name="http_error_time">Connection timed out</string>
+    <string name="http_error_request">Network error request</string>
+    <string name="cannot_location_please_open_service">Cannot location please open service</string>
 
     <string name="day1">MON</string>
     <string name="day2">TUE</string>
