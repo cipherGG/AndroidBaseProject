@@ -76,4 +76,15 @@ public class MyUtils {
         }
     }
 
+    public static String getImageUrl(String url) {
+        String foreUrl = "";
+        String imgUrl;
+        if (url.startsWith("http")) {
+            imgUrl = url;
+        } else {
+            imgUrl = foreUrl + url;
+        }
+        return imgUrl;
+    }
+
 }

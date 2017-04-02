@@ -43,21 +43,9 @@ public class GlideUtils {
         void complete(Bitmap result);
     }
 
-    private static void load(RequestManager requestManager,
-                             String foreUrl, String url, int errorRes,
-                             ImageView view, final CompleteListener completeListener) {
-        if (StringUtils.isEmpty(url)) return;
-        String imgUrl;
-        if (StringUtils.isEmpty(foreUrl)) {
-            imgUrl = url;
-        } else {
-            if (url.startsWith("http")) {
-                imgUrl = url;
-            } else {
-                imgUrl = foreUrl + url;
-            }
-        }
-        DrawableTypeRequest<String> load = requestManager.load(imgUrl);
+    private static <T> void load(RequestManager requestManager, T data, int errorRes,
+                                 final CompleteListener completeListener, ImageView view) {
+        DrawableTypeRequest load = requestManager.load(data);
         if (errorRes != 0) { // 设置错误图片
             load.error(errorRes);
         }
@@ -74,86 +62,71 @@ public class GlideUtils {
             protected void setResource(GlideDrawable resource) {
                 super.setResource(resource);
                 if (completeListener != null) {
-                    completeListener.complete(ConvertUtils.drawable2Bitmap(resource));
+                    Bitmap bitmap = ConvertUtils.drawable2Bitmap(resource);
+                    completeListener.complete(bitmap);
                 }
             }
         });
     }
 
-    /* 前置url,错误图片,回调监听 */
-    public static void load(Context context, String foreUrl, String url, int errorRes,
-                            ImageView view, CompleteListener completeListener) {
+    /* 错误图片,回调监听 */
+    public static <T> void load(Context context, T data, int errorRes,
+                                CompleteListener completeListener, ImageView view) {
         RequestManager with = Glide.with(context);
-        load(with, foreUrl, url, errorRes, view, completeListener);
+        load(with, data, errorRes, completeListener, view);
     }
 
-    public static void load(FragmentActivity activity, String foreUrl, String url, int errorRes,
-                            ImageView view, CompleteListener completeListener) {
+    public static <T> void load(FragmentActivity activity, T data, int errorRes,
+                                CompleteListener completeListener, ImageView view) {
         RequestManager with = Glide.with(activity);
-        load(with, foreUrl, url, errorRes, view, completeListener);
+        load(with, data, errorRes, completeListener, view);
     }
 
-    public static void load(Fragment fragment, String foreUrl, String url, int errorRes,
-                            ImageView view, CompleteListener completeListener) {
+    public static <T> void load(Fragment fragment, T data, int errorRes,
+                                CompleteListener completeListener, ImageView view) {
         RequestManager with = Glide.with(fragment);
-        load(with, foreUrl, url, errorRes, view, completeListener);
-    }
-
-    /* 前置url */
-    public static void load(Context context, String foreUrl, String url, ImageView view) {
-        load(context, foreUrl, url, 0, view, null);
-    }
-
-    public static void load(FragmentActivity activity, String foreUrl, String url, ImageView view) {
-        load(activity, foreUrl, url, 0, view, null);
-    }
-
-    public static void load(Fragment fragment, String foreUrl, String url, ImageView view) {
-        load(fragment, foreUrl, url, 0, view, null);
+        load(with, data, errorRes, completeListener, view);
     }
 
     /* 错误图片 */
-    public static void load(Context context, String url, int errorRes, ImageView view) {
-        load(context, "", url, errorRes, view, null);
+    public static <T> void load(Context context, T data, int errorRes, ImageView view) {
+        load(context, data, errorRes, null, view);
     }
 
-    public static void load(FragmentActivity activity, String url, int errorRes, ImageView view) {
-        load(activity, "", url, errorRes, view, null);
+    public static <T> void load(FragmentActivity activity, T data, int errorRes, ImageView view) {
+        load(activity, data, errorRes, null, view);
     }
 
-    public static void load(Fragment fragment, String url, int errorRes, ImageView view) {
-        load(fragment, "", url, errorRes, view, null);
+    public static <T> void load(Fragment fragment, T data, int errorRes, ImageView view) {
+        load(fragment, data, errorRes, null, view);
     }
 
     /* 回调监听 */
-    public static void load(Context context, String url, ImageView view,
-                            CompleteListener completeListener) {
-        RequestManager with = Glide.with(context);
-        load(with, "", url, 0, view, completeListener);
+    public static <T> void load(Context context, T data,
+                                CompleteListener completeListener, ImageView view) {
+        load(context, data, 0, completeListener, view);
     }
 
-    public static void load(FragmentActivity activity, String url, ImageView view,
-                            CompleteListener completeListener) {
-        RequestManager with = Glide.with(activity);
-        load(with, "", url, 0, view, completeListener);
+    public static <T> void load(FragmentActivity activity, T data,
+                                CompleteListener completeListener, ImageView view) {
+        load(activity, data, 0, completeListener, view);
     }
 
-    public static void load(Fragment fragment, String url, ImageView view,
-                            CompleteListener completeListener) {
-        RequestManager with = Glide.with(fragment);
-        load(with, "", url, 0, view, completeListener);
+    public static <T> void load(Fragment fragment, T data,
+                                CompleteListener completeListener, ImageView view) {
+        load(fragment, data, 0, completeListener, view);
     }
 
     /* 加载图片 */
-    public static void load(Context context, String url, ImageView view) {
-        load(context, url, 0, view);
+    public static <T> void load(Context context, T data, ImageView view) {
+        load(context, data, 0, null, view);
     }
 
-    public static void load(FragmentActivity activity, String url, ImageView view) {
-        load(activity, url, 0, view);
+    public static <T> void load(FragmentActivity activity, T data, ImageView view) {
+        load(activity, data, 0, null, view);
     }
 
-    public static void load(Fragment fragment, String url, ImageView view) {
-        load(fragment, url, 0, view);
+    public static <T> void load(Fragment fragment, T data, ImageView view) {
+        load(fragment, data, 0, null, view);
     }
 }
