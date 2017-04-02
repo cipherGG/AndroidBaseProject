@@ -15,26 +15,14 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.android.base.R;
-import com.android.base.view.MyLoading;
 
 import java.util.Calendar;
 
 /**
  * Created by Jiang on 2016/10/13
- * <p/>
- * DialogUtils: 对话框(alert，progress)，单选，多选，日期
+ * DialogUtils: 对话框管理工具类
  */
 public class DialogUtils {
-
-    /**
-     * 等待对话框 (一般用于baseActivity)
-     */
-    public static ProgressDialog createLoading(Context context) {
-        ProgressDialog loading = new MyLoading(context);
-        loading.setCanceledOnTouchOutside(false);
-        loading.setCancelable(true);
-        return loading;
-    }
 
     /**
      * 自定义对话框

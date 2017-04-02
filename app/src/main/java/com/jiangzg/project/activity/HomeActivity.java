@@ -3,21 +3,31 @@ package com.jiangzg.project.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 
 import com.android.base.base.BaseActivity;
+import com.android.base.domain.RxEvent;
+import com.android.base.domain.Version;
 import com.android.base.utils.ActivityUtils;
+import com.android.base.utils.RxUtils;
 import com.android.base.utils.ToastUtils;
+import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
 import com.jiangzg.project.utils.ViewUtils;
 
 import java.util.Date;
+
+import rx.Observable;
+import rx.functions.Action1;
 
 /**
  * Created by JiangZhiGuo on 2016/06/01
  * describe 主界面
  */
 public class HomeActivity extends BaseActivity<HomeActivity> {
+
+    private Observable<Version> observable;
 
     public static void goActivity(Activity from) {
         Intent intent = new Intent(from, HomeActivity.class);
@@ -36,6 +46,32 @@ public class HomeActivity extends BaseActivity<HomeActivity> {
 
     @Override
     protected void initData() {
+        loading.show();
+//        observable = RxUtils.get().register(1, new Action1<Version>() {
+//            @Override
+//            public void call(Version version) {
+//                ToastUtils.get().show(version.getChangeLog());
+//            }
+//        });
+//        Handler handler = MyApp.get().getHandler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Version version = new Version();
+//                version.setChangeLog("sasasasasa");
+//                RxEvent<Version> event = new RxEvent<>(1, version);
+//                RxUtils.get().post(event);
+//            }
+//        }, 3000);
+//
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                RxUtils.get().unregister(1, observable);
+//                RxUtils.get().unregister(12, observable);
+//            }
+//        }, 5000);
+
 
     }
 
