@@ -11,32 +11,34 @@ import java.util.List;
  * Created by JiangZhiGuo on 2016-11-9.
  * describe 通用tab适配器
  */
-public class MyTabAdapter<T extends Fragment> extends FragmentPagerAdapter {
+public class CommonTabAdapter<T extends Fragment> extends FragmentPagerAdapter {
 
-    private List<String> titleList;
-    private List<T> fragmentList;
+    private List<String> titleList;  // fragment
+    private List<T> fragmentList; // tab标题
 
-    public MyTabAdapter(FragmentManager fm) {
+    public CommonTabAdapter(FragmentManager fm) {
         super(fm);
         titleList = new ArrayList<>();
         fragmentList = new ArrayList<>();
     }
 
-    public void addData(String titles, T fragments) {
-        // fragment
-        fragmentList.add(fragments);
-        // 标题
-        titleList.add(titles);
+    public void newData(List<String> titles, List<T> fragments) {
+        fragmentList.clear();
+        fragmentList.addAll(fragments);
+        titleList.clear();
+        titleList.addAll(titles);
         notifyDataSetChanged();
     }
 
-    public void setData(List<String> titles, List<T> fragments) {
-        // fragment
-        fragmentList.clear();
-        fragmentList.addAll(fragments);
-        // 标题
-        titleList.clear();
+    public void addData(List<String> titles, List<T> fragments) {
         titleList.addAll(titles);
+        fragmentList.addAll(fragments);
+        notifyDataSetChanged();
+    }
+
+    public void addData(String titles, T fragment) {
+        fragmentList.add(fragment);
+        titleList.add(titles);
         notifyDataSetChanged();
     }
 
