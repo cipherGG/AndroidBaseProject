@@ -19,6 +19,7 @@ import java.util.concurrent.Executors;
 import butterknife.ButterKnife;
 
 public class BaseApp extends MultiDexApplication {
+
     protected static BaseApp instance;  // MyApp实例
     protected Handler mainHandler; // 主线程handler
     protected ExecutorService threadPool; // 缓冲线程池
@@ -35,9 +36,9 @@ public class BaseApp extends MultiDexApplication {
         instance = this;
         initListener();
         ButterKnife.setDebug(true); // 注解
-        ActivityUtils.initApp(instance);
+        ActivityUtils.initApp(instance); // activity
         LogUtils.initApp(instance); // 打印
-        AnalyUtils.initApp(instance);
+        AnalyUtils.initApp(instance); // 统计
     }
 
     public static BaseApp get() {

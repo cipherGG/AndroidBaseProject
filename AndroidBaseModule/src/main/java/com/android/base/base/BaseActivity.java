@@ -29,22 +29,22 @@ import butterknife.Unbinder;
  */
 public abstract class BaseActivity<T> extends AppCompatActivity {
 
+    public String logTag = "BaseActivity";
     public BaseActivity mActivity;
     public FragmentManager mFragmentManager;
-    public String tag = "BaseActivity";
     public ProgressDialog loading;
     public ProgressDialog progress;
     public Intent mIntent;
     private Unbinder unbinder;
 
-    /* 子类重写类似方法 实现跳转 */
+    /* 子类复制类似方法 实现跳转 */
     private static void goActivity(Activity from) {
         Intent intent = new Intent(from, BaseActivity.class);
         // intent.putExtra();
         ActivityUtils.startActivity(from, intent);
     }
 
-    /* 子类重写类似方法 实现跳转 */
+    /* 子类复制类似方法 实现跳转 */
     private static void goActivity(Fragment from) {
         Intent intent = new Intent(from.getActivity(), BaseActivity.class);
         // intent.putExtra();
@@ -62,26 +62,27 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        tag = getCls();
+        logTag = getCls();
         mActivity = this;
         ActivityUtils.initSuperCreate(mActivity);
         super.onCreate(savedInstanceState);
         mFragmentManager = getSupportFragmentManager();
-        loading = DialogUtils.createLoading(this); // Fragment也调用父Activity的Loading
-        progress = DialogUtils.createProgress(mActivity, 0,
-                getString(R.string.push_ing), true, 100, 0, null);
+        loading = DialogUtils.createLoading(mActivity,
+                0, "", getString(R.string.wait), true);
+        progress = DialogUtils.createProgress(mActivity,
+                0, getString(R.string.wait), true, 100, 0, null);
         mIntent = getIntent();
         setContentView(initLayout(savedInstanceState)); // 这之后 页面才会加载出来
     }
 
     /* setContentView()或addContentView()后调用,view只是加载出来，没有实例化.
-     * 为了页面的加载速度，不要在setContentView里做过多的操作 */
+     * 为了页面的加载速度，不要在onContentChanged前做过多的操作 */
     @Override
     public void onContentChanged() {
         super.onContentChanged();
         unbinder = ButterKnife.bind(this); // 每次setContentView之后都要bind一下
         initView(); // 二次setContentView之后控件是以前view的，所以要重新实例化一次
-        initData(); // 二次setContentView的话，可以不用获取数据 只加载数据
+        initData(); // 必须保证initView执行完，onStart不行
     }
 
     @Override
@@ -114,8 +115,10 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (null != this.getCurrentFocus()) { // 点击屏幕空白区域隐藏软键盘
-            InputMethodManager mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            return mInputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+            InputMethodManager mInputMethodManager = (InputMethodManager)
+                    getSystemService(INPUT_METHOD_SERVICE);
+            return mInputMethodManager.hideSoftInputFromWindow
+                    (this.getCurrentFocus().getWindowToken(), 0);
         }
         return super.onTouchEvent(event);
     }

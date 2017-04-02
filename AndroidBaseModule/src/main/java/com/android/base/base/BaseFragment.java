@@ -1,5 +1,6 @@
 package com.android.base.base;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,15 +26,17 @@ import butterknife.Unbinder;
  */
 public abstract class BaseFragment<T> extends Fragment {
 
+    public String logTag = "BaseFragment";
     public BaseActivity mActivity;
     public BaseFragment mFragment;
     public FragmentManager mFragmentManager;
-    public String tag = "BaseFragment";
+    public ProgressDialog loading;
+    public ProgressDialog progress;
     public Bundle mBundle;
     public View rootView;
     private Unbinder unbinder;
 
-    /* 子类重写类似方法 获取对象 */
+    /* 子类复制类似方法 获取对象 */
     private static BaseFragment newFragment() {
         Bundle bundle = new Bundle();
         // bundle.putData();
@@ -51,12 +54,14 @@ public abstract class BaseFragment<T> extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        tag = getCls();
+        logTag = getCls();
         mFragment = this;
         super.onAttach(context);
         if (context instanceof FragmentActivity) {
             mActivity = (BaseActivity) context;
             mFragmentManager = mActivity.getSupportFragmentManager();
+            loading = mActivity.loading;
+            progress = mActivity.progress;
         }
         FragmentUtils.initAttach(this);
     }
@@ -120,9 +125,9 @@ public abstract class BaseFragment<T> extends Fragment {
     protected static <T> T newInstance(Class<T> clz, Bundle args) {
         T fragment = null;
         try {
-            // 获取Fragment内名为setArguments的函数
+            // 获取名为setArguments的函数
             Method setArguments = clz.getMethod("setArguments", Bundle.class);
-            fragment = clz.newInstance();  // 走的无参构造函数
+            fragment = clz.newInstance(); // 走的无参构造函数
             if (args == null) { // 往Bundle里传值，这里是子类的类名
                 args = new Bundle();
             }
