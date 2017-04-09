@@ -14,12 +14,12 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 import com.android.base.utils.comp.ProviderUtils;
+import com.android.base.utils.file.FileUtils;
 import com.android.base.utils.str.ConstantUtils;
 import com.android.base.utils.str.StringUtils;
 import com.android.base.utils.sys.ContextUtils;
@@ -104,13 +104,6 @@ public class ConvertUtils {
         }
         if (data != null) return new File(data);
         return null;
-    }
-
-    /**
-     * setStatusColor(int)的参数不是资源文件的索引，所以要转换
-     */
-    private static int get0xColor(int colorID) {
-        return ContextCompat.getColor(ContextUtils.get().getBaseContext(), colorID);
     }
 
     private static final char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};

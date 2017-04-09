@@ -40,7 +40,6 @@ public class WelcomeActivity extends BaseActivity<WelcomeActivity> {
     protected void onResume() {
         super.onResume();
         int taskId = getTaskId();
-        boolean taskRoot = StackUtils.isTaskRoot(mActivity);
 //        Stack<StackUtils.Task> tasks = StackUtils.get();
         logTag = "";
         goHome();

@@ -18,7 +18,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.android.base.utils.sys.AppUtils;
-import com.android.base.utils.func.FileUtils;
+import com.android.base.utils.file.FileUtils;
 
 import java.util.Map;
 

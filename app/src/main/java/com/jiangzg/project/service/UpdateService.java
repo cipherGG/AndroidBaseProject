@@ -11,7 +11,7 @@ import android.view.WindowManager;
 
 import com.android.base.utils.comp.ActivityUtils;
 import com.android.base.utils.view.DialogUtils;
-import com.android.base.utils.func.FileUtils;
+import com.android.base.utils.file.FileUtils;
 import com.android.base.utils.comp.IntentUtils;
 import com.android.base.utils.net.RetrofitUtils;
 import com.jiangzg.project.MyApp;

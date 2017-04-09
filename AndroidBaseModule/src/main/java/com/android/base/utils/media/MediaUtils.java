@@ -1,4 +1,4 @@
-package com.android.base.utils.img;
+package com.android.base.utils.media;
 
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 
 import com.android.base.utils.func.ConvertUtils;
-import com.android.base.utils.func.FileUtils;
+import com.android.base.utils.file.FileUtils;
 import com.android.base.utils.sys.ContextUtils;
 
 import java.io.File;

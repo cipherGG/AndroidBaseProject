@@ -1,4 +1,4 @@
-package com.android.base.utils.func;
+package com.android.base.utils.media;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -10,10 +10,9 @@ import java.io.IOException;
 
 /**
  * Created by gg on 2017/4/3.
+ *
  */
-
 public class PlayerUtils {
-
 
     public static boolean isInit = false;
     public static boolean isPrepare = false;

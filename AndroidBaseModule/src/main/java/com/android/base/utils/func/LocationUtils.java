@@ -26,6 +26,7 @@ import java.util.Locale;
  * 定位相关工具类
  */
 public class LocationUtils {
+
     private static LocationUtils instance;
     private static OnLocationChangeListener mListener;
     private static MyLocationListener myLocationListener;
@@ -37,7 +38,7 @@ public class LocationUtils {
     private String city; // 城市信息
     private String district; // 区
 
-    public static LocationUtils get() {
+    public static LocationUtils getInfo() {
         if (instance == null) {
             synchronized (LocationUtils.class) {
                 if (instance == null) {
@@ -111,14 +112,14 @@ public class LocationUtils {
     /**
      * 判断Gps是否可用
      */
-    public boolean isGpsEnabled() {
+    public static boolean isGpsEnabled() {
         return ContextUtils.getLocationManager().isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
     /**
      * 判断定位是否可用
      */
-    public boolean isLocationEnabled() {
+    public static boolean isLocationEnabled() {
         LocationManager lm = ContextUtils.getLocationManager();
         return lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
                 || lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -126,20 +127,13 @@ public class LocationUtils {
 
     /**
      * 注册
-     * <p>使用完记得调用{@link #unregister()}</p>
-     * <p>需添加权限 {@code <uses-permission android:name="android.permission.INTERNET"/>}</p>
-     * <p>需添加权限 {@code <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>}</p>
-     * <p>需添加权限 {@code <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>}</p>
-     * <p>如果{@code minDistance}为0，则通过{@code minTime}来定时更新；</p>
-     * <p>{@code minDistance}不为0，则以{@code minDistance}为准；</p>
-     * <p>两者都为0，则随时刷新。</p>
      *
      * @param minTime     位置信息更新周期（单位：毫秒）
      * @param minDistance 位置变化最小距离：当位置距离变化超过此值时，将更新位置信息（单位：米）
      * @param listener    位置刷新的回调接口
-     * @return {@code true}: 初始化成功<br>{@code false}: 初始化失败
      */
-    public boolean register(long minTime, long minDistance, OnLocationChangeListener listener) {
+    public static boolean register(long minTime, long minDistance,
+                                   OnLocationChangeListener listener) {
         if (listener == null) return false;
         mListener = listener;
         if (!isLocationEnabled()) {
@@ -170,11 +164,10 @@ public class LocationUtils {
         return true;
     }
 
-
     /**
      * 注销
      */
-    public void unregister() {
+    public static void unregister() {
         if (myLocationListener != null) {
             ContextUtils.getLocationManager().removeUpdates(myLocationListener);
             myLocationListener = null;
@@ -186,7 +179,7 @@ public class LocationUtils {
      *
      * @return {@link Criteria}
      */
-    private Criteria getCriteria() {
+    private static Criteria getCriteria() {
         Criteria criteria = new Criteria();
         //设置定位精确度 Criteria.ACCURACY_COARSE比较粗略，Criteria.ACCURACY_FINE则比较精细
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
@@ -204,12 +197,12 @@ public class LocationUtils {
     }
 
     /* 设置本地缓存地址信息 */
-    private void setNativeLocation(Location location) {
+    private static void setNativeLocation(Location location) {
         if (location == null) return;
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
-        setLatitude(latitude);
-        setLongitude(longitude);
+        getInfo().setLatitude(latitude);
+        getInfo().setLongitude(longitude);
     }
 
     /**
@@ -219,7 +212,7 @@ public class LocationUtils {
      * @param longitude 经度
      * @return {@link Address}
      */
-    public Address getAddress(double latitude, double longitude) {
+    public static Address getAddress(double latitude, double longitude) {
         Geocoder geocoder = new Geocoder(ContextUtils.get(), Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
@@ -249,7 +242,7 @@ public class LocationUtils {
      * @param longitude 经度
      * @return 所在地
      */
-    public String getLocality(double latitude, double longitude) {
+    public static String getLocality(double latitude, double longitude) {
         Address address = getAddress(latitude, longitude);
         return address == null ? "unknown" : address.getLocality();
     }
@@ -261,12 +254,12 @@ public class LocationUtils {
      * @param longitude 经度
      * @return 所在街道
      */
-    public String getStreet(double latitude, double longitude) {
+    public static String getStreet(double latitude, double longitude) {
         Address address = getAddress(latitude, longitude);
         return address == null ? "unknown" : address.getAddressLine(0);
     }
 
-    private class MyLocationListener implements LocationListener {
+    private static class MyLocationListener implements LocationListener {
         /**
          * 当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
          *
@@ -320,6 +313,9 @@ public class LocationUtils {
         }
     }
 
+    /**
+     * 回调的监听器
+     */
     public interface OnLocationChangeListener {
 
         /**

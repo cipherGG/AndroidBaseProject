@@ -2,6 +2,7 @@ package com.jiangzg.project.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,11 +10,10 @@ import android.widget.Button;
 import com.android.base.base.BaseActivity;
 import com.android.base.utils.comp.ActivityUtils;
 import com.android.base.utils.comp.StackUtils;
+import com.android.base.utils.func.LocationUtils;
 import com.jiangzg.project.R;
 import com.jiangzg.project.domain.Version;
 import com.jiangzg.project.utils.ViewUtils;
-
-import java.util.Stack;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -95,18 +95,19 @@ public class HomeActivity extends BaseActivity<HomeActivity> {
 //        });
 //        aaa.show();
 
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         int taskId = getTaskId();
-        boolean taskRoot = StackUtils.isTaskRoot(mActivity);
 //        Stack<StackUtils.Task> tasks = StackUtils.get();
         logTag = "";
     }
 
-    @OnClick({R.id.btn1, R.id.btn2,R.id.btn3})
+    @OnClick({R.id.btn1, R.id.btn2, R.id.btn3})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn1:

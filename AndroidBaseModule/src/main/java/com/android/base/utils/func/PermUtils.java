@@ -12,7 +12,7 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
- * Created by Fan on 2016/11/18.
+ * Created by Jiangzg on 2016/11/18.
  * 权限验证框架管理
  */
 public class PermUtils {
@@ -39,7 +39,7 @@ public class PermUtils {
                                 listener.onAgree();
                             }
                         } else {
-                            LogUtils.d("拒绝使用权限");
+                            LogUtils.e("拒绝使用权限");
                         }
                     }
                 });

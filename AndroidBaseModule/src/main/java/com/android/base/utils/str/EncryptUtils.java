@@ -1,6 +1,6 @@
 package com.android.base.utils.str;
 
-import com.android.base.utils.func.FileUtils;
+import com.android.base.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

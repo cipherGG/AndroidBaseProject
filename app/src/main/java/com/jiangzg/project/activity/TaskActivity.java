@@ -39,7 +39,6 @@ public class TaskActivity extends BaseActivity<TaskActivity> {
     @Override
     protected void initView() {
         int taskId = getTaskId();
-        boolean taskRoot = StackUtils.isTaskRoot(this);
 //        Stack<StackUtils.Task> tasks = StackUtils.get();
         String logTag = "";
     }

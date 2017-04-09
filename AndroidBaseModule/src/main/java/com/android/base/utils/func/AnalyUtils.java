@@ -2,6 +2,7 @@ package com.android.base.utils.func;
 
 import android.content.Context;
 
+import com.android.base.utils.sys.ContextUtils;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -11,8 +12,8 @@ import com.umeng.analytics.MobclickAgent;
 public class AnalyUtils {
 
     /* c收集奔溃日志 */
-    public static void initApp(Context context) {
-        MobclickAgent.setScenarioType(context, MobclickAgent.EScenarioType.E_UM_NORMAL);
+    public static void initApp() {
+        MobclickAgent.setScenarioType(ContextUtils.get(), MobclickAgent.EScenarioType.E_UM_NORMAL);
         MobclickAgent.setCatchUncaughtExceptions(true);
     }
 

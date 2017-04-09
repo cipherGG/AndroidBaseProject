@@ -7,7 +7,7 @@ import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 
-import com.android.base.utils.func.FileUtils;
+import com.android.base.utils.file.FileUtils;
 import com.android.base.utils.func.PermUtils;
 import com.android.base.utils.str.StringUtils;
 
@@ -18,6 +18,7 @@ import java.io.File;
  * describe  App相关工具类
  */
 public class AppUtils {
+
     private static AppUtils instance;
 
     private String name; // APP名称
@@ -204,57 +205,6 @@ public class AppUtils {
      */
     public boolean isSDCardEnable() {
         return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
-    }
-
-    /**
-     * 清除所有资源
-     */
-    public void clearRes() {
-        String resDir = getResDir();
-        FileUtils.deleteFilesAndDirInDir(resDir);
-    }
-
-    /**
-     * 清除缓存(Glide手动清)
-     */
-    public void clearSys() {
-        String filesDir = getFilesDir("");
-        String cacheDir = getCacheDir();
-        File externalFilesDir = new File(filesDir);
-        File externalCacheDir = new File(cacheDir);
-        File internalFilesDir = ContextUtils.get().getFilesDir();
-        File internalCacheDir = ContextUtils.get().getCacheDir();
-
-        FileUtils.deleteFilesAndDirInDir(externalFilesDir);
-        FileUtils.deleteFilesAndDirInDir(externalCacheDir);
-        FileUtils.deleteFilesAndDirInDir(internalFilesDir);
-        FileUtils.deleteFilesAndDirInDir(internalCacheDir);
-    }
-
-    /**
-     * ***********************************外存***********************************
-     * <p>
-     * 外存总共空间
-     */
-    public static String getExternalTotal() {
-        long totalSpace = Environment.getExternalStorageDirectory().getTotalSpace();
-        return FileUtils.getFileSize(totalSpace);
-    }
-
-    /**
-     * 外存使用空间
-     */
-    public static String getExternalUsable() {
-        long usableSpace = Environment.getExternalStorageDirectory().getUsableSpace();
-        return FileUtils.getFileSize(usableSpace);
-    }
-
-    /**
-     * 外存剩余空间
-     */
-    public static String getExternalFree() {
-        long freeSpace = Environment.getExternalStorageDirectory().getFreeSpace();
-        return FileUtils.getFileSize(freeSpace);
     }
 
 }

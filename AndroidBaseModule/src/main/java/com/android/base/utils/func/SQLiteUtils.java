@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by gg on 2017/4/3.
  */
-
 public class SQLiteUtils {
+
     private SQLiteDatabase database;
 
     /**

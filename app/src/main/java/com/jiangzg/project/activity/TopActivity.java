@@ -51,7 +51,6 @@ public class TopActivity extends BaseActivity<TopActivity> {
         super.onNewIntent(intent);
         String test = intent.getStringExtra("test");
         int taskId = getTaskId();
-        boolean taskRoot = StackUtils.isTaskRoot(this);
 //        List<StackUtils.Task> tasks = StackUtils.get();
         String logTag = "";
     }
@@ -70,7 +69,6 @@ public class TopActivity extends BaseActivity<TopActivity> {
     protected void onResume() {
         super.onResume();
         int taskId = getTaskId();
-        boolean taskRoot = StackUtils.isTaskRoot(this);
 //        Stack<StackUtils.Task> tasks = StackUtils.get();
         String logTag = "";
     }

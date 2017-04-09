@@ -1,4 +1,4 @@
-package com.android.base.utils.img;
+package com.android.base.utils.media;
 
 import android.app.Activity;
 import android.content.Context;
@@ -31,7 +31,7 @@ import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 
-import com.android.base.utils.func.FileUtils;
+import com.android.base.utils.file.FileUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -50,6 +50,7 @@ import java.io.OutputStream;
  * 图片相关工具类
  */
 public class ImageUtils {
+
     //适屏显示image，完全没必要，直接setScaleType就行(难道是缩放？)
     public static void showImage(Context context, Activity activity, Uri imagePath, ImageView imageView) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -84,6 +85,7 @@ public class ImageUtils {
         }
         imageView.setImageBitmap(bitmap);
     }
+
     public static final Bitmap.CompressFormat FORMAT = Bitmap.CompressFormat.JPEG; // 通常
 
     /**

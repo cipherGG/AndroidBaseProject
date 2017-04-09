@@ -24,6 +24,7 @@ public class ActivityUtils {
     private static final int animIn = android.R.anim.fade_in; // 4.4下的进场效果
     private static final int animOut = android.R.anim.fade_out; // 4.4下的退场效果
 
+    /* 在base中调用 */
     public static void initBeforeSuperCreate(Activity activity) {
         Window window = activity.getWindow(); // 软键盘
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);// 键盘不会遮挡输入框
@@ -44,7 +45,6 @@ public class ActivityUtils {
     }
 
     /**
-     * ***********************************跳转***********************************
      * Context启动activity
      */
     public static void startActivity(Context from, Intent intent) {

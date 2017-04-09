@@ -1,4 +1,4 @@
-package com.android.base.utils.img;
+package com.android.base.utils.media;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 
 import com.android.base.utils.func.ConvertUtils;
+import com.android.base.utils.sys.ContextUtils;
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -25,18 +26,18 @@ import java.io.File;
 public class GlideUtils {
 
     /* 获取缓存目录 */
-    public static File getCacheFile(Context context) {
-        return new File(context.getCacheDir(), DiskCache.Factory.DEFAULT_DISK_CACHE_DIR);
+    public static File getCacheFile() {
+        return new File(ContextUtils.get().getCacheDir(), DiskCache.Factory.DEFAULT_DISK_CACHE_DIR);
     }
 
     /* 清除磁盘缓存 */
-    public static void clearCache(Context context) {
-        Glide.get(context.getApplicationContext()).clearDiskCache();
+    public static void clearCache() {
+        Glide.get(ContextUtils.get()).clearDiskCache();
     }
 
     /* 清除内存缓存 */
-    public static void clearMemory(Context context) {
-        Glide.get(context).clearMemory();
+    public static void clearMemory() {
+        Glide.get(ContextUtils.get()).clearMemory();
     }
 
     /* 图片加载完毕监听 */

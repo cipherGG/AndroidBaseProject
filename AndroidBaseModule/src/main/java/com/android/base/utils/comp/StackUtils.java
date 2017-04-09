@@ -12,6 +12,15 @@ import java.util.Stack;
  */
 public class StackUtils {
 
+    private static Stack<Activity> STACK; // 任务栈
+
+    public static Stack<Activity> get() {
+        if (STACK == null) {
+            STACK = new Stack<>();
+        }
+        return STACK;
+    }
+
     /**
      * 转变前台的activity栈(开启和改变栈都需要调用)
      * 1.FLAG_ACTIVITY_NEW_TASK 决定是否需要开启新的任务栈
@@ -24,40 +33,39 @@ public class StackUtils {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
     }
 
-    /* 任务栈 */
-    private static final Stack<Activity> STACK = new Stack<>();
-
-    public static Stack<Activity> get() {
-        return STACK;
-    }
-
     public static boolean addActivity(Activity activity) {
-        return STACK.add(activity);
+        return get().add(activity);
     }
 
     public static boolean removeActivity(Activity activity) {
-        return STACK.remove(activity);
+        return get().remove(activity);
     }
 
-    /* 关闭前台的activity */
+    /**
+     * 关闭前台的activity
+     */
     public static void finishTopActivity() {
-        Activity activity = STACK.lastElement();
+        Activity activity = get().lastElement();
         if (activity == null) return;
         removeActivity(activity);
         activity.finish();
     }
 
-    /* 关闭最底下的activity */
+    /**
+     * 关闭最底下的activity
+     */
     public static void finishRootActivity() {
-        Activity activity = STACK.firstElement();
+        Activity activity = get().firstElement();
         if (activity == null) return;
         removeActivity(activity);
         activity.finish();
     }
 
-    /*关闭task底部activity */
+    /**
+     * 关闭task底部activity
+     */
     public static void finishTask(int taskId) {
-        for (Activity activity : STACK) {
+        for (Activity activity : get()) {
             int id = activity.getTaskId();
             if (taskId != id) continue;
             removeActivity(activity);
@@ -65,15 +73,20 @@ public class StackUtils {
         }
     }
 
-    /* 关闭所有activity */
+    /**
+     * 关闭所有activity
+     */
     public static void finishAll() {
-        for (Activity activity : STACK) {
+        for (Activity activity : get()) {
             removeActivity(activity);
             activity.finish();
         }
-        STACK.clear();
+        get().clear();
     }
 
+    /**
+     * 关闭activity
+     */
     public static void finish(Activity activity) {
         if (activity == null) return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP

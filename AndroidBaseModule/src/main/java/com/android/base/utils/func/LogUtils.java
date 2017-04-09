@@ -1,10 +1,12 @@
 package com.android.base.utils.func;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import com.android.base.R;
+import com.android.base.utils.file.FileUtils;
 import com.android.base.utils.sys.AppUtils;
+import com.android.base.utils.sys.ContextUtils;
+import com.android.base.utils.time.TimeUtils;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
@@ -17,8 +19,8 @@ import java.io.File;
  */
 public class LogUtils {
 
-    public static void initApp(Context context) {
-        String logTag = context.getString(R.string.app_name);
+    public static void initApp() {
+        String logTag = ContextUtils.get().getString(R.string.app_name);
         Logger.Settings settings = Logger.init(logTag); // 打印tag
         settings.setMethodCount(3);// 3以上才能显示调用方法
         settings.hideThreadInfo(); // 隐藏线程显示

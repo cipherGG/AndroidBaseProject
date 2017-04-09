@@ -13,20 +13,26 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.android.base.utils.comp.StackUtils;
+import com.android.base.utils.file.CacheUtils;
 import com.android.base.utils.func.AnalyUtils;
 import com.android.base.utils.func.LogUtils;
-import com.android.base.utils.img.GlideUtils;
 
+import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import butterknife.ButterKnife;
 
+/**
+ * Created by JiangZhiGuo on 2016-12-2.
+ * describe Application的基类
+ */
 public class BaseApp extends MultiDexApplication {
 
     protected static BaseApp instance;  // MyApp实例
     protected Handler mainHandler; // 主线程handler
     protected ExecutorService threadPool; // 缓冲线程池
+    protected Timer timer; // timer
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -40,8 +46,8 @@ public class BaseApp extends MultiDexApplication {
         instance = this;
         initListener();
         ButterKnife.setDebug(true); // 注解
-        LogUtils.initApp(instance); // 打印
-        AnalyUtils.initApp(instance); // 统计
+        LogUtils.initApp(); // 打印
+        AnalyUtils.initApp(); // 统计
     }
 
     public static BaseApp get() {
@@ -62,6 +68,13 @@ public class BaseApp extends MultiDexApplication {
         return threadPool;
     }
 
+    public Timer getTimer() {
+        if (null == timer) {
+            timer = new Timer();
+        }
+        return timer;
+    }
+
     private void initListener() {
         // 监听当前app的内存 和 配置,可撤销
         registerComponentCallbacks(new ComponentCallbacks2() {
@@ -73,7 +86,7 @@ public class BaseApp extends MultiDexApplication {
             @Override
             public void onLowMemory() {
                 LogUtils.e("内存不足,清理内存以获取更多内存");
-                GlideUtils.clearMemory(instance);
+                CacheUtils.clearMemory();
             }
 
             @Override

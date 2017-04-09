@@ -1,4 +1,4 @@
-package com.android.base.utils.func;
+package com.android.base.utils.file;
 
 import com.android.base.utils.str.StringUtils;
 

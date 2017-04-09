@@ -2,11 +2,13 @@ package com.android.base.utils.sys;
 
 import android.app.ActivityManager;
 import android.app.Application;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.telephony.TelephonyManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.android.base.base.BaseApp;
 
@@ -24,12 +26,6 @@ public class ContextUtils {
         return get().getPackageManager();
     }
 
-    /**
-     * 内存 MemoryUtils
-     * 进程 ProcessUtils
-     * 服务 ServiceUtils
-     * 任务 StackUtils
-     */
     public static ActivityManager getActivityManager() {
         return (ActivityManager) get().getSystemService(Context.ACTIVITY_SERVICE);
     }
@@ -47,5 +43,12 @@ public class ContextUtils {
         return (TelephonyManager) get().getSystemService(Context.TELEPHONY_SERVICE);
     }
 
+    public static InputMethodManager getInputManager() {
+        return (InputMethodManager) get().getSystemService(Context.INPUT_METHOD_SERVICE);
+    }
+
+    public static ClipboardManager getClipboardManager() {
+        return (ClipboardManager) get().getSystemService(Context.CLIPBOARD_SERVICE);
+    }
 
 }

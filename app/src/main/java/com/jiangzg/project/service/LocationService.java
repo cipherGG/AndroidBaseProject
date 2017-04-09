@@ -58,7 +58,7 @@ public class LocationService extends Service {
                         String district = aMapLocation.getDistrict();
                         String address = aMapLocation.getAddress();
 
-                        LocationUtils locationUtils = LocationUtils.get();
+                        LocationUtils locationUtils = LocationUtils.getInfo();
                         locationUtils.setLongitude(longitude);
                         locationUtils.setLatitude(latitude);
                         locationUtils.setProvince(province);

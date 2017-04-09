@@ -14,7 +14,7 @@ import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import com.android.base.utils.func.ConvertUtils;
-import com.android.base.utils.func.FileUtils;
+import com.android.base.utils.file.FileUtils;
 import com.android.base.utils.func.PermUtils;
 import com.android.base.utils.str.StringUtils;
 import com.android.base.utils.sys.AppUtils;
