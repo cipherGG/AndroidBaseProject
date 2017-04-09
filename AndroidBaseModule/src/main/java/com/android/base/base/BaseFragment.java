@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.base.utils.FragmentUtils;
+import com.android.base.utils.comp.FragmentUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -26,6 +26,13 @@ import butterknife.Unbinder;
  */
 public abstract class BaseFragment<T> extends Fragment {
 
+    /* 子类复制类似方法 获取对象 */
+    private static BaseFragment newFragment() {
+        Bundle bundle = new Bundle();
+        // bundle.putData();
+        return BaseFragment.newInstance(BaseFragment.class, bundle);
+    }
+
     public String logTag = "BaseFragment";
     public BaseActivity mActivity;
     public BaseFragment mFragment;
@@ -36,15 +43,8 @@ public abstract class BaseFragment<T> extends Fragment {
     public View rootView;
     private Unbinder unbinder;
 
-    /* 子类复制类似方法 获取对象 */
-    private static BaseFragment newFragment() {
-        Bundle bundle = new Bundle();
-        // bundle.putData();
-        return BaseFragment.newInstance(BaseFragment.class, bundle);
-    }
-
     /* 初始layout */
-    protected abstract int initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
+    protected abstract int initObj(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
 
     /* 实例化View */
     protected abstract void initView(View view, @Nullable Bundle savedInstanceState);
@@ -79,7 +79,7 @@ public abstract class BaseFragment<T> extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = super.onCreateView(inflater, container, savedInstanceState);
         if (rootView == null) {
-            int layoutId = initLayout(inflater, container, savedInstanceState);
+            int layoutId = initObj(inflater, container, savedInstanceState);
             rootView = inflater.inflate(layoutId, container, false);
             unbinder = ButterKnife.bind(this, rootView);
         }

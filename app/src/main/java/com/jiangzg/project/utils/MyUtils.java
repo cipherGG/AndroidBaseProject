@@ -1,14 +1,12 @@
 package com.jiangzg.project.utils;
 
-import com.android.base.domain.HttpError;
-import com.android.base.utils.ActivityUtils;
-import com.android.base.utils.ConstantUtils;
-import com.android.base.utils.GsonUtils;
-import com.android.base.utils.SPUtils;
-import com.android.base.utils.StringUtils;
-import com.android.base.utils.ToastUtils;
+import com.android.base.utils.str.ConstantUtils;
+import com.android.base.utils.str.GsonUtils;
+import com.android.base.utils.str.StringUtils;
+import com.android.base.utils.view.ToastUtils;
 import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
+import com.jiangzg.project.domain.HttpError;
 import com.jiangzg.project.service.UpdateService;
 
 /**
@@ -52,7 +50,7 @@ public class MyUtils {
                 break;
             case 410: // 用户被禁用,请求数据的时候得到该 ErrorCode, 应该退出应用
                 ToastUtils.get().show(R.string.http_response_error_410);
-                ActivityUtils.closeActivities();
+//                StackUtils.closeActivities();
                 break;
             case 417: // 逻辑错误，必须返回错误信息
                 HttpError httpError = GsonUtils.get().fromJson(errorMessage, HttpError.class);
@@ -63,7 +61,7 @@ public class MyUtils {
                 }
                 switch (errorCode) {
                     case 1001: // 1001: 用户被锁定
-                        ActivityUtils.closeTopActivity();
+//                        StackUtils.closeTopActivity();
                         break;
                 }
                 break;

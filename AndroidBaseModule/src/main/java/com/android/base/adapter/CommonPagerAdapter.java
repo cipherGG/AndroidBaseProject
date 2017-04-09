@@ -6,8 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.android.base.utils.img.GlideUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +23,7 @@ public class CommonPagerAdapter<T> extends PagerAdapter {
 
     private View.OnClickListener clickListener;
     private View.OnLongClickListener longClickListener;
+    private int errorRes = 0;
 
     public CommonPagerAdapter(Context context, int itemLayoutId) {
         mContext = context;
@@ -39,6 +39,11 @@ public class CommonPagerAdapter<T> extends PagerAdapter {
     /* setData之前调用 */
     public void setOnLongClickListener(View.OnLongClickListener listener) {
         longClickListener = listener;
+    }
+
+    /* 错误占位图片 */
+    public void setErrorImgRes(int errorImgRes) {
+        errorRes = errorImgRes;
     }
 
     public void newData(List<T> data) {
@@ -79,14 +84,9 @@ public class CommonPagerAdapter<T> extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         ImageView view = (ImageView) View.inflate(mContext, itemId, null);
-        T item = mData.get(position);
+        T data = mData.get(position);
         // setImage
-        Glide.with(mContext)
-                .load(item)
-                .crossFade(100)
-                .skipMemoryCache(false)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(view);
+        GlideUtils.load(mContext, data, errorRes, view);
         // setListener
         if (clickListener != null) {
             view.setOnClickListener(clickListener);

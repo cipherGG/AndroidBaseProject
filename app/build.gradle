@@ -75,7 +75,8 @@ dependencies {
     compile project(':AndroidBaseModule')
     compile project(':PushSDK')
 
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    // scan
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
-    compile 'cn.yipianfengye.android:zxing-library:2.1' // scan
+    compile 'cn.yipianfengye.android:zxing-library:2.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 }

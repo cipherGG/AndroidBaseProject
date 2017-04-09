@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.android.base.utils.ToastUtils;
+import com.android.base.utils.view.ToastUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.jiangzg.project.R;

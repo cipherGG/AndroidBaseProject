@@ -13,10 +13,10 @@ import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
 
 import com.android.base.R;
-import com.android.base.utils.ActivityUtils;
-import com.android.base.utils.AnalyUtils;
-import com.android.base.utils.DialogUtils;
-import com.android.base.utils.NetUtils;
+import com.android.base.utils.comp.ActivityUtils;
+import com.android.base.utils.func.AnalyUtils;
+import com.android.base.utils.view.DialogUtils;
+import com.android.base.utils.net.NetUtils;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -28,14 +28,6 @@ import butterknife.Unbinder;
  * describe Activity的基类
  */
 public abstract class BaseActivity<T> extends AppCompatActivity {
-
-    public String logTag = "BaseActivity";
-    public BaseActivity mActivity;
-    public FragmentManager mFragmentManager;
-    public ProgressDialog loading;
-    public ProgressDialog progress;
-    public Intent mIntent;
-    private Unbinder unbinder;
 
     /* 子类复制类似方法 实现跳转 */
     private static void goActivity(Activity from) {
@@ -51,8 +43,16 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
         ActivityUtils.startActivity(from, intent);
     }
 
+    public String logTag = "BaseActivity";
+    public BaseActivity mActivity;
+    public FragmentManager mFragmentManager;
+    public ProgressDialog loading;
+    public ProgressDialog progress;
+    public Intent mIntent;
+    private Unbinder unbinder;
+
     /* 初始layout(setContent之前调用) */
-    protected abstract int initLayout(Bundle savedInstanceState);
+    protected abstract int initObj(Bundle savedInstanceState);
 
     /* 实例化View */
     protected abstract void initView();
@@ -64,7 +64,7 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         logTag = getCls();
         mActivity = this;
-        ActivityUtils.initSuperCreate(mActivity);
+        ActivityUtils.initBeforeSuperCreate(mActivity);
         super.onCreate(savedInstanceState);
         mFragmentManager = getSupportFragmentManager();
         loading = DialogUtils.createLoading(mActivity,
@@ -72,7 +72,7 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
         progress = DialogUtils.createProgress(mActivity,
                 0, getString(R.string.wait), true, 100, 0, null);
         mIntent = getIntent();
-        setContentView(initLayout(savedInstanceState)); // 这之后 页面才会加载出来
+        setContentView(initObj(savedInstanceState)); // 这之后 页面才会加载出来
     }
 
     /* setContentView()或addContentView()后调用,view只是加载出来，没有实例化.

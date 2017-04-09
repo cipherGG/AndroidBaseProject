@@ -26,7 +26,7 @@ import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
-import com.android.base.utils.LogUtils;
+import com.android.base.utils.func.LogUtils;
 import com.jiangzg.project.MyApp;
 
 import java.util.ArrayList;
@@ -101,7 +101,7 @@ public class MapUtils {
         //声明mLocationOption对象,初始化定位参数
         AMapLocationClientOption clientOption = new AMapLocationClientOption();
         //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-        clientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        clientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
         //如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会。
         if (clientOption.isOnceLocationLatest()) {
             clientOption.setOnceLocationLatest(true);

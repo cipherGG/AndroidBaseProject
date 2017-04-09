@@ -1,8 +1,8 @@
 package com.jiangzg.project.utils;
 
-import com.android.base.utils.AppUtils;
-import com.android.base.utils.FileUtils;
-import com.android.base.utils.StringUtils;
+import com.android.base.utils.sys.AppUtils;
+import com.android.base.utils.func.FileUtils;
+import com.android.base.utils.str.StringUtils;
 
 import java.io.File;
 

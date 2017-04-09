@@ -9,15 +9,14 @@ import android.support.v7.app.AlertDialog;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.android.base.domain.Version;
-import com.android.base.utils.ActivityUtils;
-import com.android.base.utils.AppUtils;
-import com.android.base.utils.DialogUtils;
-import com.android.base.utils.FileUtils;
-import com.android.base.utils.HttpUtils;
-import com.android.base.utils.IntentUtils;
+import com.android.base.utils.comp.ActivityUtils;
+import com.android.base.utils.view.DialogUtils;
+import com.android.base.utils.func.FileUtils;
+import com.android.base.utils.comp.IntentUtils;
+import com.android.base.utils.net.RetrofitUtils;
 import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
+import com.jiangzg.project.domain.Version;
 import com.jiangzg.project.utils.MyUtils;
 import com.jiangzg.project.utils.ResUtils;
 
@@ -41,41 +40,41 @@ public class UpdateService extends Service {
         checkUpdate();
     }
 
+    /* startService才走这个 不走下面的 */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // startService才走这个 不走下面的
         return super.onStartCommand(intent, flags, startId);
     }
 
+    /* bindService不走上面的 走这个 */
     @Override
     public IBinder onBind(Intent intent) {
-        // bindService不走上面的 走这个
         throw null;
     }
 
     private void checkUpdate() {
-        final int code = AppUtils.get().getVersionCode();
-        Call<Version> call = HttpUtils.call(HttpUtils.Head.common, HttpUtils.Factory.gson)
-                .checkUpdate(code);
-        HttpUtils.enqueue(call, new HttpUtils.CallBack<Version>() {
-            @Override
-            public void onSuccess(Version result) {
-                if (result == null) {
-                    stopSelf(); // 停止服务
-                    return;
-                }
-                if (code < result.getVersionCode()) { // 小于 有新版本
-                    showNoticeDialog(result); //  提示对话框
-                } else {
-                    stopSelf(); // 停止服务
-                }
-            }
-
-            @Override
-            public void onFailure(int httpCode, String errorMessage) {
-                MyUtils.httpFailure(httpCode, errorMessage);
-            }
-        });
+//        final int code = AppUtils.get().getVersionCode();
+//        Call<Version> call = RetrofitUtils.call(RetrofitUtils.Head.common, RetrofitUtils.Factory.gson)
+//                .checkUpdate(code);
+//        RetrofitUtils.enqueue(call, new RetrofitUtils.CallBack<Version>() {
+//            @Override
+//            public void onSuccess(Version result) {
+//                if (result == null) {
+//                    stopSelf(); // 停止服务
+//                    return;
+//                }
+//                if (code < result.getVersionCode()) { // 小于 有新版本
+//                    showNoticeDialog(result); //  提示对话框
+//                } else {
+//                    stopSelf(); // 停止服务
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int httpCode, String errorMessage) {
+//                MyUtils.httpFailure(httpCode, errorMessage);
+//            }
+//        });
     }
 
     /* 提示更新 */
@@ -110,9 +109,9 @@ public class UpdateService extends Service {
 
     /* 下载apk */
     private void downloadApk(final Version version) {
-        Call<ResponseBody> call = HttpUtils.call(HttpUtils.Head.empty, HttpUtils.Factory.empty)
+        Call<ResponseBody> call = RetrofitUtils.call(RetrofitUtils.Head.empty, RetrofitUtils.Factory.empty)
                 .downloadLargeFile(version.getUpdateUrl());
-        HttpUtils.enqueue(call, new HttpUtils.CallBack<ResponseBody>() {
+        RetrofitUtils.enqueue(call, new RetrofitUtils.CallBack<ResponseBody>() {
             @Override
             public void onSuccess(final ResponseBody body) { // 回调也是子线程
                 if (body == null || body.byteStream() == null) return;

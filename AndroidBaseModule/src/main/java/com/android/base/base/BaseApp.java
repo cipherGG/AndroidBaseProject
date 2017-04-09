@@ -1,17 +1,21 @@
 package com.android.base.base;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.ComponentCallbacks2;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
-import com.android.base.utils.ActivityUtils;
-import com.android.base.utils.AnalyUtils;
-import com.android.base.utils.LogUtils;
+import com.android.base.utils.comp.StackUtils;
+import com.android.base.utils.func.AnalyUtils;
+import com.android.base.utils.func.LogUtils;
+import com.android.base.utils.img.GlideUtils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,7 +40,6 @@ public class BaseApp extends MultiDexApplication {
         instance = this;
         initListener();
         ButterKnife.setDebug(true); // 注解
-        ActivityUtils.initApp(instance); // activity
         LogUtils.initApp(instance); // 打印
         AnalyUtils.initApp(instance); // 统计
     }
@@ -70,12 +73,13 @@ public class BaseApp extends MultiDexApplication {
             @Override
             public void onLowMemory() {
                 LogUtils.e("内存不足,清理内存以获取更多内存");
+                GlideUtils.clearMemory(instance);
             }
 
             @Override
             public void onConfigurationChanged(Configuration newConfig) {
-                LogUtils.d("配置发生变化");
                 StringBuilder status = new StringBuilder();
+                status.append("配置发生变化").append("\n");
                 Configuration cfg = getResources().getConfiguration();
                 status.append("fontScale:").append(cfg.fontScale).append("\n");
                 status.append("hardKeyboardHidden:").append(cfg.hardKeyboardHidden).append("\n");
@@ -105,7 +109,43 @@ public class BaseApp extends MultiDexApplication {
                 LogUtils.d(status.toString());
             }
         });
+        // 监听所有activity的生命周期
+        registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                StackUtils.addActivity(activity);
+            }
 
+            @Override
+            public void onActivityStarted(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                StackUtils.removeActivity(activity);
+            }
+        });
     }
 
 }
