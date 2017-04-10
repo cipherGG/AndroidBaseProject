@@ -2,20 +2,21 @@ package com.android.base.base;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.transition.AutoTransition;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.base.utils.comp.FragmentUtils;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -26,62 +27,94 @@ import butterknife.Unbinder;
  */
 public abstract class BaseFragment<T> extends Fragment {
 
-    /* 子类复制类似方法 获取对象 */
-    private static BaseFragment newFragment() {
-        Bundle bundle = new Bundle();
-        // bundle.putData();
-        return BaseFragment.newInstance(BaseFragment.class, bundle);
-    }
-
-    public String logTag = "BaseFragment";
     public BaseActivity mActivity;
     public BaseFragment mFragment;
     public FragmentManager mFragmentManager;
+    public boolean anim = true;
     public ProgressDialog loading;
     public ProgressDialog progress;
     public Bundle mBundle;
     public View rootView;
     private Unbinder unbinder;
 
-    /* 初始layout */
-    protected abstract int initObj(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
+    /* 获取fragment实例demo */
+    private static BaseFragment newFragment() {
+        Bundle bundle = new Bundle();
+        // bundle.putData();
+        return BaseFragment.newInstance(BaseFragment.class, bundle);
+    }
 
-    /* 实例化View */
-    protected abstract void initView(View view, @Nullable Bundle savedInstanceState);
+    /**
+     * @return 对话框(引用activity的)
+     */
+    public ProgressDialog getLoading() {
+        if (loading != null) return loading;
+        if (mActivity == null) return null;
+        loading = mActivity.getLoading();
+        return loading;
+    }
 
-    /* 初始Data */
-    protected abstract void initData(Bundle savedInstanceState);
+    /**
+     * @return 进度框(引用activity的)
+     */
+    public ProgressDialog getProgress() {
+        if (progress != null) return progress;
+        if (mActivity == null) return null;
+        progress = mActivity.getProgress();
+        return progress;
+    }
+
+    /**
+     * @return 获取当前类(影响性能, 所以需要被动获取)
+     */
+    @SuppressWarnings("unchecked")
+    protected Class<T> getCls() {
+        Type type = this.getClass().getGenericSuperclass();
+        return (Class<T>) (((ParameterizedType) (type)).getActualTypeArguments()[0]);
+    }
+
+    /**
+     * 初始layout
+     */
+    protected abstract int initObj(LayoutInflater inflater, ViewGroup container, Bundle state);
+
+    /**
+     * 实例化View/设置监听器
+     */
+    protected abstract void initView(View view, @Nullable Bundle state);
+
+    /**
+     * 获取数据,最好开线程
+     */
+    protected abstract void initData(Bundle state);
 
     @Override
     public void onAttach(Context context) {
-        logTag = getCls();
         mFragment = this;
         super.onAttach(context);
         if (context instanceof FragmentActivity) {
             mActivity = (BaseActivity) context;
             mFragmentManager = mActivity.getSupportFragmentManager();
-            loading = mActivity.loading;
-            progress = mActivity.progress;
         }
-        FragmentUtils.initAttach(this);
+        initAttach(mFragment);
     }
 
-    /* Activity中的onAttachFragment执行完后会执行 */
+    /* Activity中的onAttachFragment执行完后会执行,相当于onCreate */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBundle = getArguments(); // 取出Bundle
-        FragmentUtils.initCreate(this);
+        initCreate(mFragment);
     }
 
-    /* 在这里返回绑定并View,从stack返回的时候也是先执行这个方法 */
+    /* 在这里返回绑定并View,从stack返回的时候也是先执行这个方法,相当于onStart */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = super.onCreateView(inflater, container, savedInstanceState);
         if (rootView == null) {
             int layoutId = initObj(inflater, container, savedInstanceState);
             rootView = inflater.inflate(layoutId, container, false);
-            unbinder = ButterKnife.bind(this, rootView);
+            unbinder = ButterKnife.bind(mFragment, rootView);
         }
         return rootView;
     }
@@ -121,7 +154,7 @@ public abstract class BaseFragment<T> extends Fragment {
         }
     }
 
-    /* 反射生成对象 */
+    /* 反射生成对象实例 */
     protected static <T> T newInstance(Class<T> clz, Bundle args) {
         T fragment = null;
         try {
@@ -144,14 +177,20 @@ public abstract class BaseFragment<T> extends Fragment {
         return fragment;
     }
 
-    /**
-     * logTag获取
-     */
-    @SuppressWarnings("unchecked")
-    protected String getCls() {
-        Class<T> cls = (Class<T>) (((ParameterizedType) (this.getClass()
-                .getGenericSuperclass())).getActualTypeArguments()[0]);
-        return cls.getSimpleName();
+    /* 初始化fragment */
+    private void initAttach(Fragment fragment) {
+        // 只要进的动画就好，出的有时候执行不完全会bug
+        if (anim && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            fragment.setEnterTransition(new AutoTransition());
+            // fragment.setExitTransition(new AutoTransition());
+            fragment.setReenterTransition(new AutoTransition());
+            // fragment.setReturnTransition(new AutoTransition());
+        }
+    }
+
+    /* 初始化fragment */
+    private void initCreate(Fragment fragment) {
+        fragment.setHasOptionsMenu(true);// Fragment与ActionBar和MenuItem集成
     }
 
 }
