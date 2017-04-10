@@ -14,7 +14,7 @@ public class StackUtils {
 
     private static Stack<Activity> STACK; // 任务栈
 
-    public static Stack<Activity> get() {
+    public static Stack<Activity> getStack() {
         if (STACK == null) {
             STACK = new Stack<>();
         }
@@ -34,18 +34,18 @@ public class StackUtils {
     }
 
     public static boolean addActivity(Activity activity) {
-        return get().add(activity);
+        return getStack().add(activity);
     }
 
     public static boolean removeActivity(Activity activity) {
-        return get().remove(activity);
+        return getStack().remove(activity);
     }
 
     /**
      * 关闭前台的activity
      */
-    public static void finishTopActivity() {
-        Activity activity = get().lastElement();
+    public static void finishTop() {
+        Activity activity = getStack().lastElement();
         if (activity == null) return;
         removeActivity(activity);
         activity.finish();
@@ -54,8 +54,8 @@ public class StackUtils {
     /**
      * 关闭最底下的activity
      */
-    public static void finishRootActivity() {
-        Activity activity = get().firstElement();
+    public static void finishBottom() {
+        Activity activity = getStack().firstElement();
         if (activity == null) return;
         removeActivity(activity);
         activity.finish();
@@ -65,7 +65,7 @@ public class StackUtils {
      * 关闭task底部activity
      */
     public static void finishTask(int taskId) {
-        for (Activity activity : get()) {
+        for (Activity activity : getStack()) {
             int id = activity.getTaskId();
             if (taskId != id) continue;
             removeActivity(activity);
@@ -77,11 +77,11 @@ public class StackUtils {
      * 关闭所有activity
      */
     public static void finishAll() {
-        for (Activity activity : get()) {
+        for (Activity activity : getStack()) {
             removeActivity(activity);
             activity.finish();
         }
-        get().clear();
+        getStack().clear();
     }
 
     /**
@@ -89,8 +89,7 @@ public class StackUtils {
      */
     public static void finish(Activity activity) {
         if (activity == null) return;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                && activity.isTaskRoot()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.finishAndRemoveTask();
         } else {
             activity.finish();
