@@ -1,11 +1,9 @@
 package com.android.base.utils.comp;
 
-import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.transition.AutoTransition;
 
 /**
  * Created by Jiang on 2016/0/01
@@ -13,24 +11,6 @@ import android.transition.AutoTransition;
  * Fragment处理类, 包括FragmentManager的获取
  */
 public class FragmentUtils {
-
-    private static final boolean anim = true; // 跳转动画开关
-
-    /* 在base中调用 */
-    public static void initAttach(Fragment fragment) {
-        // 只要进的动画就好，出的有时候执行不完全会bug
-        if (anim && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            fragment.setEnterTransition(new AutoTransition());
-            // fragment.setExitTransition(new AutoTransition());
-            fragment.setReenterTransition(new AutoTransition());
-            // fragment.setReturnTransition(new AutoTransition());
-        }
-    }
-
-    /* 在base中调用 */
-    public static void initCreate(Fragment fragment) {
-        fragment.setHasOptionsMenu(true);// Fragment与ActionBar和MenuItem集成
-    }
 
     /**
      * 通过tag发现存在的fragment
@@ -143,7 +123,7 @@ public class FragmentUtils {
     }
 
     /* onBackPress里已经处理了 */
-    public static boolean canGoBack(FragmentManager manager) {
+    public static boolean goBack(FragmentManager manager) {
         if (manager != null && manager.getBackStackEntryCount() > 0) {
             manager.popBackStack(); // fragment栈中有fragment时，回退fragment
             // manager.popBackStackImmediate();
