@@ -21,23 +21,11 @@ import rx.subjects.Subject;
  */
 public class RxUtils {
 
-    private static RxUtils instance;
     // object是订阅的类型 ,List<Subject>里时候所有订阅此频道的订阅者
-    private HashMap<Object, List<Subject>> maps = new HashMap<>();
-
-    public static RxUtils get() {
-        if (instance == null) {
-            synchronized (RxUtils.class) {
-                if (instance == null) {
-                    instance = new RxUtils();
-                }
-            }
-        }
-        return instance;
-    }
+    private static HashMap<Object, List<Subject>> maps = new HashMap<>();
 
     /* 发送频道消息(已注册的频道里的观察者才会收到) */
-    public <T> void post(RxEvent<T> rxEvent) {
+    public static <T> void post(RxEvent<T> rxEvent) {
         int id = rxEvent.getChannel();
         T data = rxEvent.getData();
         if (id != 0 && data != null) {
@@ -46,7 +34,7 @@ public class RxUtils {
     }
 
     /* 注意:这个是即时发送消息的，没有注册这么一说 (可用于线程间的操作)*/
-    public <T> Observable<T> post(final T send, Subscriber<? super T> subscriber) {
+    public static <T> Observable<T> post(final T send, Subscriber<? super T> subscriber) {
         Observable<T> observable = Observable.create(new Observable.OnSubscribe<T>() {
             @Override
             public void call(Subscriber<? super T> subscriber) {
@@ -59,7 +47,7 @@ public class RxUtils {
     }
 
     /* 注册频道 */
-    public <T> Observable<T> register(int eventId, Action1<? super T> onNext) {
+    public static <T> Observable<T> register(int eventId, Action1<? super T> onNext) {
         Observable<T> observable = createObservable(eventId); // 获取观察者
         // Rx最好连着点出来,不连着点，下面全是Bug
         observable.subscribeOn(Schedulers.immediate()) // 当前线程
@@ -70,9 +58,9 @@ public class RxUtils {
         return observable;
     }
 
-    public <T> Observable<T> register(int eventId, Action1<? super T> onNext,
-                                      final Action1<Throwable> onError,
-                                      final Action0 onCompleted) {
+    public static <T> Observable<T> register(int eventId, Action1<? super T> onNext,
+                                             final Action1<Throwable> onError,
+                                             final Action0 onCompleted) {
         Observable<T> observable = createObservable(eventId); // 获取观察者
         // Rx最好连着点出来,不连着点，下面全是Bug
         observable.subscribeOn(Schedulers.immediate()) // 当前线程
@@ -84,14 +72,14 @@ public class RxUtils {
     }
 
     /* 注销频道里的单个观察者 */
-    public void unregister(int eventId, Observable observable) {
+    public static void unregister(int eventId, Observable observable) {
         if (observable == null) return;
         removeObservable(eventId, observable); // 移除此event绑定的观察者
     }
 
     /* 获取观察者 */
     @SuppressWarnings("unchecked")
-    private <T> Observable<T> createObservable(int tag) {
+    private static <T> Observable<T> createObservable(int tag) {
         List<Subject> subjects = maps.get(tag);
         if (subjects == null) { // 这个tag没有订阅者
             subjects = new ArrayList<>();
@@ -104,7 +92,7 @@ public class RxUtils {
 
     /* 观察者发送消息给订阅者 */
     @SuppressWarnings("unchecked")
-    private <T> void next(int tag, T t) {
+    private static <T> void next(int tag, T t) {
         List<Subject> subjects = maps.get(tag);
         if (subjects != null && !subjects.isEmpty()) {
             for (Subject s : subjects) { // 向所有订阅tag的对象发送消息
@@ -115,7 +103,7 @@ public class RxUtils {
 
     /* 移除观察者 */
     @SuppressWarnings("unchecked")
-    private void removeObservable(int tag, Observable observable) {
+    private static void removeObservable(int tag, Observable observable) {
         List<Subject> subjects = maps.get(tag);
         if (subjects != null) { // 这个tag的订阅者集合不为空
             subjects.remove((Subject) observable);

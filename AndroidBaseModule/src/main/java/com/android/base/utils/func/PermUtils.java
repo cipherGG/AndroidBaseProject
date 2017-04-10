@@ -2,7 +2,9 @@ package com.android.base.utils.func;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 
 import com.android.base.base.BaseApp;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -25,7 +27,9 @@ public class PermUtils {
     /**
      * 请求权限,返回结果一起处理
      */
-    public static void request(Context context, final PermissionListener listener, final String... permissions) {
+    public static void request(Context context, final PermissionListener listener,
+                               final String... permissions) {
+        if (isPermissionOK(context, permissions)) return;
         RxPermissions rxPermissions = RxPermissions.getInstance(context);
         Observable<Boolean> request = rxPermissions.request(permissions);
         request.subscribe(new Action1<Boolean>() {
@@ -57,7 +61,20 @@ public class PermUtils {
         });
     }
 
-    /* app信息 */
+    /* 是否允许 */
+    private static boolean isPermissionOK(Context context, String... permissions) {
+        boolean okAll = true;
+        for (String permission : permissions) {
+            boolean okThis = ActivityCompat.checkSelfPermission(context, permission)
+                    == PackageManager.PERMISSION_GRANTED;
+            okAll = okAll && okThis;
+        }
+        return okAll;
+    }
+
+    /**
+     * appUtils
+     */
     public static void requestApp(Context context, PermissionListener listener) {
         String[] permission;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -71,30 +88,37 @@ public class PermUtils {
         request(context, listener, permission);
     }
 
-    /* 设备信息 */
+    /**
+     * DeviceUtils
+     */
     public static void requestDevice(Context context, PermissionListener listener) {
         request(context, listener, Manifest.permission.READ_PHONE_STATE);
     }
 
-    /* 拍照 */
+    /**
+     * 拍照
+     */
     public static void requestCamera(Context context, PermissionListener listener) {
         request(context, listener, Manifest.permission.CAMERA);
     }
 
-    /* 权限 */
+    /**
+     * 地图
+     */
     public static void requestMap(Context context, PermUtils.PermissionListener listener) {
         PermUtils.request(context, listener, Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
-    /* 分享 */
+    /**
+     * 分享(瞎TM搞)
+     */
     public static void requestShare(Context context, PermUtils.PermissionListener listener) {
         String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CALL_PHONE,
-                Manifest.permission.READ_LOGS, Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.SET_DEBUG_APP,
-                Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.GET_ACCOUNTS,
-                Manifest.permission.WRITE_APN_SETTINGS};
+                Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE,
+                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_APN_SETTINGS,
+                Manifest.permission.READ_LOGS, Manifest.permission.SET_DEBUG_APP,
+                Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.GET_ACCOUNTS};
         PermUtils.request(context, listener, mPermissionList);
     }
 
