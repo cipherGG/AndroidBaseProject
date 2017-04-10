@@ -1,7 +1,5 @@
 package com.android.base.utils.func;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -10,7 +8,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 
 import com.android.base.R;
 import com.android.base.utils.str.StringUtils;
@@ -28,8 +25,8 @@ import java.util.Locale;
 public class LocationUtils {
 
     private static LocationUtils instance;
-    private static OnLocationChangeListener mListener;
-    private static MyLocationListener myLocationListener;
+    private static OnLocationChangeListener mListener; // 外部实现的listener
+    private static MyLocationListener myLocationListener;  // 内部处理的listener
     // info
     private double longitude; // 经度
     private double latitude; // 纬度
@@ -38,6 +35,60 @@ public class LocationUtils {
     private String city; // 城市信息
     private String district; // 区
 
+    /**
+     * 注册
+     *
+     * @param minTime     位置信息更新周期（单位：毫秒）
+     * @param minDistance 位置变化最小距离：当位置距离变化超过此值时，将更新位置信息（单位：米）
+     * @param listener    位置刷新的回调接口
+     */
+    public static void register(final long minTime, final long minDistance,
+                                final OnLocationChangeListener listener) {
+        if (!isLocationEnabled()) {
+            ToastUtils.get().show(R.string.cannot_location_please_open_service);
+            return;
+        }
+        PermUtils.requestMap(ContextUtils.get(), new PermUtils.PermissionListener() {
+            @Override
+            public void onAgree() {
+                starLocation(minTime, minDistance, listener);
+            }
+        });
+    }
+
+    private static boolean starLocation(long minTime, long minDistance,
+                                        OnLocationChangeListener listener) {
+        mListener = listener;
+        LocationManager mLocationManager = ContextUtils.getLocationManager();
+        String provider = mLocationManager.getBestProvider(getCriteria(), true);
+        Location location = mLocationManager.getLastKnownLocation(provider);
+        if (location != null) {
+            setNativeLocation(location);
+            if (mListener != null) {
+                mListener.getLastKnownLocation(location);
+            }
+        }
+        if (myLocationListener == null) {
+            myLocationListener = new MyLocationListener();
+        }
+        mLocationManager.requestLocationUpdates(provider,
+                minTime, minDistance, myLocationListener);
+        return true;
+    }
+
+    /**
+     * 注销
+     */
+    public static void unregister() {
+        if (myLocationListener != null) {
+            ContextUtils.getLocationManager().removeUpdates(myLocationListener);
+            myLocationListener = null;
+        }
+    }
+
+    /**
+     * @return 定位到的地理位置信息(单例模式, 不要持久化)
+     */
     public static LocationUtils getInfo() {
         if (instance == null) {
             synchronized (LocationUtils.class) {
@@ -47,6 +98,24 @@ public class LocationUtils {
             }
         }
         return instance;
+    }
+
+    /**
+     * 根据经纬度获取地理位置
+     *
+     * @param latitude  纬度
+     * @param longitude 经度
+     * @return {@link Address}
+     */
+    public static Address getAddress(double latitude, double longitude) {
+        Geocoder geocoder = new Geocoder(ContextUtils.get(), Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses.size() > 0) return addresses.get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String getAddress() {
@@ -109,76 +178,14 @@ public class LocationUtils {
         this.latitude = latitude;
     }
 
-    /**
-     * 判断Gps是否可用
-     */
-    public static boolean isGpsEnabled() {
-        return ContextUtils.getLocationManager().isProviderEnabled(LocationManager.GPS_PROVIDER);
-    }
-
-    /**
-     * 判断定位是否可用
-     */
-    public static boolean isLocationEnabled() {
+    /* 判断定位是否可用 */
+    private static boolean isLocationEnabled() {
         LocationManager lm = ContextUtils.getLocationManager();
         return lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
                 || lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
-    /**
-     * 注册
-     *
-     * @param minTime     位置信息更新周期（单位：毫秒）
-     * @param minDistance 位置变化最小距离：当位置距离变化超过此值时，将更新位置信息（单位：米）
-     * @param listener    位置刷新的回调接口
-     */
-    public static boolean register(long minTime, long minDistance,
-                                   OnLocationChangeListener listener) {
-        if (listener == null) return false;
-        mListener = listener;
-        if (!isLocationEnabled()) {
-            ToastUtils.get().show(R.string.cannot_location_please_open_service);
-            return false;
-        }
-        LocationManager mLocationManager = ContextUtils.getLocationManager();
-        String provider = mLocationManager.getBestProvider(getCriteria(), true);
-        // 权限检查
-        if (ActivityCompat.checkSelfPermission(ContextUtils.get(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(ContextUtils.get(), Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-            // 再次请求
-            PermUtils.requestMap(ContextUtils.get(), null);
-            return true;
-        }
-        Location location = mLocationManager.getLastKnownLocation(provider);
-        if (location != null) {
-            setNativeLocation(location);
-            listener.getLastKnownLocation(location);
-        }
-        if (myLocationListener == null) {
-            myLocationListener = new MyLocationListener();
-        }
-        mLocationManager.requestLocationUpdates(provider,
-                minTime, minDistance, myLocationListener);
-        return true;
-    }
-
-    /**
-     * 注销
-     */
-    public static void unregister() {
-        if (myLocationListener != null) {
-            ContextUtils.getLocationManager().removeUpdates(myLocationListener);
-            myLocationListener = null;
-        }
-    }
-
-    /**
-     * 设置定位参数
-     *
-     * @return {@link Criteria}
-     */
+    /* 设置定位参数 */
     private static Criteria getCriteria() {
         Criteria criteria = new Criteria();
         //设置定位精确度 Criteria.ACCURACY_COARSE比较粗略，Criteria.ACCURACY_FINE则比较精细
@@ -203,114 +210,6 @@ public class LocationUtils {
         double longitude = location.getLongitude();
         getInfo().setLatitude(latitude);
         getInfo().setLongitude(longitude);
-    }
-
-    /**
-     * 根据经纬度获取地理位置
-     *
-     * @param latitude  纬度
-     * @param longitude 经度
-     * @return {@link Address}
-     */
-    public static Address getAddress(double latitude, double longitude) {
-        Geocoder geocoder = new Geocoder(ContextUtils.get(), Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            if (addresses.size() > 0) return addresses.get(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * 根据经纬度获取所在国家
-     *
-     * @param latitude  纬度
-     * @param longitude 经度
-     * @return 所在国家
-     */
-    public String getCountryName(double latitude, double longitude) {
-        Address address = getAddress(latitude, longitude);
-        return address == null ? "unknown" : address.getCountryName();
-    }
-
-    /**
-     * 根据经纬度获取所在地
-     *
-     * @param latitude  纬度
-     * @param longitude 经度
-     * @return 所在地
-     */
-    public static String getLocality(double latitude, double longitude) {
-        Address address = getAddress(latitude, longitude);
-        return address == null ? "unknown" : address.getLocality();
-    }
-
-    /**
-     * 根据经纬度获取所在街道
-     *
-     * @param latitude  纬度
-     * @param longitude 经度
-     * @return 所在街道
-     */
-    public static String getStreet(double latitude, double longitude) {
-        Address address = getAddress(latitude, longitude);
-        return address == null ? "unknown" : address.getAddressLine(0);
-    }
-
-    private static class MyLocationListener implements LocationListener {
-        /**
-         * 当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
-         *
-         * @param location 坐标
-         */
-        @Override
-        public void onLocationChanged(Location location) {
-            if (mListener != null) {
-                setNativeLocation(location);
-                mListener.onLocationChanged(location);
-            }
-        }
-
-        /**
-         * provider的在可用、暂时不可用和无服务三个状态直接切换时触发此函数
-         *
-         * @param provider 提供者
-         * @param status   状态
-         * @param extras   provider可选包
-         */
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            if (mListener != null) {
-                mListener.onStatusChanged(provider, status, extras);
-            }
-            switch (status) {
-                case LocationProvider.AVAILABLE:
-                    LogUtils.d("onStatusChanged", "当前GPS状态为可见状态");
-                    break;
-                case LocationProvider.OUT_OF_SERVICE:
-                    LogUtils.d("onStatusChanged", "当前GPS状态为服务区外状态");
-                    break;
-                case LocationProvider.TEMPORARILY_UNAVAILABLE:
-                    LogUtils.d("onStatusChanged", "当前GPS状态为暂停服务状态");
-                    break;
-            }
-        }
-
-        /**
-         * provider被enable时触发此函数，比如GPS被打开
-         */
-        @Override
-        public void onProviderEnabled(String provider) {
-        }
-
-        /**
-         * provider被disable时触发此函数，比如GPS被关闭
-         */
-        @Override
-        public void onProviderDisabled(String provider) {
-        }
     }
 
     /**
@@ -339,6 +238,61 @@ public class LocationUtils {
          * @param status   状态
          * @param extras   provider可选包
          */
-        void onStatusChanged(String provider, int status, Bundle extras);//位置状态发生改变
+        void onStatusChanged(String provider, int status, Bundle extras);
     }
+
+    private static class MyLocationListener implements LocationListener {
+        /**
+         * 当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
+         *
+         * @param location 坐标
+         */
+        @Override
+        public void onLocationChanged(Location location) {
+            setNativeLocation(location);
+            if (mListener != null) {
+                mListener.onLocationChanged(location);
+            }
+        }
+
+        /**
+         * provider的在可用、暂时不可用和无服务三个状态直接切换时触发此函数
+         *
+         * @param provider 提供者
+         * @param status   状态
+         * @param extras   provider可选包
+         */
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            switch (status) {
+                case LocationProvider.AVAILABLE:
+                    LogUtils.d("onStatusChanged", "当前GPS状态为可见状态");
+                    break;
+                case LocationProvider.OUT_OF_SERVICE:
+                    LogUtils.d("onStatusChanged", "当前GPS状态为服务区外状态");
+                    break;
+                case LocationProvider.TEMPORARILY_UNAVAILABLE:
+                    LogUtils.d("onStatusChanged", "当前GPS状态为暂停服务状态");
+                    break;
+            }
+            if (mListener != null) {
+                mListener.onStatusChanged(provider, status, extras);
+            }
+        }
+
+        /**
+         * provider被enable时触发此函数，比如GPS被打开
+         */
+        @Override
+        public void onProviderEnabled(String provider) {
+        }
+
+        /**
+         * provider被disable时触发此函数，比如GPS被关闭
+         */
+        @Override
+        public void onProviderDisabled(String provider) {
+        }
+    }
+
 }
