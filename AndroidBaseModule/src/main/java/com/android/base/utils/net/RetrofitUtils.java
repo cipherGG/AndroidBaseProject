@@ -1,16 +1,15 @@
 package com.android.base.utils.net;
 
-import android.content.Context;
-
 import com.android.base.R;
-import com.android.base.utils.func.LogUtils;
+import com.android.base.utils.other.LogUtils;
 import com.android.base.utils.str.StringUtils;
 import com.android.base.utils.sys.ContextUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import okhttp3.Interceptor;
@@ -32,13 +31,44 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  * Created by JiangZhiGuo on 2016/10/13.
  * describe Retrofit管理工具类
  */
-public class RetrofitUtils {
+public class RetrofitUtils<T extends APIUtils> {
 
+    private static RetrofitUtils instance;
+    /* 初始化接口 */
+    private static InitListener initListener;
     /* api集合（不同的header参数） */
-    private static final HashMap<String, APIUtils> callMap = new HashMap<>();
+    private final HashMap<String, T> callMap = new HashMap<>();
 
-    /* 清除缓存的api集合 */
-    public static void clearToken() {
+    public static RetrofitUtils get() {
+        if (instance == null) {
+            synchronized (RetrofitUtils.class) {
+                if (instance == null) {
+                    instance = new RetrofitUtils();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public interface InitListener {
+        String getUserToken();
+
+        String getBaseURL();
+
+        String getApiKey();
+    }
+
+    /**
+     * 在App中初始化
+     */
+    public static void initApp(InitListener listener) {
+        initListener = listener;
+    }
+
+    /**
+     * 清除缓存的api集合
+     */
+    public void clearToken() {
         callMap.clear();
     }
 
@@ -53,19 +83,30 @@ public class RetrofitUtils {
     }
 
     /* 获取api */
-    public static APIUtils call(Head head, Factory factory) {
+    public T call(Head head, Factory factory) {
         String key = head.name() + factory.name();
-        APIUtils call = callMap.get(key);
+        T call = callMap.get(key);
         if (call != null) return call;
+        // head
         Interceptor hea;
-        if (head == Head.common) {
-            hea = getHeader("");
-        } else if (head == Head.token) {
-//            String userToken = SPUtils.getUser().getUserToken();
-            hea = getHeader("");
-        } else {
+        if (head == Head.common) { // 通用
+            String apiKey = "";
+            if (initListener != null) {
+                apiKey = initListener.getApiKey();
+            }
+            hea = getHeader(apiKey, "");
+        } else if (head == Head.token) { // token
+            String apiKey = "";
+            String userToken = "";
+            if (initListener != null) {
+                apiKey = initListener.getApiKey();
+                userToken = initListener.getUserToken();
+            }
+            hea = getHeader(apiKey, userToken);
+        } else { // null
             hea = null;
         }
+        // factory
         Converter.Factory fac;
         if (factory == Factory.string) {
             fac = getStringFactory();
@@ -74,14 +115,14 @@ public class RetrofitUtils {
         } else {
             fac = null;
         }
-        APIUtils newCall = getService(hea, fac);
+        T newCall = getService(hea, fac);
         callMap.put(key, newCall);
         return newCall;
     }
 
     /* http请求回调 */
-    public interface CallBack<T> {
-        void onSuccess(T result);
+    public interface CallBack<M> {
+        void onSuccess(M result);
 
         void onFailure(int httpCode, String errorMessage);
     }
@@ -91,14 +132,14 @@ public class RetrofitUtils {
      *
      * @param call     APIService接口调用
      * @param callBack 回调接口
-     * @param <T>      返回实体类
+     * @param <M>      返回实体类
      */
-    public static <T> void enqueue(Call<T> call, final CallBack<T> callBack) {
-        call.enqueue(new Callback<T>() {
+    public <M> void enqueue(Call<M> call, final CallBack<M> callBack) {
+        call.enqueue(new Callback<M>() {
             @Override
-            public void onResponse(Call<T> call, Response<T> response) {
+            public void onResponse(Call<M> call, Response<M> response) {
                 int code = response.code();
-                T result = response.body();
+                M result = response.body();
                 // 响应处理
                 if (callBack == null) return;
                 if (code == 200) { // 200成功
@@ -117,7 +158,7 @@ public class RetrofitUtils {
             }
 
             @Override
-            public void onFailure(Call<T> call, Throwable t) {
+            public void onFailure(Call<M> call, Throwable t) {
                 Class<? extends Throwable> aClass = t.getClass();
                 int errorMessage;
                 if (aClass.equals(java.net.ConnectException.class)) { // 网络环境
@@ -134,20 +175,22 @@ public class RetrofitUtils {
         });
     }
 
-    /* 构建头Map */
-    public static HashMap<String, String> getHeaderMap(String token) {
+    /* 构建头信息 */
+    private Interceptor getHeader(String apiKey, String token) {
         HashMap<String, String> options = new HashMap<>();
-        options.put("API_KEY", "");
         options.put("Content-Type", "application/json;charset=utf-8");
         options.put("Accept", "application/json");
+        if (!StringUtils.isEmpty(apiKey)) {
+            options.put("API_KEY", apiKey);
+        }
         if (!StringUtils.isEmpty(token)) {
             options.put("Authorization", token);
         }
-        return options;
+        return getHeader(options);
     }
 
     /* 构建头client */
-    private static Interceptor getHeader(final Map<String, String> options) {
+    private Interceptor getHeader(final Map<String, String> options) {
         return new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
@@ -161,14 +204,8 @@ public class RetrofitUtils {
         };
     }
 
-    /* 构建头信息 */
-    private static Interceptor getHeader(String token) {
-        HashMap<String, String> options = getHeaderMap(token);
-        return getHeader(options);
-    }
-
     /* 获取OKHttp的client */
-    private static OkHttpClient getClient(Interceptor header) {
+    private OkHttpClient getClient(Interceptor header) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.addInterceptor(getLogInterceptor());
         if (header != null) {
@@ -178,7 +215,7 @@ public class RetrofitUtils {
     }
 
     /* 获取日志拦截器 */
-    private static Interceptor getLogInterceptor() {
+    private Interceptor getLogInterceptor() {
         HttpLoggingInterceptor.Level level = HttpLoggingInterceptor.Level.BODY;
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(
                 new HttpLoggingInterceptor.Logger() {
@@ -199,9 +236,11 @@ public class RetrofitUtils {
     }
 
     /* 获取Retrofit实例 */
-    private static Retrofit getRetrofit(Interceptor header, Converter.Factory factory) {
+    private Retrofit getRetrofit(Interceptor header, Converter.Factory factory) {
         Retrofit.Builder builder = new Retrofit.Builder();
-        builder.baseUrl(APIUtils.BASE_URL); // host
+        if (initListener != null) {
+            builder.baseUrl(initListener.getBaseURL()); // host
+        }
         if (factory != null) {
             builder.addConverterFactory(factory); // 解析构造器
         }
@@ -210,47 +249,37 @@ public class RetrofitUtils {
     }
 
     /* 数据解析构造器 */
-    private static GsonConverterFactory getGsonFactory() {
+    private GsonConverterFactory getGsonFactory() {
         return GsonConverterFactory.create();
     }
 
-    private static ScalarsConverterFactory getStringFactory() {
+    private ScalarsConverterFactory getStringFactory() {
         return ScalarsConverterFactory.create();
     }
 
     /* 获取service 开始请求网络 */
-    private static APIUtils getService(Interceptor header, Converter.Factory factory) {
+    private T getService(Interceptor header, Converter.Factory factory) {
         Retrofit retrofit = getRetrofit(header, factory);
-        return retrofit.create(APIUtils.class);
+        return retrofit.create(getCls());
     }
 
-    /* 语言环境 */
-    private static Locale getLocale(Context context) {
-        return context.getResources().getConfiguration().locale;
-    }
-
-    /* 是否为英语环境 */
-    private static boolean isEN(Context context) {
-        String language = getLocale(context).getLanguage();
-        return language.endsWith("en");
-    }
-
-    /* 是否为中文环境 */
-    private static boolean isZH(Context context) {
-        String language = getLocale(context).getLanguage();
-        return language.endsWith("zh");
-    }
-
-    public static RequestBody string2PartBody(String body) {
+    public RequestBody string2PartBody(String body) {
         return RequestBody.create(MediaType.parse("text/plain"), body);
     }
 
-    public static String file2PartKey(File file) {
+    public String file2PartKey(File file) {
         return "file\";filename=\"" + file.getName();
     }
 
-    public static RequestBody img2PartBody(File file) {
+    public RequestBody img2PartBody(File file) {
         return RequestBody.create(MediaType.parse("image/jpeg"), file);
+    }
+
+    /* 获取当前类 */
+    @SuppressWarnings("unchecked")
+    private Class<T> getCls() {
+        Type type = this.getClass().getGenericSuperclass();
+        return (Class<T>) (((ParameterizedType) (type)).getActualTypeArguments()[0]);
     }
 
 }

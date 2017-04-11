@@ -10,13 +10,16 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.android.base.utils.comp.ActivityUtils;
-import com.android.base.utils.view.DialogUtils;
-import com.android.base.utils.file.FileUtils;
 import com.android.base.utils.comp.IntentUtils;
+import com.android.base.utils.file.FileUtils;
+import com.android.base.utils.net.RUtils;
 import com.android.base.utils.net.RetrofitUtils;
+import com.android.base.utils.sys.AppUtils;
+import com.android.base.utils.view.DialogUtils;
 import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
 import com.jiangzg.project.domain.Version;
+import com.jiangzg.project.utils.API;
 import com.jiangzg.project.utils.MyUtils;
 import com.jiangzg.project.utils.ResUtils;
 
@@ -53,28 +56,48 @@ public class UpdateService extends Service {
     }
 
     private void checkUpdate() {
-//        final int code = AppUtils.get().getVersionCode();
-//        Call<Version> call = RetrofitUtils.call(RetrofitUtils.Head.common, RetrofitUtils.Factory.gson)
-//                .checkUpdate(code);
-//        RetrofitUtils.enqueue(call, new RetrofitUtils.CallBack<Version>() {
-//            @Override
-//            public void onSuccess(Version result) {
-//                if (result == null) {
-//                    stopSelf(); // 停止服务
-//                    return;
-//                }
-//                if (code < result.getVersionCode()) { // 小于 有新版本
-//                    showNoticeDialog(result); //  提示对话框
-//                } else {
-//                    stopSelf(); // 停止服务
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int httpCode, String errorMessage) {
-//                MyUtils.httpFailure(httpCode, errorMessage);
-//            }
-//        });
+        Call<Version> versionCall = new RUtils()
+                .baseUrl("")
+                .head(MyUtils.getHead())
+                .factory(RUtils.Factory.empty)
+                .call(API.class)
+                .checkUpdate(1);
+        RUtils.enqueue(versionCall, null, new RUtils.CallBack<Version>() {
+            @Override
+            public void onSuccess(Version result) {
+
+            }
+
+            @Override
+            public void onFailure(int code, String error) {
+
+            }
+        });
+
+
+        final int code = AppUtils.get().getVersionCode();
+        Call<Version> call = RetrofitUtils
+                .call(RetrofitUtils.Head.common, RetrofitUtils.Factory.gson)
+                .checkUpdate(code);
+        RetrofitUtils.enqueue(call, new RetrofitUtils.CallBack<Version>() {
+            @Override
+            public void onSuccess(Version result) {
+                if (result == null) {
+                    stopSelf(); // 停止服务
+                    return;
+                }
+                if (code < result.getVersionCode()) { // 小于 有新版本
+                    showNoticeDialog(result); //  提示对话框
+                } else {
+                    stopSelf(); // 停止服务
+                }
+            }
+
+            @Override
+            public void onFailure(int httpCode, String errorMessage) {
+                MyUtils.httpFailure(httpCode, errorMessage);
+            }
+        });
     }
 
     /* 提示更新 */

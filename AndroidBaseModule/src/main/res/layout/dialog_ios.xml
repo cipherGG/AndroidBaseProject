@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/selector_dialog_custom_btn_left"
+                android:background="@drawable/selector_dialog_ios_btn_left"
                 android:text="@string/cancel"
                 android:textColor="@color/dialog_ios_text_color"
                 android:textSize="20sp" />
@@ -85,7 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/selector_dialog_custom_btn_right"
+                android:background="@drawable/selector_dialog_ios_btn_right"
                 android:text="@string/confirm"
                 android:textColor="@color/dialog_ios_text_color"
                 android:textSize="20sp"

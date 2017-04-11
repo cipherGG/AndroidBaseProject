@@ -1,8 +1,5 @@
 package com.android.base.utils.net;
 
-import android.os.Bundle;
-
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,12 +11,16 @@ import java.util.Map;
 
 /**
  * Created by gg on 2017/4/3.
+ * HttpURLConnection封装
  */
-
 public class HttpUtils {
 
     public static final int GET = 1;
     public static final int POST = 2;
+
+    public interface CallBack1 {
+        void action(InputStream inputStream);
+    }
 
     public static void httpGet(String path, HashMap<String, Object> params, CallBack1 callBack1) {
         InputStream inputStream = null;
@@ -103,67 +104,6 @@ public class HttpUtils {
                 e.printStackTrace();
             }
         }
-    }
-
-    public static String httpString(String path, HashMap<String, Object> params, int way) {
-
-        if (way == GET) {
-
-        } else if (way == POST) {
-
-        }
-
-        return "";
-    }
-
-    public static String httpGetString(String path, HashMap<String, Object> params) {
-        final Bundle bundle = new Bundle();
-        httpGet(path, params, new CallBack1() {
-            @Override
-            public void action(InputStream inputStream) {
-                try {
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    byte[] bytes = new byte[1024];
-                    int len;
-                    while ((len = inputStream.read(bytes)) != -1) {
-                        outputStream.write(bytes, 0, len);
-                    }
-                    String data = new String(outputStream.toByteArray());
-
-                    bundle.putString("data", data);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        return bundle.getString("data");
-    }
-
-    public static String httpPostString(String path, HashMap<String, Object> params) {
-        final Bundle bundle = new Bundle();
-        httpPost(path, params, new CallBack1() {
-            @Override
-            public void action(InputStream inputStream) {
-                try {
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    byte[] bytes = new byte[1024];
-                    int len;
-                    while ((len = inputStream.read(bytes)) != -1) {
-                        outputStream.write(bytes, 0, len);
-                    }
-                    String data = new String(outputStream.toByteArray());
-
-                    bundle.putString("data", data);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        return bundle.getString("data");
-    }
-
-    public interface CallBack1 {
-        void action(InputStream inputStream);
     }
 
 }

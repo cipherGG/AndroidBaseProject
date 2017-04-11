@@ -9,6 +9,8 @@ import com.jiangzg.project.R;
 import com.jiangzg.project.domain.HttpError;
 import com.jiangzg.project.service.UpdateService;
 
+import java.util.HashMap;
+
 /**
  * Created by gg on 2017/2/28.
  * 符合本项目的工具类
@@ -37,7 +39,7 @@ public class MyUtils {
                 ToastUtils.get().show(R.string.http_response_error_401);
 //                LoginActivity.goActivity(MyApp.get());
                 break;
-            case 403: // API AliKey 不正确 或者没给
+            case 403: // APIUtils AliKey 不正确 或者没给
                 ToastUtils.get().show(R.string.http_response_error_403);
                 break;
             case 404: // 404
@@ -83,6 +85,23 @@ public class MyUtils {
             imgUrl = foreUrl + url;
         }
         return imgUrl;
+    }
+
+    public static HashMap<String, String> getHead() {
+        HashMap<String, String> options = new HashMap<>();
+        options.put("Content-Type", "application/json;charset=utf-8");
+        options.put("Accept", "application/json");
+        return options;
+    }
+
+    public static HashMap<String, String> getHeadFull() {
+        HashMap<String, String> options = new HashMap<>();
+        options.put("Content-Type", "application/json;charset=utf-8");
+        options.put("Accept", "application/json");
+        options.put("API_KEY", "");
+        String userToken = SPUtils.getUser().getUserToken();
+        options.put("Authorization", userToken);
+        return options;
     }
 
 }

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.android.base.utils.comp.ProcessUtils;
-import com.android.base.utils.func.LogUtils;
+import com.android.base.utils.other.LogUtils;
 import com.android.base.utils.sys.ContextUtils;
 import com.umeng.message.IUmengCallback;
 import com.umeng.message.IUmengRegisterCallback;

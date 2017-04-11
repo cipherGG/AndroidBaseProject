@@ -22,10 +22,10 @@ import static com.android.base.utils.sys.ContextUtils.getConnectivityManager;
 
 /**
  * Created by jiang on 2016/10/12
- * <p>
  * 网络相关工具类
  */
 public class NetUtils {
+
     private static NetUtils instance;
     private static ConnectListener mListener;
 

@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.base.utils.func.ConvertUtils;
+import com.android.base.utils.other.ConvertUtils;
 
 import java.util.List;
 
@@ -14,22 +14,22 @@ import java.util.List;
  * describe 自动换行view
  */
 
-public class MyWrapView extends ViewGroup {
+public class JWrapView extends ViewGroup {
     private static int MARGIN_LEFT = 20;
     private static int MARGIN_TOP = 20;
 
     /* java构造时调用 */
-    public MyWrapView(Context context) {
+    public JWrapView(Context context) {
         super(context);
     }
 
     /* xml构造时调用 */
-    public MyWrapView(Context context, AttributeSet attrs) {
+    public JWrapView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     /* xml构造，并有自定义style时调用 */
-    public MyWrapView(Context context, AttributeSet attrs, int defStyle) {
+    public JWrapView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 

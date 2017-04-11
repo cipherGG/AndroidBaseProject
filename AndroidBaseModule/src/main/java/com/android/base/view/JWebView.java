@@ -27,7 +27,7 @@ import java.util.Map;
  * 通用WebView
  * 4.4以后WebView的操作尽量放在ui线程中去执行
  */
-public class MyWebView extends WebView {
+public class JWebView extends WebView {
     public boolean supportJS = true; // 是否支持js
     public boolean supportZoom = false; // 是否支持缩放
     public boolean supportCache = false; // 是否支持缓存
@@ -38,23 +38,23 @@ public class MyWebView extends WebView {
     private String cacheDir; // 缓存目录
     private String cookie; // cookie
 
-    public MyWebView(Context context) {
+    public JWebView(Context context) {
         super(context);
         init(context);
     }
 
-    public MyWebView(Context context, AttributeSet attrs) {
+    public JWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public MyWebView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public JWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public MyWebView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public JWebView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
     }

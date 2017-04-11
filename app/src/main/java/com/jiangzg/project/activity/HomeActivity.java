@@ -105,6 +105,7 @@ public class HomeActivity extends BaseActivity<HomeActivity> {
         int taskId = getTaskId();
 //        Stack<StackUtils.Task> tasks = StackUtils.get();
         logTag = "";
+        LocationUtils info = LocationUtils.getInfo();
     }
 
     @OnClick({R.id.btn1, R.id.btn2, R.id.btn3})
