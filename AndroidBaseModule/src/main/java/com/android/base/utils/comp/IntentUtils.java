@@ -1,27 +1,21 @@
 package com.android.base.utils.comp;
 
-import android.app.PendingIntent;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.telephony.SmsManager;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
-import com.android.base.utils.func.ConvertUtils;
 import com.android.base.utils.file.FileUtils;
 import com.android.base.utils.func.PermUtils;
-import com.android.base.utils.str.StringUtils;
+import com.android.base.utils.other.ConvertUtils;
 import com.android.base.utils.sys.AppUtils;
 import com.android.base.utils.sys.ContextUtils;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * Created by gg on 2017/3/13.
@@ -32,7 +26,7 @@ public class IntentUtils {
     /**
      * 拍照 ,不加保存路径，图片会被压缩
      */
-    public static Intent getCameraIntent(File cameraFile) {
+    public static Intent getCamera(File cameraFile) {
         PermUtils.requestCamera(ContextUtils.get(), null);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
@@ -45,7 +39,7 @@ public class IntentUtils {
     /**
      * 相册 ,可以自定义保存路径
      */
-    public static Intent getPictureIntent() {
+    public static Intent getPicture() {
         Intent intent = new Intent();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
@@ -67,12 +61,12 @@ public class IntentUtils {
     /**
      * 裁剪(通用) 1.启动拍照/相册 2.在onActivityForResult里调用此方法，启动裁剪功能
      */
-    public static Intent getCropIntent(File from, File save) {
-        return getCropIntent(from, save, 0, 0, 300, 300);
+    public static Intent getCrop(File from, File save) {
+        return getCrop(from, save, 0, 0, 300, 300);
     }
 
-    public static Intent getCropIntent(File from, File save, int aspectX, int aspectY,
-                                       int outputX, int outputY) {
+    public static Intent getCrop(File from, File save, int aspectX, int aspectY,
+                                 int outputX, int outputY) {
         if (FileUtils.isFileEmpty(from)) { // 源文件不存在
             FileUtils.deleteFile(from);
             FileUtils.deleteFile(save);
@@ -80,11 +74,11 @@ public class IntentUtils {
         }
         Uri uri1 = ConvertUtils.File2URI(from);
         Uri uri2 = ConvertUtils.File2URI(save);
-        return getCropIntent(uri1, uri2, aspectX, aspectY, outputX, outputY);
+        return getCrop(uri1, uri2, aspectX, aspectY, outputX, outputY);
     }
 
-    public static Intent getCropIntent(Uri from, Uri save, int aspectX, int aspectY,
-                                       int outputX, int outputY) {
+    public static Intent getCrop(Uri from, Uri save, int aspectX, int aspectY,
+                                 int outputX, int outputY) {
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(from, "image/*");
         intent.putExtra("crop", "true");
@@ -111,7 +105,7 @@ public class IntentUtils {
     /**
      * 获取安装App的意图
      */
-    public static Intent getInstallIntent(File file) {
+    public static Intent getInstall(File file) {
         if (file == null) return null;
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addCategory(Intent.CATEGORY_DEFAULT);
@@ -129,22 +123,22 @@ public class IntentUtils {
     /**
      * 获取打开当前App的意图
      */
-    public static Intent getAppIntent(String appPackageManager) {
+    public static Intent getApp(String appPackageManager) {
         return ContextUtils.getPackageManager().getLaunchIntentForPackage(appPackageManager);
     }
 
     /**
      * 获取分享文本的意图
      */
-    public static Intent getShareIntent(String content) {
+    public static Intent getShare(String content) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, content); // 设置分享信息
         return intent;
     }
 
-    public static Intent getShareIntent(String content, Uri uri) {
-        if (uri == null) return getShareIntent(content);
+    public static Intent getShare(String content, Uri uri) {
+        if (uri == null) return getShare(content);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_TEXT, content);
         intent.putExtra(Intent.EXTRA_STREAM, uri);
@@ -152,45 +146,15 @@ public class IntentUtils {
         return intent;
     }
 
-    public static Intent getShareIntent(String content, File image) {
+    public static Intent getShare(String content, File image) {
         if (!FileUtils.isFileExists(image)) return null;
-        return getShareIntent(content, Uri.fromFile(image));
-    }
-
-    /**
-     * 打开手机联系人界面点击联系人后便获取该号码
-     * 启动方式 startActivityForResult
-     */
-    public static Intent getContactsIntent() {
-        Intent intent = new Intent();
-        intent.setAction("android.intent.action.PICK");
-        intent.setType("vnd.android.cursor.dir/phone_v2");
-        return intent;
-    }
-
-    /**
-     * 在onActivityResult中调用，获取选中的号码
-     */
-    public static String getSelectContact(Intent data) {
-        String num = "";
-        if (data == null) return num;
-        Uri uri = data.getData();
-        // 创建内容解析者
-        ContentResolver contentResolver = ContextUtils.get().getContentResolver();
-        Cursor cursor = contentResolver.query(uri, null, null, null, null);
-        if (cursor == null) return num;
-        while (cursor.moveToNext()) {
-            num = cursor.getString(cursor.getColumnIndex("data1"));
-        }
-        cursor.close();
-        num = num.replaceAll("-", "");//替换的操作,555-6 -> 5556
-        return num;
+        return getShare(content, Uri.fromFile(image));
     }
 
     /**
      * 跳至填充好phoneNumber的拨号界面
      */
-    public static Intent getDialIntent(String phoneNumber) {
+    public static Intent getDial(String phoneNumber) {
         return new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
     }
 
@@ -198,7 +162,7 @@ public class IntentUtils {
      * 直接拨打phoneNumber
      * <p>需添加权限 {@code <uses-permission android:name="android.permission.CALL_PHONE"/>}</p>
      */
-    public static Intent getCallIntent(String phoneNumber) {
+    public static Intent getCall(String phoneNumber) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phoneNumber));
@@ -208,7 +172,7 @@ public class IntentUtils {
     /**
      * 短信发送界面
      */
-    public static Intent getSMSIntent(String phoneNumber, String content) {
+    public static Intent getSMS(String phoneNumber, String content) {
         Uri uri = Uri.parse("smsto:" + (TextUtils.isEmpty(phoneNumber) ? "" : phoneNumber));
         Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
         intent.putExtra("sms_body", TextUtils.isEmpty(content) ? "" : content);
@@ -218,35 +182,29 @@ public class IntentUtils {
     /**
      * 彩信发送界面
      */
-    public static Intent getSMSIntent(String phoneNumber, String content, File img) {
-        Intent intent = getSMSIntent(phoneNumber, content);
+    public static Intent getSMS(String phoneNumber, String content, File img) {
+        Intent intent = getSMS(phoneNumber, content);
         intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(img));
         intent.setType("image/png");
         return intent;
     }
 
     /**
-     * 直接发送短信
-     * <uses-permission android:name="android.permission.SEND_SMS"/>
+     * 打开手机联系人界面点击联系人后便获取该号码
+     * 启动方式 startActivityForResult
+     * 获取返回值需要在ContactUtils里有方法获取
      */
-    public static void sendSMS(String phoneNumber, String content) {
-        if (StringUtils.isEmpty(content)) return;
-        PendingIntent sentIntent = PendingIntent.getBroadcast(ContextUtils.get(), 0, new Intent(), 0);
-        SmsManager smsManager = SmsManager.getDefault();
-        if (content.length() >= 70) {
-            List<String> ms = smsManager.divideMessage(content);
-            for (String str : ms) {
-                smsManager.sendTextMessage(phoneNumber, null, str, sentIntent, null);
-            }
-        } else {
-            smsManager.sendTextMessage(phoneNumber, null, content, sentIntent, null);
-        }
+    public static Intent getContacts() {
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.PICK");
+        intent.setType("vnd.android.cursor.dir/phone_v2");
+        return intent;
     }
 
     /**
      * 回到Home
      */
-    public static Intent getHomeIntent() {
+    public static Intent getHome() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
@@ -256,14 +214,14 @@ public class IntentUtils {
     /**
      * 打开网络设置界面
      */
-    public static Intent getNetSettingsIntent() {
+    public static Intent getNetSettings() {
         return new Intent(Settings.ACTION_SETTINGS);
     }
 
     /**
      * 打开app系统设置
      */
-    public static Intent getSettingsIntent() {
+    public static Intent getSettings() {
         Intent intent = new Intent();
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.addCategory(Intent.CATEGORY_DEFAULT);
@@ -275,7 +233,7 @@ public class IntentUtils {
     /**
      * 获取App信息的意图
      */
-    public static Intent getInfoIntent(String packageName) {
+    public static Intent getAppInfo(String packageName) {
         Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
         return intent.setData(Uri.parse("package:" + packageName));
     }
@@ -283,7 +241,7 @@ public class IntentUtils {
     /**
      * 跳转应用市场的意图
      */
-    public static Intent getMarketIntent() {
+    public static Intent getMarket() {
         String str = "market://details?id=" + ContextUtils.get().getPackageName();
         return new Intent("android.intent.action.VIEW", Uri.parse(str));
     }
@@ -291,7 +249,7 @@ public class IntentUtils {
     /**
      * 获取卸载App的意图
      */
-    public static Intent getUninstallIntent(String packageName) {
+    public static Intent getUninstall(String packageName) {
         Intent intent = new Intent(Intent.ACTION_DELETE);
         intent.setData(Uri.parse("package:" + packageName));
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -300,7 +258,7 @@ public class IntentUtils {
     /**
      * 获取打开浏览器的意图
      */
-    public static Intent getWebBrowseIntent(String url) {
+    public static Intent getWebBrowse(String url) {
         Uri address = Uri.parse(url);
         return new Intent(Intent.ACTION_VIEW, address);
     }
@@ -308,7 +266,7 @@ public class IntentUtils {
     /**
      * 打开Gps设置界面
      */
-    public static Intent getGpsIntent() {
+    public static Intent getGps() {
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;

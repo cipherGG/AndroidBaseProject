@@ -13,9 +13,9 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.android.base.utils.comp.StackUtils;
-import com.android.base.utils.file.CacheUtils;
-import com.android.base.utils.func.AnalyUtils;
-import com.android.base.utils.func.LogUtils;
+import com.android.base.utils.file.RubbishUtils;
+import com.android.base.utils.other.AnalyUtils;
+import com.android.base.utils.other.LogUtils;
 
 import java.util.Timer;
 import java.util.concurrent.ExecutorService;
@@ -86,7 +86,7 @@ public class BaseApp extends MultiDexApplication {
             @Override
             public void onLowMemory() {
                 LogUtils.e("内存不足,清理内存以获取更多内存");
-                CacheUtils.clearMemory();
+                RubbishUtils.clearMemory();
             }
 
             @Override
