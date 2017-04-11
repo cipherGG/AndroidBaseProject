@@ -4,8 +4,8 @@ import android.text.TextUtils;
 
 import com.android.base.R;
 import com.android.base.utils.file.FileUtils;
-import com.android.base.utils.sys.AppUtils;
-import com.android.base.utils.sys.ContextUtils;
+import com.android.base.utils.func.AppUtils;
+import com.android.base.utils.comp.ContextUtils;
 import com.android.base.utils.time.TimeUtils;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;

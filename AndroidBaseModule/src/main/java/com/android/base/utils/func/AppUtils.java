@@ -1,4 +1,4 @@
-package com.android.base.utils.sys;
+package com.android.base.utils.func;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -7,8 +7,8 @@ import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 
+import com.android.base.utils.comp.ContextUtils;
 import com.android.base.utils.file.FileUtils;
-import com.android.base.utils.func.PermUtils;
 import com.android.base.utils.str.StringUtils;
 
 import java.io.File;

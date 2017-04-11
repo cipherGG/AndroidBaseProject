@@ -22,7 +22,7 @@ import com.android.base.utils.comp.ProviderUtils;
 import com.android.base.utils.file.FileUtils;
 import com.android.base.utils.str.ConstantUtils;
 import com.android.base.utils.str.StringUtils;
-import com.android.base.utils.sys.ContextUtils;
+import com.android.base.utils.comp.ContextUtils;
 import com.android.base.utils.view.ToastUtils;
 
 import java.io.ByteArrayInputStream;

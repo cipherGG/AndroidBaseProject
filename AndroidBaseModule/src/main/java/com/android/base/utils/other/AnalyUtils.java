@@ -2,7 +2,7 @@ package com.android.base.utils.other;
 
 import android.content.Context;
 
-import com.android.base.utils.sys.ContextUtils;
+import com.android.base.utils.comp.ContextUtils;
 import com.umeng.analytics.MobclickAgent;
 
 /**

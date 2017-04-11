@@ -3,8 +3,6 @@ package com.android.base.utils.comp;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.android.base.utils.sys.ContextUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

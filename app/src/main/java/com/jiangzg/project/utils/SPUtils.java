@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import com.android.base.utils.other.LogUtils;
 import com.android.base.utils.str.GsonUtils;
-import com.android.base.utils.sys.ContextUtils;
+import com.android.base.utils.comp.ContextUtils;
 import com.jiangzg.project.domain.User;
 
 import java.util.HashMap;

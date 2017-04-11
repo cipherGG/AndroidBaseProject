@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.android.base.utils.sys.ContextUtils;
+import com.android.base.utils.comp.ContextUtils;
 
 /**
  * Created by JiangZhiGuo on 2016/10/13.

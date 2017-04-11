@@ -5,7 +5,7 @@ import android.app.Dialog;
 import com.android.base.R;
 import com.android.base.utils.other.LogUtils;
 import com.android.base.utils.str.StringUtils;
-import com.android.base.utils.sys.ContextUtils;
+import com.android.base.utils.comp.ContextUtils;
 
 import java.io.File;
 import java.io.IOException;

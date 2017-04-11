@@ -4,7 +4,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.android.base.base.BaseApp;
-import com.android.base.utils.sys.ContextUtils;
+import com.android.base.utils.comp.ContextUtils;
 
 /**
  * Created by JiangZhiGuo on 2016-10-31.

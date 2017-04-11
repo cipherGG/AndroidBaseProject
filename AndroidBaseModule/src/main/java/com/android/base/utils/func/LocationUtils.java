@@ -12,7 +12,7 @@ import android.os.Bundle;
 import com.android.base.R;
 import com.android.base.utils.other.LogUtils;
 import com.android.base.utils.str.StringUtils;
-import com.android.base.utils.sys.ContextUtils;
+import com.android.base.utils.comp.ContextUtils;
 import com.android.base.utils.view.ToastUtils;
 
 import java.io.IOException;

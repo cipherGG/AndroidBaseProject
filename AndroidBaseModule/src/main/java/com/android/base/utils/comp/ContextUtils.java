@@ -1,4 +1,4 @@
-package com.android.base.utils.sys;
+package com.android.base.utils.comp;
 
 import android.app.ActivityManager;
 import android.app.Application;

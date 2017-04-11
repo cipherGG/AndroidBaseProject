@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
-import com.android.base.utils.sys.ContextUtils;
-
 import java.util.List;
 
 /**

@@ -1,7 +1,7 @@
 package com.android.base.utils.time;
 
 import com.android.base.R;
-import com.android.base.utils.sys.ContextUtils;
+import com.android.base.utils.comp.ContextUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

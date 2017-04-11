@@ -13,7 +13,7 @@ import com.android.base.utils.comp.ActivityUtils;
 import com.android.base.utils.comp.IntentUtils;
 import com.android.base.utils.file.FileUtils;
 import com.android.base.utils.net.RetrofitUtils;
-import com.android.base.utils.sys.AppUtils;
+import com.android.base.utils.func.AppUtils;
 import com.android.base.utils.view.DialogUtils;
 import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;

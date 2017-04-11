@@ -1,9 +1,8 @@
 package com.android.base.utils.str;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,52 +16,36 @@ import java.util.List;
  */
 public class GsonUtils {
     private static Gson GSON;
-    private static Gson GSON_BUILDER;
 
     public static Gson get() {
         if (GSON == null) {
             synchronized (GsonUtils.class) {
                 if (GSON == null) {
-                    GSON = new Gson();
+                    GSON = new GsonBuilder()
+                            // 配置
+                            .create();
                 }
             }
         }
         return GSON;
     }
 
-    public static Gson getNoDataInstance() {
-        if (GSON_BUILDER == null) {
-            synchronized (GsonUtils.class) {
-                if (GSON_BUILDER == null) {
-                    GSON_BUILDER = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
-                        @Override
-                        public boolean shouldSkipField(FieldAttributes f) {
-                            return f.getName().contains("outputData");
-                        }
-
-                        @Override
-                        public boolean shouldSkipClass(Class<?> clazz) {
-                            return false;
-                        }
-                    }).create();
-                }
-            }
-        }
-        return GSON_BUILDER;
-    }
-
-    /**
-     * @param object
-     * @param key
-     * @param type   Type t = new TypeToken<List<xls>>() {}.getType();
-     * @param <T>
-     */
-    public static <T> List<T> getList(JSONObject object, String key, Type type) {
+    public static <T> List<T> getList(JSONObject object, String key) {
         JSONArray array = object.optJSONArray(key);
-        return getList(array, type);
+        return getList(array, getType());
     }
 
-    public static <T> List<T> getList(JSONArray array, Type type) {
+    public static <T> List<T> getList(JSONArray array) {
+        return GSON.fromJson(array.toString(), getType());
+    }
+
+    private static <T> List<T> getList(JSONArray array, Type type) {
         return GSON.fromJson(array.toString(), type);
     }
+
+    private static <T> Type getType() {
+        return new TypeToken<List<T>>() {
+        }.getType();
+    }
+
 }

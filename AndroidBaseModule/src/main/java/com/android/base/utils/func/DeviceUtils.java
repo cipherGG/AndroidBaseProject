@@ -1,4 +1,4 @@
-package com.android.base.utils.sys;
+package com.android.base.utils.func;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -10,7 +10,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
-import com.android.base.utils.func.PermUtils;
+import com.android.base.utils.comp.ContextUtils;
 import com.android.base.utils.str.StringUtils;
 
 /**

@@ -1,4 +1,4 @@
-package com.android.base.utils.sys;
+package com.android.base.utils.func;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,8 +8,8 @@ import android.os.BatteryManager;
 
 /**
  * Created by gg on 2017/4/3.
+ * 电量管理类
  */
-
 public class BatteryUtils {
 
     public static final int FALSE = -1; // 无数据返回

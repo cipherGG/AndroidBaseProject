@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.telephony.SmsManager;
 
 import com.android.base.utils.str.StringUtils;
-import com.android.base.utils.sys.ContextUtils;
+import com.android.base.utils.comp.ContextUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

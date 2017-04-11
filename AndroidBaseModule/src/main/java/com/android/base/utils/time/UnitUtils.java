@@ -3,7 +3,7 @@ package com.android.base.utils.time;
 import com.android.base.R;
 import com.android.base.utils.str.ConstantUtils;
 import com.android.base.utils.str.StringUtils;
-import com.android.base.utils.sys.ContextUtils;
+import com.android.base.utils.comp.ContextUtils;
 
 import java.util.Calendar;
 

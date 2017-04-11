@@ -8,8 +8,8 @@ import android.text.format.Formatter;
 
 import com.android.base.utils.other.ConvertUtils;
 import com.android.base.utils.media.GlideUtils;
-import com.android.base.utils.sys.AppUtils;
-import com.android.base.utils.sys.ContextUtils;
+import com.android.base.utils.func.AppUtils;
+import com.android.base.utils.comp.ContextUtils;
 
 import java.io.File;
 import java.util.ArrayList;
