@@ -2,7 +2,6 @@ package com.android.base.utils.media;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.net.Uri;
 import android.util.Log;
 
@@ -10,7 +9,7 @@ import java.io.IOException;
 
 /**
  * Created by gg on 2017/4/3.
- *
+ * 多媒体播放
  */
 public class PlayerUtils {
 
@@ -113,7 +112,6 @@ public class PlayerUtils {
      * Idle状态
      */
     public static MediaPlayer getMediaPlayer() {
-
         return new MediaPlayer();
     }
 
@@ -222,7 +220,6 @@ public class PlayerUtils {
      * 返回至init状态 , onDestory中先调用reset后调用relese
      */
     public static void reset(MediaPlayer player) {
-
         player.reset();
         isInit = true;
         isPrepare = false;
@@ -233,7 +230,6 @@ public class PlayerUtils {
      * 释放，无状态 , onDestory中先调用reset后调用relese
      */
     public static void relese(MediaPlayer player) {
-
         player.release();
         isInit = false;
         isPrepare = false;
@@ -244,7 +240,6 @@ public class PlayerUtils {
      * 时长 , setMax
      */
     public static void getDuration(MediaPlayer player) {
-
         player.getDuration();
     }
 
@@ -252,7 +247,6 @@ public class PlayerUtils {
      * 当前播放位置 , setProgress
      */
     public static int getPosition(MediaPlayer player) {
-
         return player.getCurrentPosition();
     }
 
@@ -260,7 +254,6 @@ public class PlayerUtils {
      * 是否在播放 , while(isPlaying)
      */
     public static boolean isPlaying(MediaPlayer player) {
-
         return player.isPlaying();
     }
 
@@ -268,7 +261,6 @@ public class PlayerUtils {
      * 设置循环 ,单曲循环
      */
     public static void setLoop(MediaPlayer player, boolean loop) {
-
         player.setLooping(loop);
     }
 
@@ -276,7 +268,6 @@ public class PlayerUtils {
      * 是否循环
      */
     public static boolean isLoop(MediaPlayer player) {
-
         return player.isLooping();
     }
 
@@ -284,45 +275,7 @@ public class PlayerUtils {
      * 调音量
      */
     public static void setVolume(MediaPlayer player, float volume) {
-
         player.setVolume(volume, volume);
     }
 
-    private static MediaRecorder recorder;
-
-    /**
-     * 开始录音
-     */
-    public static void startRecord(String outFilePath) {
-        if (recorder == null) {
-            synchronized (PlayerUtils.class) {
-                recorder = new MediaRecorder();
-            }
-        }
-        // 文件输出路径
-        recorder.setOutputFile(outFilePath);
-        // 音频为麦克风
-        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        // 音频格式  THREE_GPP????
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-        // 音频编码
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        try {
-            recorder.prepare();
-            recorder.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 停止录音
-     */
-    public static void stopRecord() {
-        if (recorder == null)
-            return;
-        recorder.stop();
-        recorder.release();
-        recorder = null;
-    }
 }
