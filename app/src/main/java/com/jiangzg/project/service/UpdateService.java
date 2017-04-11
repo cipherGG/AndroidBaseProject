@@ -12,7 +12,6 @@ import android.view.WindowManager;
 import com.android.base.utils.comp.ActivityUtils;
 import com.android.base.utils.comp.IntentUtils;
 import com.android.base.utils.file.FileUtils;
-import com.android.base.utils.net.RUtils;
 import com.android.base.utils.net.RetrofitUtils;
 import com.android.base.utils.sys.AppUtils;
 import com.android.base.utils.view.DialogUtils;
@@ -20,12 +19,13 @@ import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
 import com.jiangzg.project.domain.Version;
 import com.jiangzg.project.utils.API;
-import com.jiangzg.project.utils.MyUtils;
+import com.jiangzg.project.utils.Utils;
 import com.jiangzg.project.utils.ResUtils;
 
 import java.io.File;
 
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 
 public class UpdateService extends Service {
@@ -56,13 +56,13 @@ public class UpdateService extends Service {
     }
 
     private void checkUpdate() {
-        Call<Version> versionCall = new RUtils()
-                .baseUrl("")
-                .head(MyUtils.getHead())
-                .factory(RUtils.Factory.empty)
+        Call<Version> versionCall = new RetrofitUtils("")
+                .log(HttpLoggingInterceptor.Level.BODY)
+                .head(Utils.getHead())
+                .factory(RetrofitUtils.Factory.empty)
                 .call(API.class)
                 .checkUpdate(1);
-        RUtils.enqueue(versionCall, null, new RUtils.CallBack<Version>() {
+        RetrofitUtils.enqueue(versionCall, null, new RetrofitUtils.CallBack<Version>() {
             @Override
             public void onSuccess(Version result) {
 
@@ -95,7 +95,7 @@ public class UpdateService extends Service {
 
             @Override
             public void onFailure(int httpCode, String errorMessage) {
-                MyUtils.httpFailure(httpCode, errorMessage);
+                Utils.httpFailure(httpCode, errorMessage);
             }
         });
     }
@@ -152,7 +152,7 @@ public class UpdateService extends Service {
 
             @Override
             public void onFailure(int httpCode, String errorMessage) {
-                MyUtils.httpFailure(httpCode, errorMessage);
+                Utils.httpFailure(httpCode, errorMessage);
             }
         });
     }

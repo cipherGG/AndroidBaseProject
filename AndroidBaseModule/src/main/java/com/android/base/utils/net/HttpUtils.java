@@ -15,9 +15,6 @@ import java.util.Map;
  */
 public class HttpUtils {
 
-    public static final int GET = 1;
-    public static final int POST = 2;
-
     public interface CallBack1 {
         void action(InputStream inputStream);
     }

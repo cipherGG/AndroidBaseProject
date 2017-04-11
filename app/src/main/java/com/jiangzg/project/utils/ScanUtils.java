@@ -32,7 +32,7 @@ public class ScanUtils {
     /* 开始扫描 */
     public static void scanStart(Activity from) {
         Intent intent = new Intent(from, CaptureActivity.class);
-        from.startActivityForResult(intent, MyUtils.REQUEST_SCAN);
+        from.startActivityForResult(intent, Utils.REQUEST_SCAN);
     }
 
     /* 扫描结果（string） */

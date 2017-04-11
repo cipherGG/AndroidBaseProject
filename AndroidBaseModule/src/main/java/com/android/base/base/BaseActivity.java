@@ -21,8 +21,8 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.android.base.R;
 import com.android.base.utils.comp.ActivityUtils;
-import com.android.base.utils.other.AnalyUtils;
 import com.android.base.utils.net.NetUtils;
+import com.android.base.utils.other.AnalyUtils;
 import com.android.base.utils.view.DialogUtils;
 import com.android.base.utils.view.ScreenUtils;
 
@@ -126,7 +126,7 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        NetUtils.get().isAvailable();
+        NetUtils.isAvailable();
     }
 
     @Override

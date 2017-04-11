@@ -27,7 +27,7 @@ import static com.android.base.utils.sys.ContextUtils.getConnectivityManager;
 public class NetUtils {
 
     private static NetUtils instance;
-    private static ConnectListener mListener;
+    private ConnectListener mListener;
 
     public static NetUtils get() {
         if (instance == null) {
@@ -41,27 +41,11 @@ public class NetUtils {
     }
 
     /**
-     * 网络是否可用
+     * 网络状态监听器
      */
-    public boolean isAvailable() {
-        NetworkInfo networkInfo = getNetworkInfo();
-        boolean available = (networkInfo != null && getNetworkInfo().isAvailable());
-        if (!available) {
-            String show = ContextUtils.get().getString(R.string.no_network_title);
-            ToastUtils.get().show(show);
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * 判断wifi是否连接状态
-     */
-    public boolean isWifi() {
-        ConnectivityManager cm = ContextUtils.getConnectivityManager();
-        return cm != null && cm.getActiveNetworkInfo() != null
-                && cm.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI;
+    public interface ConnectListener {
+        void onStateChange(int type, String name, NetworkInfo.State state,
+                           String operator);
     }
 
     /**
@@ -81,14 +65,6 @@ public class NetUtils {
     }
 
     /**
-     * 监听器
-     */
-    public interface ConnectListener {
-        void onStateChange(int type, String name,
-                           NetworkInfo.State state, String operator); // 无连接
-    }
-
-    /**
      * 广播,监听网络变化
      */
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -103,7 +79,31 @@ public class NetUtils {
         }
     };
 
-    private NetworkInfo getNetworkInfo() {
+    /**
+     * 网络是否可用
+     */
+    public static boolean isAvailable() {
+        NetworkInfo networkInfo = getNetworkInfo();
+        boolean available = (networkInfo != null && getNetworkInfo().isAvailable());
+        if (!available) {
+            String show = ContextUtils.get().getString(R.string.no_network_title);
+            ToastUtils.get().show(show);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * 判断wifi是否连接状态
+     */
+    public static boolean isWifi() {
+        ConnectivityManager cm = ContextUtils.getConnectivityManager();
+        return cm != null && cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
+    private static NetworkInfo getNetworkInfo() {
         return getConnectivityManager().getActiveNetworkInfo();
     }
 
@@ -112,7 +112,7 @@ public class NetUtils {
      *
      * @return {@link ConnectivityManager#TYPE_MOBILE}
      */
-    public int getNetworkType() {
+    public static int getNetworkType() {
         NetworkInfo networkInfo = getNetworkInfo();
         if (networkInfo == null) return -1;
         else return networkInfo.getType();
@@ -121,7 +121,7 @@ public class NetUtils {
     /**
      * 获取当前网络类型名称
      */
-    public String getNetworkName() {
+    public static String getNetworkName() {
         int networkType = getNetworkType();
         String name;
         if (networkType == ConnectivityManager.TYPE_MOBILE) {
@@ -141,7 +141,7 @@ public class NetUtils {
      *
      * @return {@link NetworkInfo.State State}
      */
-    public NetworkInfo.State getNetworkState() {
+    public static NetworkInfo.State getNetworkState() {
         NetworkInfo networkInfo = getNetworkInfo();
         if (networkInfo == null) return NetworkInfo.State.UNKNOWN;
         else return networkInfo.getState();
@@ -152,7 +152,7 @@ public class NetUtils {
      *
      * @return 如中国联通、中国移动、中国电信
      */
-    public String getNetworkOperator() {
+    public static String getNetworkOperator() {
         TelephonyManager tm = ContextUtils.getTelephonyManager();
         return tm != null ? tm.getNetworkOperatorName() : null;
     }
@@ -160,7 +160,7 @@ public class NetUtils {
     /**
      * 获取IP地址 eg:127.168.x.x
      */
-    public String getIpAddress() {
+    public static String getIpAddress() {
         String ipAddress = "";
         try {
             Enumeration nis = NetworkInterface.getNetworkInterfaces();

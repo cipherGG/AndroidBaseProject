@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.android.base.utils.other.LogUtils;
-import com.android.base.utils.net.RetrofitUtils;
 import com.android.base.utils.str.GsonUtils;
 import com.android.base.utils.sys.ContextUtils;
 import com.jiangzg.project.domain.User;
@@ -70,6 +69,5 @@ public class SPUtils {
     public static void clearUser() {
         SharedPreferences.Editor editor = getSharedPreferences(SHARE_USER).edit();
         editor.clear().apply();
-        RetrofitUtils.get().clearToken();
     }
 }

@@ -15,7 +15,7 @@ import java.util.HashMap;
  * Created by gg on 2017/2/28.
  * 符合本项目的工具类
  */
-public class MyUtils {
+public class Utils {
     public static final long IMG_SIZE = ConstantUtils.KB * 200; // 图片最大尺寸
 
     public static final int REQUEST_CAMERA = 191;  // 相机
@@ -32,7 +32,7 @@ public class MyUtils {
 
     public static void httpFailure(int httpCode, String errorMessage) {
         switch (httpCode) {
-            case -1: //请求异常
+            case -1: // 请求异常(弹出异常信息)
                 ToastUtils.get().show(errorMessage);
                 break;
             case 401: // 用户验证失败
