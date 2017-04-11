@@ -2,7 +2,7 @@ package com.android.base.utils.file;
 
 import android.text.TextUtils;
 
-import com.android.base.utils.func.ConvertUtils;
+import com.android.base.utils.other.ConvertUtils;
 import com.android.base.utils.str.EncryptUtils;
 
 import java.io.BufferedInputStream;
