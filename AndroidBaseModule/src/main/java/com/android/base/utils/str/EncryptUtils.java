@@ -14,8 +14,8 @@ import java.security.SecureRandom;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import static com.android.base.utils.func.ConvertUtils.bytes2HexString;
-import static com.android.base.utils.func.ConvertUtils.hexString2Bytes;
+import static com.android.base.utils.other.ConvertUtils.bytes2HexString;
+import static com.android.base.utils.other.ConvertUtils.hexString2Bytes;
 
 /**
  * Created by JiangZhiGuo on 2016/10/12.

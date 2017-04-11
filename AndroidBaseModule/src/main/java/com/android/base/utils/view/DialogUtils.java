@@ -27,10 +27,11 @@ public class DialogUtils {
     /**
      * 自定义对话框
      *
-     * @param theme R.style.DialogCustom
      * @param view  LayoutInflater.from(activity).inflate(layoutId, null);
+     * @param theme R.style.DialogCustom
      */
-    public static Dialog createCustom(Activity activity, int theme, View view,
+    // TODO: 2017/4/10  activity?
+    public static Dialog createCustom(Activity activity, View view, int theme,
                                       float height, float width) {
         final Dialog dialog = new Dialog(activity, theme);
         WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
@@ -48,6 +49,7 @@ public class DialogUtils {
     /**
      * 警告对话框
      */
+    // TODO: 2017/4/10 service
     public static AlertDialog createAlert(Context context, String title, String message,
                                           String positive, String negative,
                                           final DialogInterface.OnClickListener positiveListener) {
@@ -62,6 +64,7 @@ public class DialogUtils {
     /**
      * 等待对话框
      */
+    // TODO: 2017/4/10 service
     public static ProgressDialog createLoading(Context context, int theme, String title,
                                                String message, boolean cancel) {
         ProgressDialog loading;
@@ -82,6 +85,7 @@ public class DialogUtils {
     /**
      * 进度对话框(没有message)
      */
+    // TODO: 2017/4/10 service
     public static ProgressDialog createProgress(Context context, int theme, String title,
                                                 boolean cancel, int max, int start,
                                                 DialogInterface.OnCancelListener listener) {
@@ -115,6 +119,7 @@ public class DialogUtils {
      * @param positiveListener 确定回调(这里的witch没用)
      * @return dialog（没有show）
      */
+    // TODO: 2017/4/10 service
     public static AlertDialog createSingle(Context context, String title, String[] items,
                                            int checkedIndex, String positive,
                                            DialogInterface.OnClickListener choiceListener,
@@ -131,6 +136,7 @@ public class DialogUtils {
     /**
      * 多选对话框
      */
+    // TODO: 2017/4/10 service
     public static AlertDialog createMulti(Context context, String title, String[] items,
                                           final boolean[] checkedState, String positive,
                                           DialogInterface.OnMultiChoiceClickListener choiceListener,
@@ -147,6 +153,7 @@ public class DialogUtils {
     /**
      * 创建系统日期选择对话框
      */
+    // TODO: 2017/4/10 service
     public static DatePickerDialog showDatePicker(Context context, Calendar calendar,
                                                   DatePickerDialog.OnDateSetListener onDateSetListener) {
         int year = calendar.get(Calendar.YEAR);
@@ -160,6 +167,7 @@ public class DialogUtils {
     /**
      * 创建系统时间选择对话框 24小时
      */
+    // TODO: 2017/4/10 service
     public static TimePickerDialog show24TimePicker(Context context, Calendar calendar,
                                                     TimePickerDialog.OnTimeSetListener onTimeSetListener) {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -172,6 +180,7 @@ public class DialogUtils {
     /**
      * 创建系统时间选择对话框 12小时
      */
+    // TODO: 2017/4/10 service
     public static TimePickerDialog show12TimePicker(Context context, Calendar calendar,
                                                     TimePickerDialog.OnTimeSetListener onTimeSetListener) {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -184,6 +193,7 @@ public class DialogUtils {
     /**
      * 设置透明度
      */
+    // TODO: 2017/4/10 service
     public static void setAlpha(Dialog dialog, float alpha) {
         Window window = dialog.getWindow();
         if (window == null) return;
@@ -195,6 +205,7 @@ public class DialogUtils {
     /**
      * 设置暗黑背景层
      */
+    // TODO: 2017/4/10 service
     public static void setDimamount(Dialog dialog, float alpha) {
         Window window = dialog.getWindow();
         if (window == null) return;
