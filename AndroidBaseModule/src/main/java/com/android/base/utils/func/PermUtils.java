@@ -7,6 +7,7 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 
 import com.android.base.base.BaseApp;
+import com.android.base.utils.other.LogUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import rx.Observable;
