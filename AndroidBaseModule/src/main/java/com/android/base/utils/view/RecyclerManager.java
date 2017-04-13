@@ -51,8 +51,63 @@ public class RecyclerManager<T> {
     public void initAdapter(BaseQuickAdapter<T> adapter) {
         if (adapter == null) return;
         mAdapter = adapter;
-        // TODO: 2017/4/11
-//        mRecycler.setAdapter(adapter);
+    }
+
+    /**
+     * ************************************VIEW***************************************
+     * 主动刷新 页面进入时调用 记得offset重置
+     */
+    public void viewRefresh() {
+        if (mRefresh == null || refreshListener == null) return;
+        mRefresh.post(new Runnable() {
+            @Override
+            public void run() {
+                mRefresh.setRefreshing(true); // 执行等待动画
+                refreshListener.onRefresh();
+            }
+        });
+    }
+
+    /**
+     * 无Data时显示的view
+     */
+    public void viewEmpty(int emptyLayoutId) {
+        if (mRecycler == null || mContext == null || emptyLayoutId == 0) return;
+        View empty = LayoutInflater.from(mContext).inflate(emptyLayoutId, mRecycler, false);
+        viewEmpty(empty);
+    }
+
+    public void viewEmpty(View empty) {
+        if (mAdapter == null || empty == null) return;
+        mAdapter.setEmptyView(empty);
+    }
+
+    /**
+     * list顶部view（可remove）
+     */
+    public void viewHeader(int headLayoutId) {
+        if (mContext == null || mRecycler == null) return;
+        View head = LayoutInflater.from(mContext).inflate(headLayoutId, mRecycler, false);
+        viewHeader(head);
+    }
+
+    public void viewHeader(View head) {
+        if (mAdapter == null || head == null) return;
+        mAdapter.addHeaderView(head);
+    }
+
+    /**
+     * list底部view（可remove）
+     */
+    public void viewFooter(int footLayoutId) {
+        if (mContext == null || mRecycler == null) return;
+        View foot = LayoutInflater.from(mContext).inflate(footLayoutId, mRecycler, false);
+        viewFooter(foot);
+    }
+
+    public void viewFooter(View foot) {
+        if (mAdapter == null || foot == null) return;
+        mAdapter.addFooterView(foot);
     }
 
     /**
@@ -134,6 +189,10 @@ public class RecyclerManager<T> {
         if (null != mRefresh) { // 停止刷新
             mRefresh.setRefreshing(false);
         }
+        if (mRecycler == null) return; // 提前加载空adapter会有loadMore的标示
+        if (mRecycler.getAdapter() == null) {
+            mRecycler.setAdapter(mAdapter);
+        }
     }
 
     /**
@@ -156,63 +215,6 @@ public class RecyclerManager<T> {
         if (null != mRefresh) { // 停止刷新
             mRefresh.setRefreshing(false);
         }
-    }
-
-    /**
-     * ************************************VIEW***************************************
-     * 主动刷新 页面进入时调用 记得offset重置
-     */
-    public void viewRefresh() {
-        if (mRefresh == null || refreshListener == null) return;
-        mRefresh.post(new Runnable() {
-            @Override
-            public void run() {
-                mRefresh.setRefreshing(true); // 执行等待动画
-                refreshListener.onRefresh();
-            }
-        });
-    }
-
-    /**
-     * 无Data时显示的view
-     */
-    public void viewEmpty(int emptyLayoutId) {
-        if (mRecycler == null || mContext == null || emptyLayoutId == 0) return;
-        View empty = LayoutInflater.from(mContext).inflate(emptyLayoutId, mRecycler, false);
-        viewEmpty(empty);
-    }
-
-    public void viewEmpty(View empty) {
-        if (mAdapter == null || empty == null) return;
-        mAdapter.setEmptyView(empty);
-    }
-
-    /**
-     * list顶部view（可remove）
-     */
-    public void viewHeader(int headLayoutId) {
-        if (mContext == null || mRecycler == null) return;
-        View head = LayoutInflater.from(mContext).inflate(headLayoutId, mRecycler, false);
-        viewHeader(head);
-    }
-
-    public void viewHeader(View head) {
-        if (mAdapter == null || head == null) return;
-        mAdapter.addHeaderView(head);
-    }
-
-    /**
-     * list底部view（可remove）
-     */
-    public void viewFooter(int footLayoutId) {
-        if (mContext == null || mRecycler == null) return;
-        View foot = LayoutInflater.from(mContext).inflate(footLayoutId, mRecycler, false);
-        viewFooter(foot);
-    }
-
-    public void viewFooter(View foot) {
-        if (mAdapter == null || foot == null) return;
-        mAdapter.addFooterView(foot);
     }
 
     /**

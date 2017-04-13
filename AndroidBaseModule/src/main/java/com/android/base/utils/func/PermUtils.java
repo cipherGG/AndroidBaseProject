@@ -104,6 +104,13 @@ public class PermUtils {
     }
 
     /**
+     * 后台弹框
+     */
+    public static void requestContextDialog(Context context, PermUtils.PermissionListener listener) {
+        request(context, listener, Manifest.permission.SYSTEM_ALERT_WINDOW);
+    }
+
+    /**
      * 地图
      */
     public static void requestMap(Context context, PermUtils.PermissionListener listener) {
