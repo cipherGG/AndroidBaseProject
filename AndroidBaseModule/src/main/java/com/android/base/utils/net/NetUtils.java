@@ -22,7 +22,7 @@ import static com.android.base.utils.comp.ContextUtils.getConnectivityManager;
 
 /**
  * Created by jiang on 2016/10/12
- * 网络相关工具类
+ * 网络工具类
  */
 public class NetUtils {
 
@@ -53,8 +53,7 @@ public class NetUtils {
      */
     public void registerReceiver(Context context, ConnectListener listener) {
         mListener = listener;
-        context.registerReceiver(receiver,
-                new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        context.registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     /**

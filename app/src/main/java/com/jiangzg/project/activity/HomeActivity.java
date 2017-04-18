@@ -9,6 +9,7 @@ import android.widget.Button;
 import com.android.base.base.BaseActivity;
 import com.android.base.utils.comp.ActivityUtils;
 import com.android.base.utils.comp.StackUtils;
+import com.android.base.utils.func.BatteryUtils;
 import com.android.base.utils.func.LocationUtils;
 import com.android.base.utils.view.QuickUtils;
 import com.jiangzg.project.R;
@@ -99,6 +100,27 @@ public class HomeActivity extends BaseActivity<HomeActivity> {
 //        });
 //        aaa.show();
 
+        BatteryUtils.get().registerReceiver(mActivity, new BatteryUtils.BatteryListener() {
+            @Override
+            public void percent(int percent) {
+
+            }
+
+            @Override
+            public void up() {
+
+            }
+
+            @Override
+            public void down() {
+
+            }
+
+            @Override
+            public void full() {
+
+            }
+        });
 
     }
 

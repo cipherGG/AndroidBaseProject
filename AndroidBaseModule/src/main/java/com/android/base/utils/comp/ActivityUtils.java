@@ -44,7 +44,7 @@ public class ActivityUtils {
                 }
             }
         } else {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            StackUtils.changeTask(intent);
             from.startActivity(intent);
         }
     }
@@ -59,7 +59,7 @@ public class ActivityUtils {
     public static void startActivity(Fragment from, Intent intent, boolean anim) {
         if (from == null || intent == null) return;
         FragmentActivity activity = from.getActivity();
-        if (anim && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && activity != null) {
+        if (anim && activity != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try { // 有些机型会报错
                 ActivityOptionsCompat options = ActivityOptionsCompat
                         .makeSceneTransitionAnimation(activity, null, null);
@@ -76,13 +76,11 @@ public class ActivityUtils {
     /**
      * 启动activity，setResult设置回传的resultCode和intent
      */
-    public static void startActivity(Activity from, Intent intent,
-                                     int requestCode) {
+    public static void startActivity(Activity from, Intent intent, int requestCode) {
         startActivity(from, intent, requestCode, true);
     }
 
-    public static void startActivity(Activity from, Intent intent,
-                                     int requestCode, boolean anim) {
+    public static void startActivity(Activity from, Intent intent, int requestCode, boolean anim) {
         if (from == null || intent == null) return;
         if (anim && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try { // 有些机型会报错
@@ -111,7 +109,8 @@ public class ActivityUtils {
     public static void startActivity(Fragment from, Intent intent, int requestCode, boolean anim) {
         if (from == null || intent == null) return;
         FragmentActivity activity = from.getActivity();
-        if (anim && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && activity != null) {
+        if (activity == null) return;
+        if (anim && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try { // 有些机型会报错
                 ActivityOptionsCompat options = ActivityOptionsCompat
                         .makeSceneTransitionAnimation(activity, null, null);
@@ -122,7 +121,7 @@ public class ActivityUtils {
             }
         } else {
             from.startActivityForResult(intent, requestCode);
-            if (anim && activity != null) { // 4.4跳转效果
+            if (anim) { // 4.4跳转效果
                 activity.overridePendingTransition(animIn, animOut);
             }
         }

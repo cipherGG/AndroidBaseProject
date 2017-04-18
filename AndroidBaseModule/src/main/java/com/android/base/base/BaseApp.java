@@ -76,6 +76,43 @@ public class BaseApp extends MultiDexApplication {
     }
 
     private void initListener() {
+        // 监听所有activity的生命周期
+        registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                StackUtils.addActivity(activity);
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                StackUtils.removeActivity(activity);
+            }
+        });
         // 监听当前app的内存 和 配置,可撤销
         registerComponentCallbacks(new ComponentCallbacks2() {
             @Override
@@ -120,43 +157,6 @@ public class BaseApp extends MultiDexApplication {
                     status.append("uiMode:").append(cfg.densityDpi).append("\n");
                 }
                 LogUtils.d(status.toString());
-            }
-        });
-        // 监听所有activity的生命周期
-        registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                StackUtils.addActivity(activity);
-            }
-
-            @Override
-            public void onActivityStarted(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityResumed(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityPaused(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityStopped(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-            }
-
-            @Override
-            public void onActivityDestroyed(Activity activity) {
-                StackUtils.removeActivity(activity);
             }
         });
     }

@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="JBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- 应用亮色调，标题栏默认颜色 -->
         <item name="colorPrimary">@color/color_primary</item>
         <!-- 应用暗色调，状态栏默认颜色 -->
