@@ -7,7 +7,7 @@
     <color name="color_accent">#087be6</color>
     <color name="color_control_highlight">@color/color_primary</color>
     <color name="button_color">@color/color_primary</color>
-    <color name="text_color">#333333</color>
+    <color name="text_color">#333333</color><!-- 最好是黑色 -->
     <color name="window_color">#F5F5F5</color>
 
     <!--iosDialog中按钮字体颜色 -->

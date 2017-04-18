@@ -28,8 +28,8 @@ import retrofit2.http.Url;
 public interface APIUtils {
 
     /* BaseURL最好以/结尾 */
-    String HOST = "http://192.168.0.1/"; // 测试
-    // String HOST = "http://192.168.0.1/"; // 正式
+    String API_HOST = "192.168.0.1";
+    String HOST = "http://" + API_HOST + "/";
     String BASE_URL = HOST + "api/v1/zh-CN/";
     String IMG_URL_ = ""; // 图片前缀
 
