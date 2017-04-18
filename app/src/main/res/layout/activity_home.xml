@@ -4,8 +4,8 @@
               android:id="@+id/llMain"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical"
               android:background="#ffffff"
+              android:orientation="vertical"
               tools:context="com.jiangzg.project.activity.HomeActivity">
 
     <include layout="@layout/view_top_bar"/>
@@ -28,4 +28,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="333333"/>
+
+    <ImageView
+        android:id="@+id/ivMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

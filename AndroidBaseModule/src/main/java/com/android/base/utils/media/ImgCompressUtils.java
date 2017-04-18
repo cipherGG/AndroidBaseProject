@@ -17,37 +17,20 @@ import top.zibin.luban.OnCompressListener;
 public class ImgCompressUtils {
 
     /**
-     * 鲁班算法压缩
+     * 鲁班算法压缩(推荐)
      */
-    public static void compress(Context context, File src) {
+    public static void compress(Context context, File src, OnCompressListener listener) {
         Luban.get(context)
                 .load(src) // 压缩源文件
                 .putGear(Luban.THIRD_GEAR) // 设定压缩档次，默认三挡
-                .setCompressListener(new OnCompressListener() {
-
-                    @Override
-                    public void onStart() {
-                        // TODO 压缩开始前调用，可以在方法内启动 loading UI
-                    }
-
-                    @Override
-                    public void onSuccess(File file) {
-                        // TODO 压缩成功后调用，返回压缩后的图片文件
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        // TODO 当压缩过去出现问题时调用
-                    }
-                })
+                .setCompressListener(listener)
                 .launch(); // 启动压缩
-
     }
 
     /**
      * 获取bitmap(带压缩) 真正的压缩到200KB左右（建议200KB）
      */
-    public static Bitmap compressFile(File file, long maxByteSize) {
+    public static Bitmap compressBySize(File file, long maxByteSize) {
         long length = file.length(); // 真正的文件大小
         if (length > maxByteSize) { // 这么算比较准
             int ratio = (int) (length / maxByteSize);

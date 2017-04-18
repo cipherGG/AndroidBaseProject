@@ -1,6 +1,7 @@
 package com.android.base.utils.media;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -10,14 +11,16 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import com.android.base.utils.comp.ContextUtils;
 import com.android.base.utils.file.FileUtils;
 import com.android.base.utils.other.ConvertUtils;
-import com.android.base.utils.comp.ContextUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
+import top.zibin.luban.OnCompressListener;
 
 /**
  * Created by jiang on 2016/10/13
@@ -43,7 +46,7 @@ public class ImgMediaUtils {
             FileUtils.deleteFile(cameraFile); // 删除垃圾文件
             return null;
         }
-        Bitmap small = ImgCompressUtils.compressFile(cameraFile, maxByteSize); // File转Bitmap(压缩)
+        Bitmap small = ImgCompressUtils.compressBySize(cameraFile, maxByteSize); // File转Bitmap(压缩)
         FileUtils.createFileByDeleteOldFile(cameraFile); // 重置源文件
         ImgConvertUtils.save(small, cameraFile.getAbsolutePath(), ImgConvertUtils.FORMAT, true); // 保存图像
         if (small != null && !small.isRecycled()) {
@@ -127,7 +130,7 @@ public class ImgMediaUtils {
         Uri uri = getPictureUri(data);
         if (uri != null) {
             File file = ConvertUtils.URI2File(uri);
-            picture = ImgCompressUtils.compressFile(file, maxByteSize);
+            picture = ImgCompressUtils.compressBySize(file, maxByteSize);
         } else {
             picture = data.getParcelableExtra("data");
         }
@@ -164,7 +167,7 @@ public class ImgMediaUtils {
             FileUtils.deleteFile(cropFile); // 删除垃圾文件
             return null;
         }
-        Bitmap small = ImgCompressUtils.compressFile(cropFile, maxByteSize); // File转Bitmap(压缩)
+        Bitmap small = ImgCompressUtils.compressBySize(cropFile, maxByteSize); // File转Bitmap(压缩)
         FileUtils.createFileByDeleteOldFile(cropFile); // 重置源文件
         ImgConvertUtils.save(small, cropFile.getAbsolutePath(), ImgConvertUtils.FORMAT, true); // 保存图像
         if (small != null && !small.isRecycled()) {
