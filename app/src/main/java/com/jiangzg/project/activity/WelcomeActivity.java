@@ -25,6 +25,12 @@ public class WelcomeActivity extends BaseActivity<WelcomeActivity> {
         goHome();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
     /* 跳转主页 */
     private void goHome() {
         MyApp.get().getHandler().postDelayed(new Runnable() {
@@ -33,13 +39,6 @@ public class WelcomeActivity extends BaseActivity<WelcomeActivity> {
                 HomeActivity.goActivity(mActivity);
             }
         }, 1000);
-//         立刻关闭当前页面会出现空白缝隙
-        MyApp.get().getHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mActivity.finish();
-            }
-        }, 3000);
     }
 
 }
