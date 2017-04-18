@@ -1,10 +1,13 @@
 package com.android.base.utils.media;
 
+import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.android.base.utils.comp.ProviderUtils;
+import com.android.base.utils.comp.ContextUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +29,7 @@ public class MediaUtils {
                 MediaStore.Images.Media.SIZE};
         String orderBy = MediaStore.Images.Media.DISPLAY_NAME;
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        return ProviderUtils.getProviderColumn(uri, projection, null, null, orderBy);
+        return getProviderColumn(uri, projection, null, null, orderBy);
     }
 
     /**
@@ -42,7 +45,7 @@ public class MediaUtils {
                 MediaStore.Audio.Media.SIZE};
         String orderBy = MediaStore.Audio.Media.DISPLAY_NAME;
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        return ProviderUtils.getProviderColumn(uri, projection, null, null, orderBy);
+        return getProviderColumn(uri, projection, null, null, orderBy);
     }
 
     /**
@@ -58,7 +61,32 @@ public class MediaUtils {
                 MediaStore.Video.Media.SIZE};
         String orderBy = MediaStore.Video.Media.DISPLAY_NAME;
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-        return ProviderUtils.getProviderColumn(uri, projection, null, null, orderBy);
+        return getProviderColumn(uri, projection, null, null, orderBy);
+    }
+
+    /**
+     * @param uri        查询的uri
+     * @param projection map里的key
+     * @param orderBy    排序
+     * @return 查询到的数据
+     */
+    public static List<Map<String, String>> getProviderColumn(Uri uri, String[] projection,
+                                                              String selection,
+                                                              String[] selectionArgs,
+                                                              String orderBy) {
+        List<Map<String, String>> list = new ArrayList<>();
+        Cursor cursor = ContextUtils.get().getContentResolver()
+                .query(uri, projection, selection, selectionArgs, orderBy);
+        if (null == cursor) return list;
+        while (cursor.moveToNext()) {
+            HashMap<String, String> map = new HashMap<>();
+            for (int i = 0; i < projection.length; i++) {
+                map.put(projection[i], cursor.getString(i));
+            }
+            list.add(map);
+        }
+        cursor.close();
+        return list;
     }
 
 }

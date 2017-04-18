@@ -3,6 +3,7 @@ package com.android.base.utils.other;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -18,11 +19,10 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
-import com.android.base.utils.comp.ProviderUtils;
+import com.android.base.utils.comp.ContextUtils;
 import com.android.base.utils.file.FileUtils;
 import com.android.base.utils.str.ConstantUtils;
 import com.android.base.utils.str.StringUtils;
-import com.android.base.utils.comp.ContextUtils;
 import com.android.base.utils.view.ToastUtils;
 
 import java.io.ByteArrayInputStream;
@@ -78,7 +78,7 @@ public class ConvertUtils {
                 // DownloadsProvider
                 Uri contentUri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
-                data = ProviderUtils.getProviderColumnTop(contentUri, project, null, null, null);
+                data = getProviderColumnTop(contentUri, project, null, null, null);
             } else if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
                 // MediaProvider
                 Uri contentUri = null;
@@ -91,7 +91,7 @@ public class ConvertUtils {
                 }
                 String selection = "_id=?";
                 String[] selectionArgs = new String[]{split[1]};
-                data = ProviderUtils.getProviderColumnTop(contentUri, project, selection, selectionArgs, null);
+                data = getProviderColumnTop(contentUri, project, selection, selectionArgs, null);
             }
         } else if (ContentResolver.SCHEME_FILE.equals(scheme)) { // File
             data = uri.getPath();
@@ -99,10 +99,23 @@ public class ConvertUtils {
             if ("com.google.android.apps.photos.content".equals(uri.getAuthority())) {
                 data = uri.getLastPathSegment();
             } else {
-                data = ProviderUtils.getProviderColumnTop(uri, project, null, null, null);
+                data = getProviderColumnTop(uri, project, null, null, null);
             }
         }
         if (data != null) return new File(data);
+        return null;
+    }
+
+    private static String getProviderColumnTop(Uri uri, String[] projection, String selection,
+                                              String[] selectionArgs, String orderBy) {
+        Cursor cursor = ContextUtils.get().getContentResolver()
+                .query(uri, projection, selection, selectionArgs, orderBy);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int index = cursor.getColumnIndex(projection[0]);
+            if (index > -1) return cursor.getString(index);
+            cursor.close();
+        }
         return null;
     }
 

@@ -224,17 +224,17 @@ public class RetrofitUtils {
 
         void onFailure(int code, String error);
     }
-
-    public RequestBody string2PartBody(String body) {
-        return RequestBody.create(MediaType.parse("text/plain"), body);
-    }
-
-    public String file2PartKey(File file) {
-        return "file\";filename=\"" + file.getName();
-    }
-
-    public RequestBody img2PartBody(File file) {
-        return RequestBody.create(MediaType.parse("image/jpeg"), file);
-    }
+//
+//    public RequestBody string2PartBody(String body) {
+//        return RequestBody.create(MediaType.parse("text/plain"), body);
+//    }
+//
+//    public String file2PartKey(File file) {
+//        return "file\";filename=\"" + file.getName();
+//    }
+//
+//    public RequestBody img2PartBody(File file) {
+//        return RequestBody.create(MediaType.parse("image/jpeg"), file);
+//    }
 
 }

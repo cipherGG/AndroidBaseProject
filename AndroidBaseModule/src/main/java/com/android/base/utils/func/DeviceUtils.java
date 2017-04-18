@@ -19,8 +19,8 @@ import com.android.base.utils.str.StringUtils;
  * describe  设备相关工具类
  */
 public class DeviceUtils {
+
     private static DeviceUtils instance;
-    private static TelephonyManager telephonyManager;
 
     private String deviceId; // GSM网络，返回IMEI；CDMA网络，返回MEID
     private String macAddress; // MAC地址
@@ -38,8 +38,6 @@ public class DeviceUtils {
         if (instance != null) return instance;
         PermUtils.requestDevice(ContextUtils.get(), null); // 权限请求
         instance = new DeviceUtils();
-        telephonyManager = (TelephonyManager) ContextUtils.get()
-                .getSystemService(Context.TELEPHONY_SERVICE);
         return instance;
     }
 
@@ -51,7 +49,7 @@ public class DeviceUtils {
         if (!StringUtils.isEmpty(deviceId)) return deviceId;
         String deviceId;
         if (isPhone()) {
-            deviceId = telephonyManager.getDeviceId();
+            deviceId = ContextUtils.getTelephonyManager().getDeviceId();
         } else {
             ContentResolver contentResolver = ContextUtils.get().getContentResolver();
             deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID);
@@ -67,7 +65,7 @@ public class DeviceUtils {
     @SuppressLint("HardwareIds")
     public String getPhoneNumber() {
         if (!StringUtils.isEmpty(phoneNumber)) return phoneNumber;
-        setPhoneNumber(telephonyManager.getLine1Number());
+        setPhoneNumber(ContextUtils.getTelephonyManager().getLine1Number());
         return phoneNumber;
     }
 
@@ -78,7 +76,7 @@ public class DeviceUtils {
     @SuppressLint("HardwareIds")
     public String getSimSerial() {
         if (!StringUtils.isEmpty(simSerial)) return simSerial;
-        setSimSerial(telephonyManager.getSimSerialNumber());
+        setSimSerial(ContextUtils.getTelephonyManager().getSimSerialNumber());
         return simSerial;
     }
 
@@ -106,7 +104,8 @@ public class DeviceUtils {
     }
 
     public boolean isPhone() {
-        setPhone(telephonyManager.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE);
+        setPhone(ContextUtils.getTelephonyManager().getPhoneType()
+                != TelephonyManager.PHONE_TYPE_NONE);
         return isPhone;
     }
 

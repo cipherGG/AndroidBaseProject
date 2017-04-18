@@ -15,19 +15,20 @@ import java.util.List;
  * describe Gson工具类
  */
 public class GsonUtils {
-    private static Gson GSON;
+
+    private static Gson instance;
 
     public static Gson get() {
-        if (GSON == null) {
+        if (instance == null) {
             synchronized (GsonUtils.class) {
-                if (GSON == null) {
-                    GSON = new GsonBuilder()
+                if (instance == null) {
+                    instance = new GsonBuilder()
                             // 配置
                             .create();
                 }
             }
         }
-        return GSON;
+        return instance;
     }
 
     public static <T> List<T> getList(JSONObject object, String key) {
@@ -36,11 +37,11 @@ public class GsonUtils {
     }
 
     public static <T> List<T> getList(JSONArray array) {
-        return GSON.fromJson(array.toString(), getType());
+        return instance.fromJson(array.toString(), getType());
     }
 
     private static <T> List<T> getList(JSONArray array, Type type) {
-        return GSON.fromJson(array.toString(), type);
+        return instance.fromJson(array.toString(), type);
     }
 
     private static <T> Type getType() {

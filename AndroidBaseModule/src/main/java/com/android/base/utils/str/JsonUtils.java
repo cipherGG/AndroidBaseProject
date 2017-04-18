@@ -12,9 +12,10 @@ import java.util.Map;
 
 /**
  * Created by gg on 2017/4/3.
+ * Json管理类
  */
-
 public class JsonUtils {
+
     public static List<Map<String, Object>> getList(String jsonString, String key) {
         List<Map<String, Object>> list = new ArrayList<>();
         try {

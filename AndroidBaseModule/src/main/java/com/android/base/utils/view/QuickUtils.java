@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * Created by JiangZhiGuo on 2016-11-9.
- * describe RecyclerView管理类
+ * describe RecyclerViewAdapter管理类
  */
 public class QuickUtils {
 

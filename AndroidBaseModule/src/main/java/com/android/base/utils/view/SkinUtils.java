@@ -2,25 +2,24 @@ package com.android.base.utils.view;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 /**
  * Created by gg on 2017/4/3.
+ * 换肤管理类
  */
 public class SkinUtils {
-
-    /**
-     * 这里只有着色模式，全屏模式只是status的透明设置，其他控件要在xml里设置好透明，不好封装
-     */
-    private static final String KEY_SKIN = "skin_type";
-    // 主题样式和状态栏颜色 ,每个position的颜色要对应，不可错乱
-    private static int[] THEMES = new int[]{-1};
+//
+//    /**
+//     * 这里只有着色模式，全屏模式只是status的透明设置，其他控件要在xml里设置好透明，不好封装
+//     */
+//    private static final String KEY_SKIN = "skin_type";
+//    // 主题样式和状态栏颜色 ,每个position的颜色要对应，不可错乱
+//    private static int[] THEMES = new int[]{-1};
 //    private static int[] COLOR = new int[]{get0xColor(-1)};
 //
 //    /**
