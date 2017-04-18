@@ -2,7 +2,6 @@ package com.jiangzg.project.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +10,7 @@ import com.android.base.base.BaseActivity;
 import com.android.base.utils.comp.ActivityUtils;
 import com.android.base.utils.comp.StackUtils;
 import com.android.base.utils.func.LocationUtils;
+import com.android.base.utils.view.QuickUtils;
 import com.jiangzg.project.R;
 import com.jiangzg.project.domain.Version;
 import com.jiangzg.project.utils.ViewUtils;
@@ -39,17 +39,21 @@ public class HomeActivity extends BaseActivity<HomeActivity> {
     }
 
     @Override
-    protected int initObj(Bundle savedInstanceState) {
-        return R.layout.activity_home;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+        initView();
+        initData();
     }
 
-    @Override
-    protected void initView() {
+    private void initView() {
         ViewUtils.initTop(mActivity, "主页面");
+        QuickUtils manager = new QuickUtils(null)
+                .initRecycler(null);
 
+        manager.dataRefresh();
     }
 
-    @Override
     protected void initData() {
 //        loading.show();
 //        observable = RxUtils.get().register(1, new Action1<Version>() {
@@ -96,7 +100,6 @@ public class HomeActivity extends BaseActivity<HomeActivity> {
 //        aaa.show();
 
 
-
     }
 
     @Override
@@ -104,7 +107,6 @@ public class HomeActivity extends BaseActivity<HomeActivity> {
         super.onResume();
         int taskId = getTaskId();
 //        Stack<StackUtils.Task> tasks = StackUtils.get();
-        logTag = "";
         LocationUtils info = LocationUtils.getInfo();
     }
 
@@ -112,13 +114,13 @@ public class HomeActivity extends BaseActivity<HomeActivity> {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn1:
-                TopActivity.goActivityNew(mActivity);
+//                TopActivity.goActivityNew(mActivity);
                 break;
             case R.id.btn2:
-                TaskActivity.goActivity(mActivity);
+//                TaskActivity.goActivity(mActivity);
                 break;
             case R.id.btn3:
-                StackUtils.finishTask(getTaskId());
+//                StackUtils.finishTask(getTaskId());
                 break;
         }
     }

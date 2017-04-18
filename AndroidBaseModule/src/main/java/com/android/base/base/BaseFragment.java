@@ -76,12 +76,12 @@ public abstract class BaseFragment<T> extends Fragment {
     /**
      * 初始layout
      */
-    protected abstract int initObj(LayoutInflater inflater, ViewGroup container, Bundle state);
+    protected abstract int initObj(Bundle state);
 
     /**
      * 实例化View/设置监听器
      */
-    protected abstract void initView(View view, @Nullable Bundle state);
+    protected abstract void initView(@Nullable Bundle state);
 
     /**
      * 获取数据,最好开线程
@@ -112,7 +112,7 @@ public abstract class BaseFragment<T> extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = super.onCreateView(inflater, container, savedInstanceState);
         if (rootView == null) {
-            int layoutId = initObj(inflater, container, savedInstanceState);
+            int layoutId = initObj(savedInstanceState);
             rootView = inflater.inflate(layoutId, container, false);
             unbinder = ButterKnife.bind(mFragment, rootView);
         }
@@ -123,7 +123,7 @@ public abstract class BaseFragment<T> extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initView(view, savedInstanceState);
+        initView(savedInstanceState);
     }
 
     /* activity的onCreate执行完成后才会调用 */

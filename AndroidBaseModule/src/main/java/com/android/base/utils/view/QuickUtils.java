@@ -16,7 +16,7 @@ import java.util.List;
  * Created by JiangZhiGuo on 2016-11-9.
  * describe RecyclerView管理类
  */
-public class QuickManager {
+public class QuickUtils {
 
     private Context mContext;
     private RecyclerView mRecycler;
@@ -25,14 +25,14 @@ public class QuickManager {
     private SwipeRefreshLayout mRefresh;
     private RefreshListener mRefreshListener;
 
-    public QuickManager(Context context) {
+    public QuickUtils(Context context) {
         mContext = context;
     }
 
     /**
      * ************************************初始化***************************************
      */
-    public QuickManager initRecycler(RecyclerView recyclerView) {
+    public QuickUtils initRecycler(RecyclerView recyclerView) {
         mRecycler = recyclerView;
         return this;
     }
@@ -40,7 +40,7 @@ public class QuickManager {
     /**
      * 布局管理器
      */
-    public QuickManager initLayoutManager(RecyclerView.LayoutManager layoutManager) {
+    public QuickUtils initLayoutManager(RecyclerView.LayoutManager layoutManager) {
         if (mRecycler == null || layoutManager == null) return this;
         mLayoutManager = layoutManager;
         mRecycler.setLayoutManager(mLayoutManager);
@@ -50,7 +50,7 @@ public class QuickManager {
     /**
      * 设置适配器，这里只支持BaseRecyclerViewAdapterHelper
      */
-    public QuickManager initAdapter(BaseQuickAdapter adapter) {
+    public QuickUtils initAdapter(BaseQuickAdapter adapter) {
         if (adapter == null) return this;
         mAdapter = adapter;
         return this;
@@ -59,7 +59,7 @@ public class QuickManager {
     /**
      * 直接设置适配器，空数据的适配器刚开始会有加载更多的提示
      */
-    public QuickManager setAdapter(BaseQuickAdapter adapter) {
+    public QuickUtils setAdapter(BaseQuickAdapter adapter) {
         if (mRecycler == null || adapter == null) return this;
         mAdapter = adapter;
         mRecycler.setAdapter(mAdapter);
@@ -70,14 +70,14 @@ public class QuickManager {
      * ************************************VIEW***************************************
      * 加载更多视图
      */
-    public QuickManager viewLoading(int loadingLayoutId) {
+    public QuickUtils viewMore(int loadingLayoutId) {
         if (mContext == null || mRecycler == null) return this;
         View head = LayoutInflater.from(mContext).inflate(loadingLayoutId, mRecycler, false);
         viewHeader(head);
         return this;
     }
 
-    public QuickManager viewLoading(View loading) {
+    public QuickUtils viewMore(View loading) {
         if (mAdapter == null || loading == null) return this;
         mAdapter.setLoadingView(loading);
         return this;
@@ -86,14 +86,14 @@ public class QuickManager {
     /**
      * 无Data时显示的view
      */
-    public QuickManager viewEmpty(int emptyLayoutId) {
+    public QuickUtils viewEmpty(int emptyLayoutId) {
         if (mRecycler == null || mContext == null || emptyLayoutId == 0) return this;
         View empty = LayoutInflater.from(mContext).inflate(emptyLayoutId, mRecycler, false);
         viewEmpty(empty);
         return this;
     }
 
-    public QuickManager viewEmpty(View empty) {
+    public QuickUtils viewEmpty(View empty) {
         if (mAdapter == null || empty == null) return this;
         mAdapter.setEmptyView(empty);
         return this;
@@ -102,14 +102,14 @@ public class QuickManager {
     /**
      * list顶部view（可remove）
      */
-    public QuickManager viewHeader(int headLayoutId) {
+    public QuickUtils viewHeader(int headLayoutId) {
         if (mContext == null || mRecycler == null) return this;
         View head = LayoutInflater.from(mContext).inflate(headLayoutId, mRecycler, false);
         viewHeader(head);
         return this;
     }
 
-    public QuickManager viewHeader(View head) {
+    public QuickUtils viewHeader(View head) {
         if (mAdapter == null || head == null) return this;
         mAdapter.addHeaderView(head);
         return this;
@@ -118,14 +118,14 @@ public class QuickManager {
     /**
      * list底部view（可remove）
      */
-    public QuickManager viewFooter(int footLayoutId) {
+    public QuickUtils viewFooter(int footLayoutId) {
         if (mContext == null || mRecycler == null) return this;
         View foot = LayoutInflater.from(mContext).inflate(footLayoutId, mRecycler, false);
         viewFooter(foot);
         return this;
     }
 
-    public QuickManager viewFooter(View foot) {
+    public QuickUtils viewFooter(View foot) {
         if (mAdapter == null || foot == null) return this;
         mAdapter.addFooterView(foot);
         return this;
@@ -133,9 +133,35 @@ public class QuickManager {
 
     /**
      * ************************************监听器***************************************
+     * RecyclerView的item点击监听
      */
+    public QuickUtils listenerClick(RecyclerView.OnItemTouchListener listener) {
+        if (mRecycler == null || listener == null) return this;
+        mRecycler.addOnItemTouchListener(listener);
+        return this;
+    }
+
     public interface MoreListener {
         void onMore(int currentCount);
+    }
+
+    /**
+     * 加载更多监听 回调时addData() 记得offset叠加
+     */
+    public QuickUtils listenerMore(final MoreListener listener) {
+        if (mRecycler == null || mAdapter == null || listener == null) return this;
+        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                mRecycler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onMore(mAdapter.getItemCount());
+                    }
+                });
+            }
+        });
+        return this;
     }
 
     public interface RefreshListener {
@@ -145,7 +171,7 @@ public class QuickManager {
     /**
      * 刷新监听 回调时newData() 记得offset重置
      */
-    public QuickManager listenerRefresh(SwipeRefreshLayout srl, RefreshListener listener) {
+    public QuickUtils listenerRefresh(SwipeRefreshLayout srl, RefreshListener listener) {
         if (srl == null || listener == null) return this;
         mRefresh = srl;
         mRefreshListener = listener;
@@ -156,34 +182,6 @@ public class QuickManager {
                     @Override
                     public void run() {
                         mRefreshListener.onRefresh();
-                    }
-                });
-            }
-        });
-        return this;
-    }
-
-    /**
-     * RecyclerView的item点击监听
-     */
-    public QuickManager listenerClick(RecyclerView.OnItemTouchListener listener) {
-        if (mRecycler == null || listener == null) return this;
-        mRecycler.addOnItemTouchListener(listener);
-        return this;
-    }
-
-    /**
-     * 加载更多监听 回调时addData() 记得offset叠加
-     */
-    public QuickManager listenerMore(final MoreListener listener) {
-        if (mRecycler == null || mAdapter == null || listener == null) return this;
-        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                mRecycler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.onMore(mAdapter.getItemCount());
                     }
                 });
             }
@@ -270,17 +268,19 @@ public class QuickManager {
     /**
      * ************************************实例获取***************************************
      */
-    public BaseQuickAdapter getAdapter() {
-        return mAdapter;
+    @SuppressWarnings("unchecked")
+    public <A extends BaseQuickAdapter> A getAdapter() {
+        return (A) mAdapter;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <A extends RecyclerView.LayoutManager> A getLayoutManager() {
+        return (A) mLayoutManager;
     }
 
     public BaseViewHolder getHolder(int position) {
         if (mRecycler == null) return null;
         return (BaseViewHolder) mRecycler.findViewHolderForLayoutPosition(position);
-    }
-
-    public RecyclerView.LayoutManager getLayoutManager() {
-        return mLayoutManager;
     }
 
 }

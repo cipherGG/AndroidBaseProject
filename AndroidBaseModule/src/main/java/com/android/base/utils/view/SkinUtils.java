@@ -13,7 +13,6 @@ import android.view.WindowManager;
 /**
  * Created by gg on 2017/4/3.
  */
-
 public class SkinUtils {
 
     /**

@@ -30,15 +30,13 @@ import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 
 import com.android.base.utils.file.FileUtils;
+import com.android.base.utils.view.ScreenUtils;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * Created by Jiang on 2016/10/12
@@ -60,14 +58,11 @@ public class ImgUtils {
     /**
      * 适屏显示image，完全没必要，直接setScaleType就行(难道是缩放？)
      */
-    public static void showImage(Context context, Activity activity,
-                                 Uri imagePath, ImageView imageView) {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        // 初始化displayMetrics
-        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+    public static void showImage(Activity activity, Uri imagePath, ImageView imageView) {
+        DisplayMetrics display = ScreenUtils.getDisplay(activity);
         // 屏幕像素的绝对宽高
-        int width = displayMetrics.widthPixels;
-        int height = displayMetrics.heightPixels;
+        int width = display.widthPixels;
+        int height = display.heightPixels;
         //实现对图片裁剪的类，是匿名内部类
         BitmapFactory.Options options = new BitmapFactory.Options();
         //图片的宽度相对于手机屏幕宽度的比例
@@ -88,7 +83,7 @@ public class ImgUtils {
         Bitmap bitmap = null;
         try {
             bitmap = BitmapFactory.decodeStream
-                    (context.getContentResolver().openInputStream(imagePath), null, options);
+                    (activity.getContentResolver().openInputStream(imagePath), null, options);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

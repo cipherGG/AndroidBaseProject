@@ -1,12 +1,10 @@
 package com.jiangzg.project.utils;
 
 import com.android.base.utils.str.ConstantUtils;
-import com.android.base.utils.str.GsonUtils;
 import com.android.base.utils.str.StringUtils;
 import com.android.base.utils.view.ToastUtils;
 import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
-import com.jiangzg.project.domain.HttpError;
 import com.jiangzg.project.service.UpdateService;
 
 import java.util.HashMap;
@@ -30,10 +28,10 @@ public class Utils {
         return StringUtils.isEmpty(userToken);
     }
 
-    public static void httpFailure(int httpCode, String errorMessage) {
-        switch (httpCode) {
+    public static void httpFailure(int code, String error) {
+        switch (code) {
             case -1: // 请求异常(弹出异常信息)
-                ToastUtils.get().show(errorMessage);
+                ToastUtils.get().show(error);
                 break;
             case 401: // 用户验证失败
                 ToastUtils.get().show(R.string.http_response_error_401);
@@ -41,9 +39,6 @@ public class Utils {
                 break;
             case 403: // APIUtils AliKey 不正确 或者没给
                 ToastUtils.get().show(R.string.http_response_error_403);
-                break;
-            case 404: // 404
-                ToastUtils.get().show(R.string.http_response_error_404);
                 break;
             case 409: // 用户版本过低, 应该禁止用户登录，并提示用户升级
                 ToastUtils.get().show(R.string.http_response_error_409);
@@ -55,23 +50,10 @@ public class Utils {
 //                StackUtils.closeActivities();
                 break;
             case 417: // 逻辑错误，必须返回错误信息
-                HttpError httpError = GsonUtils.get().fromJson(errorMessage, HttpError.class);
-                int errorCode = -1;
-                if (httpError != null) {
-                    ToastUtils.get().show(httpError.getMessage());
-                    errorCode = httpError.getErrorCode();
-                }
-                switch (errorCode) {
-                    case 1001: // 1001: 用户被锁定
-//                        StackUtils.closeTopActivity();
-                        break;
-                }
-                break;
-            case 500: // 500
-                ToastUtils.get().show(R.string.http_response_error_500);
+//                ToastUtils.get().show(errorMessage);
                 break;
             default: // 其他错误
-                ToastUtils.get().show(R.string.http_response_error);
+                ToastUtils.get().show(String.valueOf(code));
                 break;
         }
     }

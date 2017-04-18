@@ -3,13 +3,15 @@ package com.android.base.utils.view;
 import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.TypedValue;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -51,6 +53,15 @@ public class ScreenUtils {
      */
     public static void requestLandscape(Activity activity) {
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
+
+    /**
+     * 获取屏幕参数集
+     */
+    public static DisplayMetrics getDisplay(Activity activity) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics;
     }
 
     /**
@@ -222,11 +233,11 @@ public class ScreenUtils {
             // TODO: 2017/3/27  4.0-4.4
         }
     }
+
     /**
      * 获取activity的xml布局
      */
     public static View getMainLayout(Activity activity) {
-
         return activity.getWindow().findViewById(Window.ID_ANDROID_CONTENT);
     }
 
@@ -234,7 +245,6 @@ public class ScreenUtils {
      * 获取状态栏＋标题栏高度,如果没有ActionBar，那么只有状态栏的高度
      */
     public static int getTopBarHeight(Activity activity) {
-
         return getMainLayout(activity).getBottom();
     }
 
@@ -243,24 +253,21 @@ public class ScreenUtils {
      */
     public static int getActionBarHeight(Activity activity) {
         Rect frame = new Rect();
-
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-
         return frame.top;
     }
 
     /**
      * 获取状态栏高度, 和getStatusHeight()效果一样
      */
-    public static int getStatusHeight(Activity activity) {
-
+    public static int getStatusBarHeight(Activity activity) {
         return getTopBarHeight(activity) - getActionBarHeight(activity);
     }
+
     /**
      * 动态显示Status
      */
     public static void showStatus(View view) {
-
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
     }
 
@@ -268,15 +275,63 @@ public class ScreenUtils {
      * 动态显示Status , 会遮挡top布局
      */
     public static void fitStatus(View view) {
-
-        view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
     }
 
     /**
      * 动态隐藏Status
      */
     public static void disStatus(View view) {
-
         view.setSystemUiVisibility(View.INVISIBLE);
+    }
+
+    /**
+     * 唤醒屏幕并解锁
+     * <uses-permission android:name="android.permission.WAKE_LOCK" />
+     * <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+     *
+     * @param context
+     */
+    public static void wakeUpAndUnlock(Context context) {
+        KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+        KeyguardManager.KeyguardLock kl = km.newKeyguardLock("unLock");
+        //解锁
+        kl.disableKeyguard();
+        //获取电源管理器对象
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        //获取PowerManager.WakeLock对象,后面的参数|表示同时传入两个值,最后的是LogCat里用的Tag
+        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
+        //点亮屏幕
+        wl.acquire();
+        //释放
+        wl.release();
+    }
+
+    /**
+     * 判断当前手机是否处于锁屏(睡眠)状态
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isSleeping(Context context) {
+        KeyguardManager kgMgr = (KeyguardManager) context
+                .getSystemService(Context.KEYGUARD_SERVICE);
+
+        return kgMgr.inKeyguardRestrictedInputMode();
+    }
+
+    /**
+     * 主动回到Home，后台运行
+     *
+     * @param context
+     */
+    public static void goHome(Context context) {
+        Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);
+        mHomeIntent.addCategory(Intent.CATEGORY_HOME);
+        mHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        context.startActivity(mHomeIntent);
     }
 }

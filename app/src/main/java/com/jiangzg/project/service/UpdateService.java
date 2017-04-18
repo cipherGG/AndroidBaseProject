@@ -12,15 +12,16 @@ import android.view.WindowManager;
 import com.android.base.utils.comp.ActivityUtils;
 import com.android.base.utils.comp.IntentUtils;
 import com.android.base.utils.file.FileUtils;
-import com.android.base.utils.net.RetrofitUtils;
 import com.android.base.utils.func.AppUtils;
+import com.android.base.utils.net.APIUtils;
+import com.android.base.utils.net.RetrofitUtils;
 import com.android.base.utils.view.DialogUtils;
 import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
 import com.jiangzg.project.domain.Version;
 import com.jiangzg.project.utils.API;
-import com.jiangzg.project.utils.Utils;
 import com.jiangzg.project.utils.ResUtils;
+import com.jiangzg.project.utils.Utils;
 
 import java.io.File;
 
@@ -56,30 +57,14 @@ public class UpdateService extends Service {
     }
 
     private void checkUpdate() {
-        Call<Version> versionCall = new RetrofitUtils("")
+        final int code = AppUtils.get().getVersionCode();
+        Call<Version> versionCall = new RetrofitUtils(API.BASE_URL)
                 .log(HttpLoggingInterceptor.Level.BODY)
                 .head(Utils.getHead())
                 .factory(RetrofitUtils.Factory.empty)
                 .call(API.class)
-                .checkUpdate(1);
-        RetrofitUtils.enqueue(versionCall, null, new RetrofitUtils.CallBack<Version>() {
-            @Override
-            public void onSuccess(Version result) {
-
-            }
-
-            @Override
-            public void onFailure(int code, String error) {
-
-            }
-        });
-
-
-        final int code = AppUtils.get().getVersionCode();
-        Call<Version> call = RetrofitUtils
-                .call(RetrofitUtils.Head.common, RetrofitUtils.Factory.gson)
                 .checkUpdate(code);
-        RetrofitUtils.enqueue(call, new RetrofitUtils.CallBack<Version>() {
+        RetrofitUtils.enqueue(versionCall, null, new RetrofitUtils.CallBack<Version>() {
             @Override
             public void onSuccess(Version result) {
                 if (result == null) {
@@ -94,8 +79,8 @@ public class UpdateService extends Service {
             }
 
             @Override
-            public void onFailure(int httpCode, String errorMessage) {
-                Utils.httpFailure(httpCode, errorMessage);
+            public void onFailure(int code, String error) {
+                Utils.httpFailure(code, error);
             }
         });
     }
@@ -132,7 +117,9 @@ public class UpdateService extends Service {
 
     /* 下载apk */
     private void downloadApk(final Version version) {
-        Call<ResponseBody> call = RetrofitUtils.call(RetrofitUtils.Head.empty, RetrofitUtils.Factory.empty)
+        Call<ResponseBody> call = new RetrofitUtils(API.BASE_URL)
+                .factory(RetrofitUtils.Factory.empty)
+                .call(APIUtils.class)
                 .downloadLargeFile(version.getUpdateUrl());
         RetrofitUtils.enqueue(call, new RetrofitUtils.CallBack<ResponseBody>() {
             @Override
@@ -144,7 +131,7 @@ public class UpdateService extends Service {
                         File apkFile = ResUtils.createAPKInRes(version.getVersionName());
                         FileUtils.writeFileFromIS(apkFile, body.byteStream(), false);
                         // 启动安装
-                        Intent installIntent = IntentUtils.getInstallIntent(apkFile);
+                        Intent installIntent = IntentUtils.getInstall(apkFile);
                         ActivityUtils.startActivity(UpdateService.this, installIntent);
                     }
                 });
