@@ -1,1 +1,1 @@
-include ':app', ':PushSDK', ':AndroidBaseModule'
+include ':app', ':PushSDK', ':AndroidBaseModule', ':AndroidCustomView'
