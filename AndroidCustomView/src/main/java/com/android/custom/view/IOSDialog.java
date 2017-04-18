@@ -1,4 +1,4 @@
-package com.android.base.view;
+package com.android.custom.view;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.base.R;
+import com.android.custom.R;
 
 /**
  * Created by fd.meng on 2014/03/30
