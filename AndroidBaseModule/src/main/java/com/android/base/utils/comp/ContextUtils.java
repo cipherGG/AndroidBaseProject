@@ -2,12 +2,15 @@ package com.android.base.utils.comp;
 
 import android.app.ActivityManager;
 import android.app.Application;
+import android.app.KeyguardManager;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
+import android.os.PowerManager;
 import android.telephony.TelephonyManager;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.android.base.base.BaseApp;
@@ -22,6 +25,10 @@ public class ContextUtils {
         return BaseApp.get();
     }
 
+    public static WindowManager getWindowManager() {
+        return (WindowManager) get().getSystemService(Context.WINDOW_SERVICE);
+    }
+
     public static PackageManager getPackageManager() {
         return get().getPackageManager();
     }
@@ -29,7 +36,6 @@ public class ContextUtils {
     public static ActivityManager getActivityManager() {
         return (ActivityManager) get().getSystemService(Context.ACTIVITY_SERVICE);
     }
-
 
     public static ConnectivityManager getConnectivityManager() {
         return (ConnectivityManager) get().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -49,6 +55,14 @@ public class ContextUtils {
 
     public static ClipboardManager getClipboardManager() {
         return (ClipboardManager) get().getSystemService(Context.CLIPBOARD_SERVICE);
+    }
+
+    public static KeyguardManager getKeyguardManager() {
+        return (KeyguardManager) get().getSystemService(Context.KEYGUARD_SERVICE);
+    }
+
+    public static PowerManager getPowerManager() {
+        return (PowerManager) get().getSystemService(Context.POWER_SERVICE);
     }
 
 }

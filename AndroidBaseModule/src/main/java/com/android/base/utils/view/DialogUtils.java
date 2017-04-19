@@ -37,7 +37,7 @@ public class DialogUtils {
         WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
         DisplayMetrics d = activity.getResources().getDisplayMetrics(); // 获取屏幕宽、高用
         if (height != 0) {  // 高度设置为屏幕的0.x（减去statusBar高度）
-            lp.height = (int) (d.heightPixels * height) - ScreenUtils.getStatusBarHeight(activity);
+            lp.height = (int) (d.heightPixels * height) - BarUtils.getStatusBarHeight(activity);
         }
         if (width != 0) {  // 宽度设置为屏幕的0.x
             lp.width = (int) (d.widthPixels * width);

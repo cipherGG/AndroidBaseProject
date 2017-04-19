@@ -1,9 +1,14 @@
 package com.android.base.utils.str;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,10 +16,43 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by gg on 2017/4/3.
- * Json管理类
+ * Created by Fan-pc on 2015/11/13.
+ * describe json工具类
  */
 public class JsonUtils {
+
+    private static Gson instance;
+
+    public static Gson getGSON() {
+        if (instance == null) {
+            synchronized (JsonUtils.class) {
+                if (instance == null) {
+                    instance = new GsonBuilder()
+                            // 配置
+                            .create();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public static <T> List<T> getList(JSONObject object, String key) {
+        JSONArray array = object.optJSONArray(key);
+        return getList(array, getType());
+    }
+
+    public static <T> List<T> getList(JSONArray array) {
+        return instance.fromJson(array.toString(), getType());
+    }
+
+    private static <T> List<T> getList(JSONArray array, Type type) {
+        return instance.fromJson(array.toString(), type);
+    }
+
+    private static <T> Type getType() {
+        return new TypeToken<List<T>>() {
+        }.getType();
+    }
 
     public static List<Map<String, Object>> getList(String jsonString, String key) {
         List<Map<String, Object>> list = new ArrayList<>();

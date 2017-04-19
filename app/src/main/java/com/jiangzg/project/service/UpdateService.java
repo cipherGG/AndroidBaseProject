@@ -14,7 +14,7 @@ import com.android.base.utils.comp.IntentUtils;
 import com.android.base.utils.file.FileUtils;
 import com.android.base.utils.func.AppUtils;
 import com.android.base.utils.net.APIUtils;
-import com.android.base.utils.net.RetrofitUtils;
+import com.android.base.utils.net.HttpUtils;
 import com.android.base.utils.view.DialogUtils;
 import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
@@ -58,13 +58,13 @@ public class UpdateService extends Service {
 
     private void checkUpdate() {
         final int code = AppUtils.get().getVersionCode();
-        Call<Version> versionCall = new RetrofitUtils(API.BASE_URL)
+        Call<Version> versionCall = new HttpUtils(API.BASE_URL)
                 .log(HttpLoggingInterceptor.Level.BODY)
                 .head(Utils.getHead())
-                .factory(RetrofitUtils.Factory.empty)
+                .factory(HttpUtils.Factory.empty)
                 .call(API.class)
                 .checkUpdate(code);
-        RetrofitUtils.enqueue(versionCall, null, new RetrofitUtils.CallBack<Version>() {
+        HttpUtils.enqueue(versionCall, null, new HttpUtils.CallBack<Version>() {
             @Override
             public void onSuccess(Version result) {
                 if (result == null) {
@@ -117,11 +117,11 @@ public class UpdateService extends Service {
 
     /* 下载apk */
     private void downloadApk(final Version version) {
-        Call<ResponseBody> call = new RetrofitUtils(API.BASE_URL)
-                .factory(RetrofitUtils.Factory.empty)
+        Call<ResponseBody> call = new HttpUtils(API.BASE_URL)
+                .factory(HttpUtils.Factory.empty)
                 .call(APIUtils.class)
                 .downloadLargeFile(version.getUpdateUrl());
-        RetrofitUtils.enqueue(call, new RetrofitUtils.CallBack<ResponseBody>() {
+        HttpUtils.enqueue(call, new HttpUtils.CallBack<ResponseBody>() {
             @Override
             public void onSuccess(final ResponseBody body) { // 回调也是子线程
                 if (body == null || body.byteStream() == null) return;

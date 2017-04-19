@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.android.base.base.BaseActivity;
+import com.android.base.utils.view.BarUtils;
 import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
 
@@ -21,6 +22,7 @@ public class WelcomeActivity extends BaseActivity<WelcomeActivity> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BarUtils.hideStatusBar(this);
         setContentView(R.layout.activity_welcome);
         goHome();
     }

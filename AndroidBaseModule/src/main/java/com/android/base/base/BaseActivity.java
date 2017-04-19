@@ -23,6 +23,7 @@ import com.android.base.R;
 import com.android.base.utils.comp.ActivityUtils;
 import com.android.base.utils.net.NetUtils;
 import com.android.base.utils.other.AnalyUtils;
+import com.android.base.utils.view.BarUtils;
 import com.android.base.utils.view.DialogUtils;
 import com.android.base.utils.view.ScreenUtils;
 
@@ -194,7 +195,7 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
         ScreenUtils.requestPortrait(activity);
         // titleBar
         if (activity instanceof AppCompatActivity) {
-            ScreenUtils.requestNoTitle((AppCompatActivity) activity);
+            BarUtils.requestNoTitle((AppCompatActivity) activity);
         }
         // 专门的跳转方式才会有过场效果
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
