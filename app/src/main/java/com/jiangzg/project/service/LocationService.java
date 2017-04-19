@@ -72,7 +72,7 @@ public class LocationService extends Service {
                     public void onFailed(AMapLocation aMapLocation) {
                         int errorCode = aMapLocation.getErrorCode();
                         String toast = MyApp.get().getString(R.string.location_error);
-                        ToastUtils.get().show(toast + errorCode);
+                        ToastUtils.show(toast + errorCode);
                     }
                 });
         MapUtils.get().startLocation(locationListener);

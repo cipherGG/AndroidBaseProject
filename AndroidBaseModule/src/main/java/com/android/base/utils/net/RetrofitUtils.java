@@ -3,19 +3,16 @@ package com.android.base.utils.net;
 import android.app.Dialog;
 
 import com.android.base.R;
+import com.android.base.utils.comp.ContextUtils;
 import com.android.base.utils.other.LogUtils;
 import com.android.base.utils.str.StringUtils;
-import com.android.base.utils.comp.ContextUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
 import okhttp3.Interceptor;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -134,7 +131,7 @@ public class RetrofitUtils {
     /**
      * @return 获取call
      */
-    public <T> T call(Class<T> clz) {
+    public <T extends APIUtils> T call(Class<T> clz) {
         if (clz == null) return null;
         Interceptor head = getHead(mHeaders); // head
         Interceptor log = getLogInterceptor(mLog); // log

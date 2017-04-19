@@ -110,7 +110,7 @@ public class HomeActivity extends BaseActivity<HomeActivity> {
             @Override
             public void onSuccess(File file) {
                 getLoading().dismiss();
-                ToastUtils.get().show(file.getAbsolutePath());
+                ToastUtils.show(file.getAbsolutePath());
                 GlideUtils.load(mActivity, file, ivMain);
             }
 
@@ -129,7 +129,7 @@ public class HomeActivity extends BaseActivity<HomeActivity> {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             Long nowTime = TimeUtils.getCurrentLong();
             if (nowTime - lastExitTime > 2000) { // 第一次按
-                ToastUtils.get().show(R.string.press_again_exit);
+                ToastUtils.show(R.string.press_again_exit);
             } else { // 返回键连按两次
                 System.exit(0); // 真正退出程序
             }

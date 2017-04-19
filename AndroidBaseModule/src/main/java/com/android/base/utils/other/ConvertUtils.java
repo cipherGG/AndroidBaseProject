@@ -72,7 +72,7 @@ public class ConvertUtils {
                 if ("primary".equalsIgnoreCase(type)) {
                     data = Environment.getExternalStorageDirectory() + "/" + split[1];
                 } else {
-                    ToastUtils.get().show("non-primary");
+                    ToastUtils.show("non-primary");
                 }
             } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
                 // DownloadsProvider

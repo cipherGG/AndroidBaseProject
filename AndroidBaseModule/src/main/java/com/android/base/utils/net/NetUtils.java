@@ -86,7 +86,7 @@ public class NetUtils {
         boolean available = (networkInfo != null && getNetworkInfo().isAvailable());
         if (!available) {
             String show = ContextUtils.get().getString(R.string.no_network_title);
-            ToastUtils.get().show(show);
+            ToastUtils.show(show);
             return false;
         } else {
             return true;

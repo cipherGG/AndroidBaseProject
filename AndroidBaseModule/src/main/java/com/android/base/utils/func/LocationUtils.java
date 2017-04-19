@@ -46,7 +46,7 @@ public class LocationUtils {
     public static void register(final long minTime, final long minDistance,
                                 final OnLocationChangeListener listener) {
         if (!isLocationEnabled()) {
-            ToastUtils.get().show(R.string.cannot_location_please_open_service);
+            ToastUtils.show(R.string.cannot_location_please_open_service);
             return;
         }
         PermUtils.requestMap(ContextUtils.get(), new PermUtils.PermissionListener() {

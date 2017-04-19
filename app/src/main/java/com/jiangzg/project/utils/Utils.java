@@ -31,29 +31,29 @@ public class Utils {
     public static void httpFailure(int code, String error) {
         switch (code) {
             case -1: // 请求异常(弹出异常信息)
-                ToastUtils.get().show(error);
+                ToastUtils.show(error);
                 break;
             case 401: // 用户验证失败
-                ToastUtils.get().show(R.string.http_response_error_401);
+                ToastUtils.show(R.string.http_response_error_401);
 //                LoginActivity.goActivity(MyApp.get());
                 break;
             case 403: // APIUtils AliKey 不正确 或者没给
-                ToastUtils.get().show(R.string.http_response_error_403);
+                ToastUtils.show(R.string.http_response_error_403);
                 break;
             case 409: // 用户版本过低, 应该禁止用户登录，并提示用户升级
-                ToastUtils.get().show(R.string.http_response_error_409);
+                ToastUtils.show(R.string.http_response_error_409);
                 SPUtils.clearUser();
                 UpdateService.goService(MyApp.get());
                 break;
             case 410: // 用户被禁用,请求数据的时候得到该 ErrorCode, 应该退出应用
-                ToastUtils.get().show(R.string.http_response_error_410);
+                ToastUtils.show(R.string.http_response_error_410);
 //                StackUtils.closeActivities();
                 break;
             case 417: // 逻辑错误，必须返回错误信息
 //                ToastUtils.get().show(errorMessage);
                 break;
             default: // 其他错误
-                ToastUtils.get().show(String.valueOf(code));
+                ToastUtils.show(String.valueOf(code));
                 break;
         }
     }

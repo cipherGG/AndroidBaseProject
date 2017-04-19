@@ -45,7 +45,7 @@ public class ScanUtils {
                     listener.onSuccess(result);
                 }
             } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
-                ToastUtils.get().show(R.string.code_2_scan_error);
+                ToastUtils.show(R.string.code_2_scan_error);
                 if (listener != null) {
                     listener.onFail();
                 }
@@ -64,12 +64,12 @@ public class ScanUtils {
                         T t1 = new Gson().fromJson(result, t);
                         listener.onSuccess(t1);
                     } catch (JsonSyntaxException e) {
-                        ToastUtils.get().show(R.string.please_scan_real_code_2);
+                        ToastUtils.show(R.string.please_scan_real_code_2);
                         listener.onFail();
                     }
                 }
             } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
-                ToastUtils.get().show(R.string.code_2_scan_error);
+                ToastUtils.show(R.string.code_2_scan_error);
                 if (listener != null) {
                     listener.onFail();
                 }
