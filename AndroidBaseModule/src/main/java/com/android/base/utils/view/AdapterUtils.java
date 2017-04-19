@@ -24,6 +24,9 @@ public class AdapterUtils {
     private BaseQuickAdapter mAdapter;
     private SwipeRefreshLayout mRefresh;
     private RefreshListener mRefreshListener;
+    private RecyclerView.OnItemTouchListener mClickListener;
+    private MoreListener mMoreListener;
+    private View mLoading, mEmpty, mHead, mFoot;
 
     public AdapterUtils(Context context) {
         mContext = context;
@@ -48,6 +51,14 @@ public class AdapterUtils {
     }
 
     /**
+     * SwipeRefreshLayout
+     */
+    public AdapterUtils initRefresh(SwipeRefreshLayout srl) {
+        mRefresh = srl;
+        return this;
+    }
+
+    /**
      * 设置适配器，这里只支持BaseRecyclerViewAdapterHelper
      */
     public AdapterUtils initAdapter(BaseQuickAdapter adapter) {
@@ -57,29 +68,20 @@ public class AdapterUtils {
     }
 
     /**
-     * 直接设置适配器，空数据的适配器刚开始会有加载更多的提示
-     */
-    public AdapterUtils setAdapter(BaseQuickAdapter adapter) {
-        if (mRecycler == null || adapter == null) return this;
-        mAdapter = adapter;
-        mRecycler.setAdapter(mAdapter);
-        return this;
-    }
-
-    /**
      * ************************************VIEW***************************************
      * 加载更多视图
      */
-    public AdapterUtils viewMore(int loadingLayoutId) {
+    public AdapterUtils viewLoading(int loadingLayoutId) {
         if (mContext == null || mRecycler == null) return this;
         View head = LayoutInflater.from(mContext).inflate(loadingLayoutId, mRecycler, false);
         viewHeader(head);
         return this;
     }
 
-    public AdapterUtils viewMore(View loading) {
+    public AdapterUtils viewLoading(View loading) {
         if (mAdapter == null || loading == null) return this;
-        mAdapter.setLoadingView(loading);
+        mLoading = loading;
+        mAdapter.setLoadingView(mLoading);
         return this;
     }
 
@@ -95,7 +97,8 @@ public class AdapterUtils {
 
     public AdapterUtils viewEmpty(View empty) {
         if (mAdapter == null || empty == null) return this;
-        mAdapter.setEmptyView(empty);
+        mEmpty = empty;
+        mAdapter.setEmptyView(mEmpty);
         return this;
     }
 
@@ -111,7 +114,8 @@ public class AdapterUtils {
 
     public AdapterUtils viewHeader(View head) {
         if (mAdapter == null || head == null) return this;
-        mAdapter.addHeaderView(head);
+        mHead = head;
+        mAdapter.addHeaderView(mHead);
         return this;
     }
 
@@ -127,7 +131,8 @@ public class AdapterUtils {
 
     public AdapterUtils viewFooter(View foot) {
         if (mAdapter == null || foot == null) return this;
-        mAdapter.addFooterView(foot);
+        mFoot = foot;
+        mAdapter.addFooterView(mFoot);
         return this;
     }
 
@@ -137,7 +142,8 @@ public class AdapterUtils {
      */
     public AdapterUtils listenerClick(RecyclerView.OnItemTouchListener listener) {
         if (mRecycler == null || listener == null) return this;
-        mRecycler.addOnItemTouchListener(listener);
+        mClickListener = listener;
+        mRecycler.addOnItemTouchListener(mClickListener);
         return this;
     }
 
@@ -150,13 +156,14 @@ public class AdapterUtils {
      */
     public AdapterUtils listenerMore(final MoreListener listener) {
         if (mRecycler == null || mAdapter == null || listener == null) return this;
+        mMoreListener = listener;
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 mRecycler.post(new Runnable() {
                     @Override
                     public void run() {
-                        listener.onMore(mAdapter.getItemCount());
+                        mMoreListener.onMore(mAdapter.getItemCount());
                     }
                 });
             }
@@ -171,9 +178,8 @@ public class AdapterUtils {
     /**
      * 刷新监听 回调时newData() 记得offset重置
      */
-    public AdapterUtils listenerRefresh(SwipeRefreshLayout srl, RefreshListener listener) {
-        if (srl == null || listener == null) return this;
-        mRefresh = srl;
+    public AdapterUtils listenerRefresh(RefreshListener listener) {
+        if (mRefresh == null || listener == null) return this;
         mRefreshListener = listener;
         mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -263,6 +269,33 @@ public class AdapterUtils {
         if (null != mRefresh) { // 停止刷新
             mRefresh.setRefreshing(false);
         }
+    }
+
+    /**
+     * ************************************变更***************************************
+     * 变更布局管理器，需要紧接着changeAdapter
+     */
+    public void changeLayoutManager(RecyclerView.LayoutManager layoutManager) {
+        if (mRecycler == null || layoutManager == null) return;
+        mLayoutManager = layoutManager;
+        mRecycler.setAdapter(null);
+        mRecycler.setLayoutManager(mLayoutManager);
+    }
+
+    /**
+     * 变更适配器，空数据的适配器刚开始会有加载更多的提示
+     */
+    public void changeAdapter(BaseQuickAdapter adapter) {
+        if (mRecycler == null || adapter == null) return;
+        mAdapter = adapter;
+        mRecycler.setAdapter(mAdapter);
+        viewLoading(mLoading);
+        viewEmpty(mEmpty);
+        viewHeader(mHead);
+        viewFooter(mFoot);
+        listenerRefresh(mRefreshListener);
+//        listenerClick(mClickListener); recycler重复
+        listenerMore(mMoreListener);
     }
 
     /**
