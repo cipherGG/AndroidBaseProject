@@ -3,6 +3,7 @@ package com.android.base.utils.comp;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.app.KeyguardManager;
+import android.app.NotificationManager;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -63,6 +64,10 @@ public class ContextUtils {
 
     public static PowerManager getPowerManager() {
         return (PowerManager) get().getSystemService(Context.POWER_SERVICE);
+    }
+
+    public static NotificationManager getNotificationManager() {
+        return (NotificationManager) get().getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
 }
