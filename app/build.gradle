@@ -12,22 +12,22 @@ android {
         versionName "1.0.0"
     }
     signingConfigs { // 签名信息
-        bjxrgz_debug {
-            storeFile file('/Users/gg/Documents/bjxrgz/key/bjxrgz_android_debug.jks')
-            storePassword 'Bjxrgz998'
-            keyAlias 'Bjxrgz'
-            keyPassword 'Bjxrgz998'
+        jzg_debug {
+            storeFile file('/Users/gg/Documents/mine/android/key/jiangzg_debug.jks')
+            storePassword 'laojiang1'
+            keyAlias 'jiangzg'
+            keyPassword 'laojiang1'
         }
     }
     buildTypes { // 打包选项
         debug { // 测试
-            signingConfig signingConfigs.bjxrgz_debug // 设置签名信息
+            signingConfig signingConfigs.jzg_debug // 设置签名信息
             minifyEnabled false // 混淆开关
             // 指定混淆规则文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release { // 正式
-            signingConfig signingConfigs.bjxrgz_debug // 可以只用一个签名信息
+            signingConfig signingConfigs.jzg_debug // 可以只用一个签名信息
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
