@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.android.base.utils.comp.ContextUtils;
 import com.android.base.utils.other.LogUtils;
 import com.android.base.utils.str.JsonUtils;
-import com.android.base.utils.comp.ContextUtils;
 import com.jiangzg.project.domain.User;
 
 import java.util.HashMap;
@@ -16,7 +16,6 @@ import java.util.Map;
  * Created by Fan on 2017/3/2.
  * Preferences 帮助类
  */
-
 public class SPUtils {
 
     private static final String SHARE_USER = "user_info";
@@ -59,7 +58,6 @@ public class SPUtils {
         User user = new User();
         user.setId(preference.getString(id, ""));
         user.setUserToken(preference.getString(userToken, ""));
-        LogUtils.json("getUser", JsonUtils.getGSON().toJson(user));
         return user;
     }
 

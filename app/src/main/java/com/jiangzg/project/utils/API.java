@@ -13,11 +13,11 @@ import retrofit2.http.Path;
  */
 public interface API extends APIUtils {
 
-    /* BaseURL最好以/结尾 */
-    String HOST = "http://192.168.0.1/"; // 测试
-    //    String HOST = "http://192.168.0.1/"; // 正式
-    String BASE_URL = HOST + "api/v1/zh-CN/";
-    String IMG_FORE_URL = ""; // 图片前缀
+    String HOST = "192.168.0.1";
+    String API_HOST = "http://" + HOST + "/";
+    String BASE_URL = API_HOST + "api/v1/zh-CN/"; // BaseURL最好以/结尾
+    String IMG_URL_ = ""; // 图片前缀
+    String WEB_URL_ = ""; // 网站前缀
 
     @GET("checkUpdate/{version}")
     Call<Version> checkUpdate(@Path("version") int version);

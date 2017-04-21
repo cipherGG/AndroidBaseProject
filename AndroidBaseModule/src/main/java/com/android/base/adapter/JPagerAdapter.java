@@ -15,7 +15,7 @@ import java.util.List;
  * Created by JiangZhiGuo on 2016-11-9.
  * describe 通用ViewPager适配器
  */
-public class JPagerAdapter<T> extends android.support.v4.view.PagerAdapter {
+public class JPagerAdapter<T> extends PagerAdapter {
 
     private Context mContext;
     private int itemId;

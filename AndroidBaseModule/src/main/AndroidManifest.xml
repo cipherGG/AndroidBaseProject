@@ -7,9 +7,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <!-- 访问WIFI状态 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <!-- 获取wifi权限 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <!-- 向扩展卡写入数据 -->
+    <!-- 向扩展卡读写数据 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>

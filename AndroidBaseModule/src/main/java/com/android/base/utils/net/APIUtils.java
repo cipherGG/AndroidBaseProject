@@ -27,11 +27,11 @@ import retrofit2.http.Url;
  */
 public interface APIUtils {
 
-    /* BaseURL最好以/结尾 */
-    String API_HOST = "192.168.0.1";
-    String HOST = "http://" + API_HOST + "/";
-    String BASE_URL = HOST + "api/v1/zh-CN/";
+    String HOST = "192.168.0.1";
+    String API_HOST = "http://" + HOST + "/";
+    String BASE_URL = API_HOST + "api/v1/zh-CN/"; // BaseURL最好以/结尾
     String IMG_URL_ = ""; // 图片前缀
+    String WEB_URL_ = ""; // 网站前缀
 
     @Streaming // 下载大文件(请求需要放在子线程中)
     @Multipart // 上传文件

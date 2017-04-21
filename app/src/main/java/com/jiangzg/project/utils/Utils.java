@@ -14,13 +14,14 @@ import java.util.HashMap;
  * 符合本项目的工具类
  */
 public class Utils {
+    // imgFileSize
     public static final long IMG_SIZE = ConstantUtils.KB * 200; // 图片最大尺寸
-
+    // requestCode
     public static final int REQUEST_CAMERA = 191;  // 相机
     public static final int REQUEST_PICTURE = 192;  // 图库
     public static final int REQUEST_CROP = 193;  // 裁剪
     public static final int REQUEST_SCAN = 194;  // 扫描
-
+    // RxBus.ID
     public static final int EVENT_COMMON = 1;
 
     public static boolean noLogin() {
@@ -58,7 +59,7 @@ public class Utils {
         }
     }
 
-    public static String getImageUrl(String url) {
+    public static String getImgUrl(String url) {
         String foreUrl = "";
         String imgUrl;
         if (url.startsWith("http")) {
@@ -76,11 +77,14 @@ public class Utils {
         return options;
     }
 
-    public static HashMap<String, String> getHeadFull() {
-        HashMap<String, String> options = new HashMap<>();
-        options.put("Content-Type", "application/json;charset=utf-8");
-        options.put("Accept", "application/json");
+    public static HashMap<String, String> getHeadKey() {
+        HashMap<String, String> options = getHead();
         options.put("API_KEY", "");
+        return options;
+    }
+
+    public static HashMap<String, String> getHeadFull() {
+        HashMap<String, String> options = getHeadKey();
         String userToken = SPUtils.getUser().getUserToken();
         options.put("Authorization", userToken);
         return options;

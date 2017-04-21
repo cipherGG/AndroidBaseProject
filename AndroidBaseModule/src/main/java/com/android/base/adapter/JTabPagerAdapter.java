@@ -9,14 +9,14 @@ import java.util.List;
 
 /**
  * Created by JiangZhiGuo on 2016-11-9.
- * describe 通用tab适配器
+ * describe 通用tab-pager适配器
  */
-public class JTabAdapter<T extends Fragment> extends FragmentPagerAdapter {
+public class JTabPagerAdapter<T extends Fragment> extends FragmentPagerAdapter {
 
     private List<String> titleList;  // fragment
     private List<T> fragmentList; // tab标题
 
-    public JTabAdapter(FragmentManager fm) {
+    public JTabPagerAdapter(FragmentManager fm) {
         super(fm);
         titleList = new ArrayList<>();
         fragmentList = new ArrayList<>();

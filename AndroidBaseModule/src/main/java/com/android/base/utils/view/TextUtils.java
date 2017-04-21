@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
@@ -20,21 +21,41 @@ import com.bumptech.glide.request.target.SimpleTarget;
  */
 public class TextUtils {
 
+    /**
+     * textView.setCompoundDrawables(null, null, null, null);
+     */
+    public static Drawable getDrawable(Context context, int draResId) {
+        Drawable icon = ContextCompat.getDrawable(context, draResId);
+        icon.setBounds(0, 0, icon.getMinimumWidth(), icon.getMinimumHeight());
+        return icon;
+    }
+
+    /**
+     * 底划线
+     */
     public static void setLineBottom(TextView view) {
         view.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         view.getPaint().setAntiAlias(true);
     }
 
+    /**
+     * 中划线
+     */
     public static void setLineCenter(TextView view) {
         view.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         view.getPaint().setAntiAlias(true);
     }
 
-
+    /**
+     * 连接点击
+     */
     public static void setLinkClick(TextView view) {
         view.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
+    /**
+     * 加载html
+     */
     public static void setHtml(Context context, TextView view, String content) {
         view.setText(Html.fromHtml(content, new HtmlText(context, view), null));
     }
