@@ -10,7 +10,6 @@ public class MyApp extends BaseApp {
         super.onCreate();
 
 //        PushUtils.initAPP(); // 推送
-//        ShareUtils.initApp(this); // 分享/授权
 //        ScanUtils.initApp(this);
     }
 

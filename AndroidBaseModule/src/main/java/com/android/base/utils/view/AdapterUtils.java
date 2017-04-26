@@ -68,6 +68,16 @@ public class AdapterUtils {
     }
 
     /**
+     * 直接设置适配器，这里只支持BaseRecyclerViewAdapterHelper
+     */
+    public AdapterUtils setAdapter(BaseQuickAdapter adapter) {
+        if (mRecycler == null || adapter == null) return this;
+        mAdapter = adapter;
+        mRecycler.setAdapter(mAdapter);
+        return this;
+    }
+
+    /**
      * ************************************VIEW***************************************
      * 加载更多视图
      */
