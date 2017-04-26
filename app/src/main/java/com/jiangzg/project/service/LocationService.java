@@ -27,26 +27,15 @@ public class LocationService extends Service {
         });
     }
 
-    public static void bindService(final Context from) {
-        PermUtils.requestMap(from, new PermUtils.PermissionListener() {
-            @Override
-            public void onAgree() {
-                Intent intent = new Intent(from, LocationService.class);
-                from.startService(intent);
-            }
-        });
-    }
-
     @Override
     public void onCreate() {
-
     }
 
     /* startService才走这个 不走下面的 */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        boolean once = intent.getBooleanExtra("once", true);
-        MapUtils.get().initLocation(this);
+        final boolean once = intent.getBooleanExtra("once", true);
+        MapUtils.get().initLocation(this, once);
         AMapLocationListener locationListener = MapUtils.get()
                 .getAMapLocationListener(new MapUtils.LocationCallBack() {
                     @Override
@@ -65,7 +54,9 @@ public class LocationService extends Service {
                         locationUtils.setCity(city);
                         locationUtils.setDistrict(district);
                         locationUtils.setAddress(address);
-                        stopSelf();
+                        if (once) {
+                            stopSelf();
+                        }
                     }
 
                     @Override

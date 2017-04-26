@@ -57,11 +57,11 @@ public class MapUtils {
     private LocationSource.OnLocationChangedListener locationChangedListener; // 注意这个是小蓝点的监听
 
     /* 1.初始化定位 */
-    public void initLocation(Context context) {
+    public void initLocation(Context context, boolean once) {
         if (aMapLocationClient == null) {
             aMapLocationClient = new AMapLocationClient(context);
         }
-        aMapLocationClient.setLocationOption(getClientOption()); // 定位配置
+        aMapLocationClient.setLocationOption(getClientOption(once)); // 定位配置
         locationChangedListener = new LocationSource.OnLocationChangedListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -97,7 +97,7 @@ public class MapUtils {
     /**
      * 定位配置对象
      */
-    private AMapLocationClientOption getClientOption() {
+    private AMapLocationClientOption getClientOption(boolean once) {
         //声明mLocationOption对象,初始化定位参数
         AMapLocationClientOption clientOption = new AMapLocationClientOption();
         //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
@@ -112,11 +112,17 @@ public class MapUtils {
         clientOption.setWifiActiveScan(true);
         //设置是否允许模拟位置,默认为false，不允许模拟位置
         clientOption.setMockEnable(false);
-        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。
-        //设置是否只定位一次,默认为false
-        clientOption.setOnceLocation(true);
-        //设置定位间隔,单位毫秒,默认为2000ms
-        clientOption.setInterval(10000);
+        if (once) {
+            //设置接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。
+            clientOption.setOnceLocationLatest(true);
+            //设置是否只定位一次,默认为false
+            clientOption.setOnceLocation(true);
+        } else {
+            //设置是否只定位一次,默认为false
+            clientOption.setOnceLocation(false);
+            //设置定位间隔,单位毫秒,默认为2000ms
+            clientOption.setInterval(2000);
+        }
         return clientOption;
     }
 
