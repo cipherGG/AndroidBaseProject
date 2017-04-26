@@ -24,6 +24,23 @@ public class RxUtils {
     // object是订阅的类型 ,List<Subject>里时候所有订阅此频道的订阅者
     private static HashMap<Object, List<Subject>> maps = new HashMap<>();
 
+    /* 注意:这个是即时发送消息的，没有注册这么一说 (可用于线程间的操作)*/
+    public static <T> Observable<T> post(final T send, Subscriber<? super T> subscriber) {
+        Observable<T> observable = Observable.create(new Observable.OnSubscribe<T>() {
+            @Override
+            public void call(Subscriber<? super T> subscriber) {
+                // TODO: 2017/4/26 这里可以做一些耗时操作
+                subscriber.onNext(send); // 发送事件
+                subscriber.onCompleted(); // 完成事件
+            }
+        });
+        observable.subscribeOn(Schedulers.io()) // 执行线程
+                .onBackpressureBuffer() // 解决连续发送数据过快时的异常，toList也行
+                .observeOn(AndroidSchedulers.mainThread()) // 回调线程
+                .subscribe(subscriber); // 回调内容
+        return observable;
+    }
+
     /* 发送频道消息(已注册的频道里的观察者才会收到) */
     public static <T> void post(RxEvent<T> rxEvent) {
         int id = rxEvent.getChannel();
@@ -33,28 +50,14 @@ public class RxUtils {
         }
     }
 
-    /* 注意:这个是即时发送消息的，没有注册这么一说 (可用于线程间的操作)*/
-    public static <T> Observable<T> post(final T send, Subscriber<? super T> subscriber) {
-        Observable<T> observable = Observable.create(new Observable.OnSubscribe<T>() {
-            @Override
-            public void call(Subscriber<? super T> subscriber) {
-                subscriber.onNext(send); // 发送事件
-                subscriber.onCompleted(); // 完成事件
-            }
-        });
-        observable.observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
-        return observable;
-    }
-
     /* 注册频道 */
     public static <T> Observable<T> register(int eventId, Action1<? super T> onNext) {
         Observable<T> observable = createObservable(eventId); // 获取观察者
-        // Rx最好连着点出来,不连着点，下面全是Bug
-        observable.subscribeOn(Schedulers.immediate()) // 当前线程
-                // 解决连续发送数据过快时的异常，toList也行
-                .onBackpressureBuffer()
-                // 接受线程和事件处理必须连起来,否则回调线程会不正确
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(onNext);
+        // 执行线程和回调内容必须连起来,否则回调线程会不正确
+        observable.subscribeOn(Schedulers.immediate()) // 执行线程(当前线程)
+                .onBackpressureBuffer() // 解决连续发送数据过快时的异常，toList也行
+                .observeOn(AndroidSchedulers.mainThread()) // 回调线程
+                .subscribe(onNext); // 回调内容
         return observable;
     }
 
