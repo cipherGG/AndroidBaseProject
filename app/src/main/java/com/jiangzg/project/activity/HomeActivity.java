@@ -16,6 +16,7 @@ import com.android.base.utils.media.GlideUtils;
 import com.android.base.utils.media.ImgCompressUtils;
 import com.android.base.utils.media.ImgMediaUtils;
 import com.android.base.utils.other.ConvertUtils;
+import com.android.base.utils.other.LogUtils;
 import com.android.base.utils.time.TimeUtils;
 import com.android.base.utils.view.ToastUtils;
 import com.jiangzg.project.R;
@@ -63,7 +64,7 @@ public class HomeActivity extends BaseActivity<HomeActivity> {
     }
 
     protected void initData() {
-
+        LogUtils.e("----------------");
 
     }
 

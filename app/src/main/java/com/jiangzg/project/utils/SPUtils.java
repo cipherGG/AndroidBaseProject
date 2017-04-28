@@ -42,7 +42,7 @@ public class SPUtils {
      * 存取User
      */
     public static void setUser(User user) {
-        LogUtils.json("setUser", JsonUtils.getGSON().toJson(user));
+        LogUtils.json(JsonUtils.getGSON().toJson(user));
         clearUser();
         SharedPreferences.Editor editor = getSharedPreferences(SHARE_USER).edit();
         editor.putString(id, user.getId());

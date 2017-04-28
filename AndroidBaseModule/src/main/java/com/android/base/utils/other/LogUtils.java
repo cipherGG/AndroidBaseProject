@@ -22,9 +22,9 @@ public class LogUtils {
     public static void initApp() {
         String logTag = ContextUtils.get().getString(R.string.app_name);
         Logger.init(logTag) // 打印tag
-                .setMethodCount(3)// 3以上才能显示调用方法
+                .methodCount(0)// 3以上才能显示调用方法
                 .hideThreadInfo() // 隐藏线程显示
-                .setLogLevel(LogLevel.FULL); // 打印开关
+                .logLevel(LogLevel.FULL);// 打印开关
     }
 
     /**
@@ -58,37 +58,10 @@ public class LogUtils {
     }
 
     /**
-     * 异常
-     */
-    public static void e(Exception e) {
-        Logger.e(e);
-    }
-
-    public static void e(Throwable ex) {
-        Logger.e(ex.toString());
-    }
-
-    public static void e(String tag, Exception e) {
-        Logger.e(tag, e);
-    }
-
-    public static void e(String tag, Throwable ex) {
-        Logger.e(tag, ex.toString());
-    }
-
-    /**
      * 实体类
      */
     public static void json(String json) {
         Logger.json(json);
-    }
-
-    public static void json(String tag, String json) {
-        Logger.json(tag, json);
-    }
-
-    public static void json(String json, int methodCount) {
-        Logger.json(json, methodCount);
     }
 
     /**
