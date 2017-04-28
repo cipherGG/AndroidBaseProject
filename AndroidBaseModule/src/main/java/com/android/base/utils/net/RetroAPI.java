@@ -25,7 +25,7 @@ import retrofit2.http.Url;
  * Created by JiangZhiGuo on 2016/10/14.
  * describe Retrofit接口
  */
-public interface APIUtils {
+public interface RetroAPI {
 
     String HOST = "192.168.0.1";
     String API_HOST = "http://" + HOST + "/";

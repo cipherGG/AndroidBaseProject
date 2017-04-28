@@ -49,7 +49,7 @@ public class LocationUtils {
             ToastUtils.show(R.string.cannot_location_please_open_service);
             return;
         }
-        PermUtils.requestMap(new PermUtils.PermissionListener() {
+        RxPermUtils.requestMap(new RxPermUtils.PermissionListener() {
             @Override
             public void onAgree() {
                 starLocation(minTime, minDistance, listener);

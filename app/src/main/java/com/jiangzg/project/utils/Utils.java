@@ -38,7 +38,7 @@ public class Utils {
                 ToastUtils.show(R.string.http_response_error_401);
 //                LoginActivity.goActivity(MyApp.get());
                 break;
-            case 403: // APIUtils AliKey 不正确 或者没给
+            case 403: // RetroAPI AliKey 不正确 或者没给
                 ToastUtils.show(R.string.http_response_error_403);
                 break;
             case 409: // 用户版本过低, 应该禁止用户登录，并提示用户升级

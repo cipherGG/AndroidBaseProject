@@ -37,7 +37,7 @@ public class AppUtils {
     /* 获取当前App信息 */
     public static AppUtils get() {
         if (instance != null) return instance;
-        PermUtils.requestApp(null);
+        RxPermUtils.requestApp(null);
         instance = new AppUtils();
         PackageManager pm = ContextUtils.get().getPackageManager();
         try { // packageName可换成其他的app包名

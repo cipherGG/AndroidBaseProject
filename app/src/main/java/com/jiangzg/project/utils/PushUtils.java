@@ -3,7 +3,7 @@ package com.jiangzg.project.utils;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.android.base.utils.comp.ProcessUtils;
+import com.android.base.utils.comp.RunningUtils;
 import com.android.base.utils.other.LogUtils;
 import com.android.base.utils.comp.ContextUtils;
 import com.umeng.message.IUmengCallback;
@@ -137,7 +137,7 @@ public class PushUtils {
             @Override
             public void launchApp(Context context, UMessage uMessage) {
                 // 一般这里会先进行判断  是正常打开app，还是跳转到指定的页面
-                if (!ProcessUtils.isAppForeground(ContextUtils.get().getPackageName())) {
+                if (!RunningUtils.isAppForeground(ContextUtils.get().getPackageName())) {
                     // 如果数据在uMessage.extra里，那么友盟会自动把这些数据封装带启动的intent里
                     // 如果数据不在extra里，那么需要额外的处理
                     super.launchApp(context, uMessage);

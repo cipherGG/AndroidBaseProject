@@ -20,7 +20,7 @@ import rx.functions.Action1;
  * Created by Jiangzg on 2016/11/18.
  * 权限验证框架管理
  */
-public class PermUtils {
+public class RxPermUtils {
 
     public interface PermissionListener {
         /* 同意使用权限 */
@@ -110,28 +110,28 @@ public class PermUtils {
     /**
      * 后台弹框
      */
-    public static void requestContextDialog(PermUtils.PermissionListener listener) {
+    public static void requestContextDialog(RxPermUtils.PermissionListener listener) {
         request(listener, Manifest.permission.SYSTEM_ALERT_WINDOW);
     }
 
     /**
      * 地图
      */
-    public static void requestMap(PermUtils.PermissionListener listener) {
-        PermUtils.request(listener, Manifest.permission.ACCESS_COARSE_LOCATION,
+    public static void requestMap(RxPermUtils.PermissionListener listener) {
+        RxPermUtils.request(listener, Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
     /**
      * 分享(瞎TM搞)
      */
-    public static void requestShare(PermUtils.PermissionListener listener) {
+    public static void requestShare(RxPermUtils.PermissionListener listener) {
         String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE,
                 Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_APN_SETTINGS,
                 Manifest.permission.READ_LOGS, Manifest.permission.SET_DEBUG_APP,
                 Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.GET_ACCOUNTS};
-        PermUtils.request(listener, mPermissionList);
+        RxPermUtils.request(listener, mPermissionList);
     }
 
 }

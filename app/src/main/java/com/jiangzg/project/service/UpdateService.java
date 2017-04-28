@@ -13,13 +13,11 @@ import com.android.base.utils.comp.ActivityUtils;
 import com.android.base.utils.comp.IntentUtils;
 import com.android.base.utils.file.FileUtils;
 import com.android.base.utils.func.AppUtils;
-import com.android.base.utils.net.APIUtils;
-import com.android.base.utils.net.HttpUtils;
+import com.android.base.utils.net.RetroUtils;
 import com.android.base.utils.view.DialogUtils;
 import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
 import com.jiangzg.project.domain.Version;
-import com.jiangzg.project.utils.API;
 import com.jiangzg.project.utils.ResUtils;
 import com.jiangzg.project.utils.Utils;
 
@@ -58,13 +56,13 @@ public class UpdateService extends Service {
 
     private void checkUpdate() {
         final int code = AppUtils.get().getVersionCode();
-        Call<Version> versionCall = new HttpUtils(API.BASE_URL)
+        Call<Version> versionCall = new RetroUtils(com.jiangzg.project.utils.RetroAPI.BASE_URL)
                 .log(HttpLoggingInterceptor.Level.BODY)
                 .head(Utils.getHead())
-                .factory(HttpUtils.Factory.empty)
-                .call(API.class)
+                .factory(RetroUtils.Factory.empty)
+                .call(com.jiangzg.project.utils.RetroAPI.class)
                 .checkUpdate(code);
-        HttpUtils.enqueue(versionCall, null, new HttpUtils.CallBack<Version>() {
+        RetroUtils.enqueue(versionCall, null, new RetroUtils.CallBack<Version>() {
             @Override
             public void onSuccess(Version result) {
                 if (result == null) {
@@ -117,11 +115,11 @@ public class UpdateService extends Service {
 
     /* 下载apk */
     private void downloadApk(final Version version) {
-        Call<ResponseBody> call = new HttpUtils(API.BASE_URL)
-                .factory(HttpUtils.Factory.empty)
-                .call(APIUtils.class)
+        Call<ResponseBody> call = new RetroUtils(com.jiangzg.project.utils.RetroAPI.BASE_URL)
+                .factory(RetroUtils.Factory.empty)
+                .call(RetroAPI.class)
                 .downloadLargeFile(version.getUpdateUrl());
-        HttpUtils.enqueue(call, new HttpUtils.CallBack<ResponseBody>() {
+        RetroUtils.enqueue(call, new RetroUtils.CallBack<ResponseBody>() {
             @Override
             public void onSuccess(final ResponseBody body) { // 回调也是子线程
                 if (body == null || body.byteStream() == null) return;

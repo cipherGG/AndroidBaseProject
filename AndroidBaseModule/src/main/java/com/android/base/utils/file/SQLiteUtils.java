@@ -1,4 +1,4 @@
-package com.android.base.utils.func;
+package com.android.base.utils.file;
 
 import android.content.ContentValues;
 import android.database.Cursor;

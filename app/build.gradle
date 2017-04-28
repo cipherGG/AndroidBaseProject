@@ -36,6 +36,7 @@ android {
     }
     sourceSets { // 源码设置
         main {
+            java.srcDirs = ['src/main/java', 'src/main/aidl']
             jniLibs.srcDirs = ['libs'] // 指定lib库目录
         }
         instrumentTest.setRoot('tests') // 指定测试所在的路径

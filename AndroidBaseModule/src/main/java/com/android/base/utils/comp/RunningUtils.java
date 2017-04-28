@@ -12,7 +12,22 @@ import java.util.List;
  * Created by gg on 2017/4/3.
  * 进程管理类
  */
-public class ProcessUtils {
+public class RunningUtils {
+
+    /**
+     * 获取top的Activity的ComponentName
+     */
+    public static ComponentName getTopActivityName() {
+        ActivityManager localActivityManager = ContextUtils.getActivityManager();
+        if (localActivityManager != null) {
+            List<ActivityManager.RunningTaskInfo> localList =
+                    localActivityManager.getRunningTasks(1);
+            if (localList != null && localList.size() > 0) {
+                return localList.get(0).topActivity;
+            }
+        }
+        return null;
+    }
 
     /**
      * 判断是否存在Activity

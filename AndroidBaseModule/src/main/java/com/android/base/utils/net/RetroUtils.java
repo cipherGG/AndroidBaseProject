@@ -27,14 +27,14 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  * Created by gg on 2017/4/10.
  * Retrofit管理工具类
  */
-public class HttpUtils {
+public class RetroUtils {
 
     private HashMap<String, String> mHeaders;
     private Factory mFactory;
     private HttpLoggingInterceptor.Level mLog;
     private String mBaseUrl;
 
-    public HttpUtils(String BaseUrl) {
+    public RetroUtils(String BaseUrl) {
         this.mBaseUrl = BaseUrl;
         this.mHeaders = new HashMap<>(); // 默认无参
         this.mFactory = Factory.gson; // 默认gson
@@ -103,7 +103,7 @@ public class HttpUtils {
     /**
      * @param headers head参数
      */
-    public HttpUtils head(final HashMap<String, String> headers) {
+    public RetroUtils head(final HashMap<String, String> headers) {
         if (headers == null) return this;
         mHeaders = headers;
         return this;
@@ -113,7 +113,7 @@ public class HttpUtils {
     /**
      * @param log 日志打印开关
      */
-    public HttpUtils log(HttpLoggingInterceptor.Level log) {
+    public RetroUtils log(HttpLoggingInterceptor.Level log) {
         if (log == null) return this;
         mLog = log;
         return this;
@@ -122,7 +122,7 @@ public class HttpUtils {
     /**
      * @param factory 返回数据构造器
      */
-    public HttpUtils factory(Factory factory) {
+    public RetroUtils factory(Factory factory) {
         if (factory == null) return this;
         mFactory = factory;
         return this;
@@ -131,7 +131,7 @@ public class HttpUtils {
     /**
      * @return 获取call
      */
-    public <T extends APIUtils> T call(Class<T> clz) {
+    public <T extends RetroAPI> T call(Class<T> clz) {
         if (clz == null) return null;
         Interceptor head = getHead(mHeaders); // head
         Interceptor log = getLogInterceptor(mLog); // log

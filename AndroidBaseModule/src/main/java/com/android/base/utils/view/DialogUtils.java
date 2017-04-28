@@ -15,7 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.android.base.R;
-import com.android.base.utils.func.PermUtils;
+import com.android.base.utils.func.RxPermUtils;
 
 import java.util.Calendar;
 
@@ -209,7 +209,7 @@ public class DialogUtils {
      * 后台弹框
      */
     public static void showInContext(final Dialog dialog) {
-        PermUtils.requestContextDialog(new PermUtils.PermissionListener() {
+        RxPermUtils.requestContextDialog(new RxPermUtils.PermissionListener() {
             @Override
             public void onAgree() {
                 Window window = dialog.getWindow();

@@ -8,7 +8,7 @@ import android.os.IBinder;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.android.base.utils.func.LocationUtils;
-import com.android.base.utils.func.PermUtils;
+import com.android.base.utils.func.RxPermUtils;
 import com.android.base.utils.view.ToastUtils;
 import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
@@ -17,7 +17,7 @@ import com.jiangzg.project.utils.MapUtils;
 public class LocationService extends Service {
 
     public static void startService(final Context from, final boolean once) {
-        PermUtils.requestMap(new PermUtils.PermissionListener() {
+        RxPermUtils.requestMap(new RxPermUtils.PermissionListener() {
             @Override
             public void onAgree() {
                 Intent intent = new Intent(from, LocationService.class);

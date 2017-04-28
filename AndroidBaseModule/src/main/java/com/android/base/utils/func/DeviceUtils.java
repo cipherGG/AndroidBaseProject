@@ -36,7 +36,7 @@ public class DeviceUtils {
     /* 获取当前Device信息 */
     public static DeviceUtils get() {
         if (instance != null) return instance;
-        PermUtils.requestDevice(null); // 权限请求
+        RxPermUtils.requestDevice(null); // 权限请求
         instance = new DeviceUtils();
         return instance;
     }

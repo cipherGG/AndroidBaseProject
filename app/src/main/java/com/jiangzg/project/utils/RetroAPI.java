@@ -1,6 +1,5 @@
 package com.jiangzg.project.utils;
 
-import com.android.base.utils.net.APIUtils;
 import com.jiangzg.project.domain.Version;
 
 import retrofit2.Call;
@@ -11,7 +10,7 @@ import retrofit2.http.Path;
  * Created by gg on 2017/4/9.
  * describe Retrofit接口
  */
-public interface API extends APIUtils {
+public interface RetroAPI extends com.android.base.utils.net.RetroAPI {
 
     String HOST = "192.168.0.1";
     String API_HOST = "http://" + HOST + "/";

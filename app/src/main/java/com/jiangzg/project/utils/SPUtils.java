@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import com.android.base.utils.comp.ContextUtils;
 import com.android.base.utils.other.LogUtils;
-import com.android.base.utils.str.JsonUtils;
+import com.android.base.utils.str.GsonUtils;
 import com.jiangzg.project.domain.User;
 
 import java.util.HashMap;
@@ -42,7 +42,7 @@ public class SPUtils {
      * 存取User
      */
     public static void setUser(User user) {
-        LogUtils.json(JsonUtils.getGSON().toJson(user));
+        LogUtils.json(GsonUtils.getGSON().toJson(user));
         clearUser();
         SharedPreferences.Editor editor = getSharedPreferences(SHARE_USER).edit();
         editor.putString(id, user.getId());
