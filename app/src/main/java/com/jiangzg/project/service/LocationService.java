@@ -17,7 +17,7 @@ import com.jiangzg.project.utils.MapUtils;
 public class LocationService extends Service {
 
     public static void startService(final Context from, final boolean once) {
-        PermUtils.requestMap(from, new PermUtils.PermissionListener() {
+        PermUtils.requestMap(new PermUtils.PermissionListener() {
             @Override
             public void onAgree() {
                 Intent intent = new Intent(from, LocationService.class);

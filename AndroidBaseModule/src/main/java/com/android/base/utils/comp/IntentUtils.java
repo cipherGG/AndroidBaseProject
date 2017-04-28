@@ -10,9 +10,9 @@ import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import com.android.base.utils.file.FileUtils;
+import com.android.base.utils.func.AppUtils;
 import com.android.base.utils.func.PermUtils;
 import com.android.base.utils.other.ConvertUtils;
-import com.android.base.utils.func.AppUtils;
 
 import java.io.File;
 
@@ -26,7 +26,7 @@ public class IntentUtils {
      * 拍照 ,不加保存路径，图片会被压缩
      */
     public static Intent getCamera(File cameraFile) {
-        PermUtils.requestCamera(ContextUtils.get(), null);
+        PermUtils.requestCamera(null);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
         if (cameraFile == null) return intent;

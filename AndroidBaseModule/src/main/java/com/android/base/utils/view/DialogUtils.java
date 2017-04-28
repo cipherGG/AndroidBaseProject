@@ -208,8 +208,8 @@ public class DialogUtils {
     /**
      * 后台弹框
      */
-    public static void showInContext(Context context, final Dialog dialog) {
-        PermUtils.requestContextDialog(context, new PermUtils.PermissionListener() {
+    public static void showInContext(final Dialog dialog) {
+        PermUtils.requestContextDialog(new PermUtils.PermissionListener() {
             @Override
             public void onAgree() {
                 Window window = dialog.getWindow();

@@ -10,9 +10,9 @@ import android.location.LocationProvider;
 import android.os.Bundle;
 
 import com.android.base.R;
+import com.android.base.utils.comp.ContextUtils;
 import com.android.base.utils.other.LogUtils;
 import com.android.base.utils.str.StringUtils;
-import com.android.base.utils.comp.ContextUtils;
 import com.android.base.utils.view.ToastUtils;
 
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class LocationUtils {
             ToastUtils.show(R.string.cannot_location_please_open_service);
             return;
         }
-        PermUtils.requestMap(ContextUtils.get(), new PermUtils.PermissionListener() {
+        PermUtils.requestMap(new PermUtils.PermissionListener() {
             @Override
             public void onAgree() {
                 starLocation(minTime, minDistance, listener);
