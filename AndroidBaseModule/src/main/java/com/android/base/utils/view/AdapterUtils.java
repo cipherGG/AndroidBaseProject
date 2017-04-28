@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.loadmore.LoadMoreView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +25,9 @@ public class AdapterUtils {
     private BaseQuickAdapter mAdapter;
     private SwipeRefreshLayout mRefresh;
     private RefreshListener mRefreshListener;
-    private RecyclerView.OnItemTouchListener mClickListener;
     private MoreListener mMoreListener;
-    private View mLoading, mEmpty, mHead, mFoot;
+    private LoadMoreView mLoading;
+    private View mEmpty, mHead, mFoot;
 
     public AdapterUtils(Context context) {
         mContext = context;
@@ -79,23 +80,6 @@ public class AdapterUtils {
 
     /**
      * ************************************VIEW***************************************
-     * 加载更多视图
-     */
-    public AdapterUtils viewLoading(int loadingLayoutId) {
-        if (mContext == null || mRecycler == null) return this;
-        View head = LayoutInflater.from(mContext).inflate(loadingLayoutId, mRecycler, false);
-        viewHeader(head);
-        return this;
-    }
-
-    public AdapterUtils viewLoading(View loading) {
-        if (mAdapter == null || loading == null) return this;
-        mLoading = loading;
-        mAdapter.setLoadingView(mLoading);
-        return this;
-    }
-
-    /**
      * 无Data时显示的view
      */
     public AdapterUtils viewEmpty(int emptyLayoutId) {
@@ -125,7 +109,7 @@ public class AdapterUtils {
     public AdapterUtils viewHeader(View head) {
         if (mAdapter == null || head == null) return this;
         mHead = head;
-        mAdapter.addHeaderView(mHead);
+        mAdapter.setHeaderView(mHead);
         return this;
     }
 
@@ -142,7 +126,34 @@ public class AdapterUtils {
     public AdapterUtils viewFooter(View foot) {
         if (mAdapter == null || foot == null) return this;
         mFoot = foot;
-        mAdapter.addFooterView(mFoot);
+        mAdapter.setFooterView(mFoot);
+        return this;
+    }
+
+    /**
+     * 加载更多视图
+     */
+    public AdapterUtils viewLoading(int loadingLayoutId) {
+        if (mContext == null || mRecycler == null) return this;
+        View head = LayoutInflater.from(mContext).inflate(loadingLayoutId, mRecycler, false);
+        viewHeader(head);
+        return this;
+    }
+
+    public AdapterUtils viewLoading(LoadMoreView loading) {
+        if (mAdapter == null || loading == null) return this;
+        mLoading = loading;
+        mAdapter.setLoadMoreView(mLoading);
+        return this;
+    }
+
+    /**
+     * item动画
+     */
+    public AdapterUtils viewAnim(int animType) {
+        if (mAdapter == null) return this;
+        mAdapter.openLoadAnimation(animType);
+        mAdapter.isFirstOnly(true);
         return this;
     }
 
@@ -152,8 +163,7 @@ public class AdapterUtils {
      */
     public AdapterUtils listenerClick(RecyclerView.OnItemTouchListener listener) {
         if (mRecycler == null || listener == null) return this;
-        mClickListener = listener;
-        mRecycler.addOnItemTouchListener(mClickListener);
+        mRecycler.addOnItemTouchListener(listener);
         return this;
     }
 
@@ -177,7 +187,7 @@ public class AdapterUtils {
                     }
                 });
             }
-        });
+        }, mRecycler);
         return this;
     }
 
@@ -221,7 +231,8 @@ public class AdapterUtils {
     }
 
     public void data(List list, boolean more) {
-        data(list, 0, more);
+        if (list == null) return;
+        data(list, list.size(), more);
     }
 
     public void data(List list, int totalCount, boolean more) {
@@ -236,18 +247,19 @@ public class AdapterUtils {
      * 刷新数据
      */
     public void dataNew(List list) {
-        dataNew(list, 0);
+        if (list == null) return;
+        dataNew(list, list.size());
     }
 
     public void dataNew(List list, int totalCount) {
         if (mAdapter == null) return;
-        if (null == list || 0 == list.size()) { // 没有数据
+        if (null == list) {
             mAdapter.setNewData(new ArrayList());
-            mAdapter.loadComplete(); // 关闭更多
-        } else { // 有数据
+            mAdapter.loadMoreEnd(true); // 关闭更多
+        } else {
             mAdapter.setNewData(list);
             if (list.size() >= totalCount) {
-                mAdapter.loadComplete(); // 关闭更多
+                mAdapter.loadMoreEnd(true); // 关闭更多
             }
         }
         if (null != mRefresh) { // 停止刷新
@@ -263,17 +275,17 @@ public class AdapterUtils {
      * 更多数据
      */
     public void dataAdd(List list) {
-        dataAdd(list, 0);
+        if (list == null) return;
+        dataAdd(list, list.size());
     }
 
     public void dataAdd(List list, int totalCount) {
         if (mAdapter == null) return;
-        if (null == list || 0 == list.size()) { // 没有数据
-            mAdapter.loadComplete();
-        } else { // 有数据
+        mAdapter.loadMoreComplete();
+        if (null != list) {
             mAdapter.addData(list);
             if (mAdapter.getItemCount() >= totalCount) {
-                mAdapter.loadComplete(); // 关闭更多
+                mAdapter.loadMoreEnd(); // 关闭更多
             }
         }
         if (null != mRefresh) { // 停止刷新
@@ -300,11 +312,11 @@ public class AdapterUtils {
         mAdapter = adapter;
         mRecycler.setAdapter(mAdapter);
         viewLoading(mLoading);
-        viewEmpty(mEmpty);
+//        viewEmpty(mEmpty); 重新设置
         viewHeader(mHead);
         viewFooter(mFoot);
         listenerRefresh(mRefreshListener);
-//        listenerClick(mClickListener); recycler重复
+//        listenerClick(mClickListener); recycler会重复
         listenerMore(mMoreListener);
     }
 
@@ -321,9 +333,10 @@ public class AdapterUtils {
         return (A) mLayoutManager;
     }
 
-    public BaseViewHolder getHolder(int position) {
+    @SuppressWarnings("unchecked")
+    public <A extends BaseViewHolder> A getHolder(int position) {
         if (mRecycler == null) return null;
-        return (BaseViewHolder) mRecycler.findViewHolderForLayoutPosition(position);
+        return (A) mRecycler.findViewHolderForLayoutPosition(position);
     }
 
 }
