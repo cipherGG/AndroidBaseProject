@@ -60,7 +60,7 @@ public class RecyclerUtils {
     }
 
     /**
-     * 设置适配器，这里只支持BaseRecyclerViewAdapterHelper
+     * 设置适配器，http获取数据
      */
     public RecyclerUtils initAdapter(BaseQuickAdapter adapter) {
         if (adapter == null) return this;
@@ -69,7 +69,7 @@ public class RecyclerUtils {
     }
 
     /**
-     * 直接设置适配器，这里只支持BaseRecyclerViewAdapterHelper
+     * 直接设置适配器，本地数据
      */
     public RecyclerUtils setAdapter(BaseQuickAdapter adapter) {
         if (mRecycler == null || adapter == null) return this;

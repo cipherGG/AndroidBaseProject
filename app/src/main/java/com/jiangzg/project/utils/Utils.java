@@ -25,7 +25,7 @@ public class Utils {
     public static final int EVENT_COMMON = 1;
 
     public static boolean noLogin() {
-        String userToken = SPUtils.getUser().getUserToken();
+        String userToken = UserUtils.getUser().getUserToken();
         return StringUtils.isEmpty(userToken);
     }
 
@@ -43,7 +43,7 @@ public class Utils {
                 break;
             case 409: // 用户版本过低, 应该禁止用户登录，并提示用户升级
                 ToastUtils.show(R.string.http_response_error_409);
-                SPUtils.clearUser();
+                UserUtils.clearUser();
                 UpdateService.goService(MyApp.get());
                 break;
             case 410: // 用户被禁用,请求数据的时候得到该 ErrorCode, 应该退出应用
@@ -85,7 +85,7 @@ public class Utils {
 
     public static HashMap<String, String> getHeadFull() {
         HashMap<String, String> options = getHeadKey();
-        String userToken = SPUtils.getUser().getUserToken();
+        String userToken = UserUtils.getUser().getUserToken();
         options.put("Authorization", userToken);
         return options;
     }

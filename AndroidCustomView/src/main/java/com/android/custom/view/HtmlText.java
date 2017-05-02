@@ -22,7 +22,7 @@ public class HtmlText implements Html.ImageGetter {
     private Context mContext;
     private TextView mTextView;
 
-    public static void setText(){
+    public static void setText() {
 
     }
 

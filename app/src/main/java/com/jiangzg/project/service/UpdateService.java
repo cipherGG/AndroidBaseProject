@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.v7.app.AlertDialog;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.android.base.utils.comp.ActivityUtils;
 import com.android.base.utils.comp.IntentUtils;
@@ -19,6 +17,7 @@ import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
 import com.jiangzg.project.domain.Version;
 import com.jiangzg.project.utils.ResUtils;
+import com.jiangzg.project.utils.RetroAPI;
 import com.jiangzg.project.utils.Utils;
 
 import java.io.File;
@@ -96,11 +95,7 @@ public class UpdateService extends Service {
                         newThreadDown(version);
                     }
                 });
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        }
-        dialog.show();
+        DialogUtils.showInContext(dialog);
     }
 
     /* 子线程下载 */
