@@ -17,8 +17,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.android.base.utils.func.AppUtils;
 import com.android.base.utils.file.FileUtils;
+import com.android.base.utils.func.AppUtils;
 
 import java.util.Map;
 
@@ -115,6 +115,7 @@ public class JWebView extends WebView {
             CookieManager instance = CookieManager.getInstance();
             cookie = instance.getCookie(url);
             super.onPageFinished(view, url);
+            // 进度条隐藏
         }
 
         @Override
@@ -141,6 +142,7 @@ public class JWebView extends WebView {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
+            // 进度条更新
         }
 
         @Override

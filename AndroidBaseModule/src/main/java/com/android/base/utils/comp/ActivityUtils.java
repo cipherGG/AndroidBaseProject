@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewCompat;
+import android.view.View;
 
 /**
  * Created by JiangZhiGuo on 2016/10/13.
@@ -16,6 +19,27 @@ public class ActivityUtils {
 
     private static int animIn = android.R.anim.fade_in; // 4.4下的进场效果
     private static int animOut = android.R.anim.fade_out; // 4.4下的退场效果
+
+    /**
+     * 过度跳转
+     */
+    public static void transFrom(Activity from, Intent intent, Integer request, View trans, String tag) {
+        if (from == null || intent == null || trans == null || tag == null) return;
+        ActivityOptionsCompat options = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(from, trans, tag);
+        if (request == null) {
+            ActivityCompat.startActivity(from, intent, options.toBundle());
+        } else {
+            ActivityCompat.startActivityForResult(from, intent, request, options.toBundle());
+        }
+    }
+
+    /**
+     * 一般在目标activity里的create中调用
+     */
+    public static void transTo(View trans, String tag) {
+        ViewCompat.setTransitionName(trans, tag);
+    }
 
     /**
      * Context启动activity

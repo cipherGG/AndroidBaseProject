@@ -6,8 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 
-import com.android.base.utils.other.ConvertUtils;
 import com.android.base.utils.comp.ContextUtils;
+import com.android.base.utils.other.ConvertUtils;
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -18,6 +18,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
 import java.io.File;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by JiangZhiGuo on 2016/7/25.
@@ -43,6 +44,22 @@ public class GlideUtils {
     /* 图片加载完毕监听 */
     public interface CompleteListener {
         void complete(Bitmap result);
+    }
+
+    /* 获取网络图片 */
+    public static <T> Bitmap getBitmap(T data, int width, int height) {
+        try {
+            return Glide.with(ContextUtils.get())
+                    .load(data)
+                    .asBitmap()
+                    .into(width, height)
+                    .get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private static <T> void load(RequestManager requestManager, T data, int errorRes,
