@@ -12,7 +12,7 @@ import com.android.base.utils.func.RxPermUtils;
 import com.android.base.utils.view.ToastUtils;
 import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
-import com.jiangzg.project.utils.MapUtils;
+import com.jiangzg.project.utils.third.MapUtils;
 
 public class LocationService extends Service {
 

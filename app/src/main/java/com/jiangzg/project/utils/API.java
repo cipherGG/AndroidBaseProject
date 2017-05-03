@@ -10,7 +10,7 @@ import retrofit2.http.Path;
  * Created by gg on 2017/4/9.
  * describe Retrofit接口
  */
-public interface RetroAPI extends com.android.base.utils.net.RetroAPI {
+public interface API extends com.android.base.utils.net.RetroAPI {
 
     String HOST = "192.168.0.1";
     String API_HOST = "http://" + HOST + "/";

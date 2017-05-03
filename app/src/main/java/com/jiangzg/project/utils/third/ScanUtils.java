@@ -1,4 +1,4 @@
-package com.jiangzg.project.utils;
+package com.jiangzg.project.utils.third;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,7 @@ import com.android.base.utils.view.ToastUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.jiangzg.project.R;
+import com.jiangzg.project.utils.Constants;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
@@ -32,7 +33,7 @@ public class ScanUtils {
     /* 开始扫描 */
     public static void scanStart(Activity from) {
         Intent intent = new Intent(from, CaptureActivity.class);
-        from.startActivityForResult(intent, Utils.REQUEST_SCAN);
+        from.startActivityForResult(intent, Constants.REQUEST_SCAN);
     }
 
     /* 扫描结果（string） */

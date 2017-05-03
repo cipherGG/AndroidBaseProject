@@ -17,8 +17,8 @@ import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
 import com.jiangzg.project.domain.Version;
 import com.jiangzg.project.utils.ResUtils;
-import com.jiangzg.project.utils.RetroAPI;
-import com.jiangzg.project.utils.Utils;
+import com.jiangzg.project.utils.API;
+import com.jiangzg.project.utils.HttpUtils;
 
 import java.io.File;
 
@@ -55,11 +55,11 @@ public class UpdateService extends Service {
 
     private void checkUpdate() {
         final int code = AppUtils.get().getVersionCode();
-        Call<Version> versionCall = new RetroUtils(com.jiangzg.project.utils.RetroAPI.BASE_URL)
+        Call<Version> versionCall = new RetroUtils(API.BASE_URL)
                 .log(HttpLoggingInterceptor.Level.BODY)
-                .head(Utils.getHead())
+                .head(HttpUtils.getHead())
                 .factory(RetroUtils.Factory.empty)
-                .call(com.jiangzg.project.utils.RetroAPI.class)
+                .call(API.class)
                 .checkUpdate(code);
         RetroUtils.enqueue(versionCall, null, new RetroUtils.CallBack<Version>() {
             @Override
@@ -77,7 +77,7 @@ public class UpdateService extends Service {
 
             @Override
             public void onFailure(int code, String error) {
-                Utils.httpFailure(code, error);
+                HttpUtils.onFailure(code, error);
             }
         });
     }
@@ -110,9 +110,9 @@ public class UpdateService extends Service {
 
     /* 下载apk */
     private void downloadApk(final Version version) {
-        Call<ResponseBody> call = new RetroUtils(com.jiangzg.project.utils.RetroAPI.BASE_URL)
+        Call<ResponseBody> call = new RetroUtils(API.BASE_URL)
                 .factory(RetroUtils.Factory.empty)
-                .call(RetroAPI.class)
+                .call(API.class)
                 .downloadLargeFile(version.getUpdateUrl());
         RetroUtils.enqueue(call, new RetroUtils.CallBack<ResponseBody>() {
             @Override
@@ -132,7 +132,7 @@ public class UpdateService extends Service {
 
             @Override
             public void onFailure(int httpCode, String errorMessage) {
-                Utils.httpFailure(httpCode, errorMessage);
+                HttpUtils.onFailure(httpCode, errorMessage);
             }
         });
     }
