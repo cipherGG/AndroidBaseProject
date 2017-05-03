@@ -41,6 +41,7 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
 
     public BaseActivity mActivity;
     public FragmentManager mFragmentManager;
+    public View rootView;
     private ProgressDialog loading;
     private ProgressDialog progress;
     private Unbinder unbinder;
@@ -134,6 +135,19 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         AnalyUtils.analysisOnResume(this);
+    }
+
+    /*
+     * DecorView在这里才会有params,viewGroup在这里才能add
+     * Window是WindowManager最顶层的视图，PhoneWindow是Window的唯一实现类
+     * DecorView是window下的子视图,是所有应用窗口(Activity界面)的根View
+     */
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        // 控制DecorView的大小来控制activity的大小，可做窗口activity
+        rootView = getWindow().getDecorView();
+        // setFinishOnTouchOutside(true);
     }
 
     @Override

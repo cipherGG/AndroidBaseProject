@@ -39,11 +39,14 @@ public class JZoomScrollView extends ScrollView implements View.OnTouchListener 
     public JZoomScrollView(Context context, AttributeSet set, int defStyleAttr) {
         super(context, set, defStyleAttr);
         int[] attrs = R.styleable.JZoomScrollView;
+        // 1.获取attrs里定义的属性
         TypedArray typedArray = context.obtainStyledAttributes(set, attrs, defStyleAttr, 0);
+        // 2.获取各项属性的值
         layoutIndex = typedArray.getInteger(R.styleable.JZoomScrollView_layout_index, 2);
         if (layoutIndex < 2) { // 最少为2
             layoutIndex = 2;
         }
+        // 3.最后关闭
         typedArray.recycle();
     }
 

@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.android.base.base.BaseActivity;
 
-public class TestActivity extends BaseActivity<TestActivity> {
+public class TestViewActivity extends BaseActivity<TestViewActivity> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

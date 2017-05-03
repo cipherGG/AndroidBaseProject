@@ -22,14 +22,14 @@ public class PopUtils {
      * @param width  WindowManager.LayoutParams.WRAP_CONTENT
      * @param height WindowManager.LayoutParams.WRAP_CONTENT
      * @return 下面的代码放到onTouchEvent中来点击外部dismiss也行
-     * if (popupWindow != null && popupWindow.isShowing()) {
-     * popupWindow.dismiss();}
+     * if (popupWindow != null && popupWindow.isShowing()) {popupWindow.dismiss();}
      */
     private static PopupWindow getPop(View window, int width, int height, int anim) {
         PopupWindow pop = new PopupWindow(window, width, height);
         pop.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        if (0 != anim)
+        if (0 != anim) {
             pop.setAnimationStyle(anim);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             pop.setEnterTransition(new AutoTransition());
             pop.setExitTransition(new AutoTransition());
