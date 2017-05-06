@@ -13,10 +13,5 @@
     <string name="http_response_error_410">用户被禁用</string>
     <string name="http_response_error_500">服务器异常</string>
     <string name="location_error">定位失败</string>
-    <string name="code_2_scan_error">二维码扫描失败</string>
-    <string name="please_scan_real_code_2">请扫描正确的二维码</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

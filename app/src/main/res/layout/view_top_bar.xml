@@ -34,9 +34,11 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
+        android:ellipsize="middle"
         android:maxLines="1"
+        android:maxWidth="200dp"
         android:visibility="gone"
-        tools:text="标题"
+        tools:text="标题标题标题标题标题标题标题标题标题"
         tools:visibility="visible"/>
 
     <TextView
