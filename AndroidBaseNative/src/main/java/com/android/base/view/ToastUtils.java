@@ -15,7 +15,7 @@ public class ToastUtils {
 
     public static void show(final CharSequence message) {
         if (TextUtils.isEmpty(message)) return;
-//        BaseApp.get().getHandler().post(new Runnable() {
+//        JApp.get().getHandler().post(new Runnable() {
 //            @Override
 //            public void run() {
 //                if (toast == null) {

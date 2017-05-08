@@ -1,9 +1,9 @@
 package com.jiangzg.project;
 
 
-import com.android.depend.base.JApp;
+import com.android.depend.base.ZApp;
 
-public class MyApp extends JApp {
+public class MyApp extends ZApp {
 
     @Override
     public void onCreate() {

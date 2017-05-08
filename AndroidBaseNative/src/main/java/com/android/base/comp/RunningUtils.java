@@ -85,7 +85,7 @@ public class RunningUtils {
      */
     public void appExit() {
         try {
-            StackUtils.finishAll();
+            ActivityStack.finishAll();
             ActivityManager activityManager = ContextUtils.getActivityManager();
             activityManager.killBackgroundProcesses(ContextUtils.get().getPackageName());
             System.exit(0);

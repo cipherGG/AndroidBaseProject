@@ -14,7 +14,7 @@ import android.telephony.TelephonyManager;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-import com.android.base.BaseApp;
+import com.android.base.base.JApp;
 
 /**
  * Created by gg on 2017/4/4.
@@ -23,7 +23,7 @@ import com.android.base.BaseApp;
 public class ContextUtils {
 
     public static Application get() {
-        return BaseApp.get();
+        return JApp.get();
     }
 
     public static WindowManager getWindowManager() {

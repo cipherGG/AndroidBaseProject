@@ -5,7 +5,7 @@ android {
     compileSdkVersion 25 // 最高运行版本
     defaultConfig {
         targetSdkVersion 25 // 最高效果版本
-        minSdkVersion 14 // 最低运行版本
+        minSdkVersion 16 // 最低运行版本
         multiDexEnabled true // 允许分包
         applicationId "com.jiangzg.project" // 要和manifest一致
         versionCode 1

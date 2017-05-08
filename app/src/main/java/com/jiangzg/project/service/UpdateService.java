@@ -7,20 +7,13 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.v7.app.AlertDialog;
 
-import com.android.base.comp.ActivityUtils;
-import com.android.base.comp.IntentUtils;
-import com.android.base.file.FileUtils;
 import com.android.base.func.AppUtils;
 import com.android.base.view.DialogUtils;
 import com.android.depend.utils.RetroUtils;
-import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
 import com.jiangzg.project.domain.Version;
-import com.jiangzg.project.utils.ResUtils;
 import com.jiangzg.project.utils.API;
 import com.jiangzg.project.utils.HttpUtils;
-
-import java.io.File;
 
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -125,7 +118,7 @@ public class UpdateService extends Service {
 //                        FileUtils.writeFileFromIS(apkFile, body.byteStream(), false);
 //                        // 启动安装
 //                        Intent installIntent = IntentUtils.getInstall(apkFile);
-//                        ActivityUtils.startActivity(UpdateService.this, installIntent);
+//                        ActivityTrans.startActivity(UpdateService.this, installIntent);
 //                    }
 //                });
             }

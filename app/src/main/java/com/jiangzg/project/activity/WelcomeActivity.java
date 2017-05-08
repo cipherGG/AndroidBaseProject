@@ -2,11 +2,11 @@ package com.jiangzg.project.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.ImageView;
 
 import com.android.base.view.BarUtils;
-import com.android.depend.base.JActivity;
-import com.jiangzg.project.MyApp;
+import com.android.depend.base.ZActivity;
 import com.jiangzg.project.R;
 
 import butterknife.BindView;
@@ -15,7 +15,7 @@ import butterknife.BindView;
  * Created by JiangZhiGuo on 2016/06/01
  * describe 启动界面
  */
-public class WelcomeActivity extends JActivity<WelcomeActivity> {
+public class WelcomeActivity extends ZActivity<WelcomeActivity> {
 
     @BindView(R.id.ivWelcome)
     ImageView ivWelcome;
@@ -34,6 +34,12 @@ public class WelcomeActivity extends JActivity<WelcomeActivity> {
     @Override
     protected void initData(Bundle savedInstanceState) {
         goHome();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                HomeActivity.goActivity(mActivity);
+            }
+        }, 2000);
     }
 
     @Override
@@ -47,7 +53,7 @@ public class WelcomeActivity extends JActivity<WelcomeActivity> {
 //        MyApp.get().getHandler().postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
-                HomeActivity.goActivity(mActivity);
+//                HomeActivity.goActivity(mActivity);
 //            }
 //        }, 1000);
     }

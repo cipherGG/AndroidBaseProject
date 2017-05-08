@@ -7,8 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 
-import com.android.base.comp.StackUtils;
-import com.android.depend.base.JApp;
+import com.android.base.comp.ActivityStack;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import rx.Observable;
@@ -30,7 +29,7 @@ public class RxPermUtils {
      * 请求权限,返回结果一起处理
      */
     public static void request(final PermissionListener listener, final String... permissions) {
-        Activity activity = StackUtils.getStack().lastElement();
+        Activity activity = ActivityStack.getStack().lastElement();
         if (activity == null) return;
         if (isPermissionOK(activity, permissions)) return;
         RxPermissions rxPermissions = new RxPermissions(activity);
@@ -83,7 +82,7 @@ public class RxPermUtils {
             permission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS};
         }
-        Activity activity = StackUtils.getStack().lastElement();
+        Activity activity = ActivityStack.getStack().lastElement();
         request(listener, permission);
     }
 

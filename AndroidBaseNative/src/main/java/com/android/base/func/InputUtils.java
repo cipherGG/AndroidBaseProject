@@ -5,8 +5,9 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import com.android.base.comp.ContextUtils;
 
@@ -17,42 +18,48 @@ import com.android.base.comp.ContextUtils;
 public class InputUtils {
 
     /**
-     * 动态隐藏软键盘
+     * 软键盘设置, 要在setContentView之前调用
      */
-    public static void hideSoftInput(Activity activity) {
-        View view = activity.getWindow().peekDecorView();
-        if (view == null) return;
-        InputMethodManager inputManager = ContextUtils.getInputManager();
-        inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    public static void initActivity(Activity activity){
+        Window window = activity.getWindow();
+        // 键盘不会遮挡输入框
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        // 不自动弹键盘
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        // 总是隐藏键盘
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     /**
      * 动态隐藏软键盘
      */
-    public static void hideSoftInput(EditText edit) {
-        edit.clearFocus();
+    public static boolean hideSoftInput(View focus) {
+        if (focus == null) return false;
+        focus.clearFocus();
         InputMethodManager inputManager = ContextUtils.getInputManager();
-        inputManager.hideSoftInputFromWindow(edit.getWindowToken(), 0);
+        return inputManager.hideSoftInputFromWindow(focus.getWindowToken(), 0);
     }
 
     /**
      * 动态显示软键盘
      */
-    public static void showSoftInput(EditText edit) {
-        edit.setFocusable(true);
-        edit.setFocusableInTouchMode(true);
-        edit.requestFocus();
+    public static boolean showSoftInput(View focus) {
+        if (focus == null) return false;
+        focus.setFocusable(true);
+        focus.setFocusableInTouchMode(true);
+        focus.requestFocus();
         InputMethodManager inputManager = ContextUtils.getInputManager();
-        inputManager.showSoftInput(edit, 0);
+        return inputManager.showSoftInput(focus, 0);
     }
 
     /**
      * 切换键盘显示与否状态
      */
-    public static void toggleSoftInput(EditText edit) {
-        edit.setFocusable(true);
-        edit.setFocusableInTouchMode(true);
-        edit.requestFocus();
+    public static void toggleSoftInput(View focus) {
+        if (focus == null) return;
+        focus.setFocusable(true);
+        focus.setFocusableInTouchMode(true);
+        focus.requestFocus();
         InputMethodManager inputManager = ContextUtils.getInputManager();
         inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }

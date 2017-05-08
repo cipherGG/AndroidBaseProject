@@ -9,13 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.android.base.comp.ActivityUtils;
+import com.android.base.comp.ActivityTrans;
 import com.android.base.comp.IntentUtils;
 import com.android.base.media.ImgMediaUtils;
 import com.android.base.other.ConvertUtils;
 import com.android.base.time.TimeUtils;
 import com.android.base.view.ToastUtils;
-import com.android.depend.base.JActivity;
+import com.android.depend.base.ZActivity;
 import com.android.depend.utils.GlideUtils;
 import com.android.depend.utils.LogUtils;
 import com.android.depend.utils.LuBanUtils;
@@ -34,7 +34,7 @@ import top.zibin.luban.OnCompressListener;
  * Created by JiangZhiGuo on 2016/06/01
  * describe 主界面
  */
-public class HomeActivity extends JActivity<HomeActivity> {
+public class HomeActivity extends ZActivity<HomeActivity> {
 
     @BindView(R.id.btn1)
     Button btn1;
@@ -49,7 +49,7 @@ public class HomeActivity extends JActivity<HomeActivity> {
 
     public static void goActivity(Activity from) {
         Intent intent = new Intent(from, HomeActivity.class);
-        ActivityUtils.startActivity(from, intent);
+        ActivityTrans.start(from, intent);
     }
 
     @Override
@@ -76,13 +76,13 @@ public class HomeActivity extends JActivity<HomeActivity> {
                     public void onAgree() {
                         jpgInRes = ResUtils.createJPGInRes();
                         Intent camera = IntentUtils.getCamera(jpgInRes);
-                        ActivityUtils.startActivity(mActivity, camera, 11);
+                        ActivityTrans.startRequest(mActivity, camera, 11);
                     }
                 });
                 break;
             case R.id.btn2:
                 Intent picture = IntentUtils.getPicture();
-                ActivityUtils.startActivity(mActivity, picture, 22);
+                ActivityTrans.startRequest(mActivity, picture, 22);
                 break;
             case R.id.btn3:
                 break;

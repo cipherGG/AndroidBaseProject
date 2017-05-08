@@ -38,7 +38,7 @@ public class HttpUtils {
                 break;
             case 410: // 用户被禁用,请求数据的时候得到该 ErrorCode, 应该退出应用
                 ToastUtils.show(R.string.http_response_error_410);
-//                StackUtils.closeActivities();
+//                ActivityStack.closeActivities();
                 break;
             case 417: // 逻辑错误，必须返回错误信息
 //                ToastUtils.get().show(errorMessage);
