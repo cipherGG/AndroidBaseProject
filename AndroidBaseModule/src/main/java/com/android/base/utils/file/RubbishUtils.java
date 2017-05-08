@@ -1,15 +1,19 @@
 package com.android.base.utils.file;
 
 import android.app.ActivityManager;
+import android.app.Application;
+import android.content.ComponentCallbacks2;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Environment;
 import android.text.format.Formatter;
 
-import com.android.base.utils.other.ConvertUtils;
-import com.android.base.utils.media.GlideUtils;
-import com.android.base.utils.func.AppUtils;
 import com.android.base.utils.comp.ContextUtils;
+import com.android.base.utils.func.AppUtils;
+import com.android.base.utils.media.GlideUtils;
+import com.android.base.utils.other.ConvertUtils;
+import com.android.base.utils.other.LogUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,6 +24,55 @@ import java.util.List;
  * 垃圾管理类
  */
 public class RubbishUtils {
+
+    public static void initApp(final Application app) {
+        // 监听当前app的内存 和 配置,可撤销
+        app.registerComponentCallbacks(new ComponentCallbacks2() {
+            @Override
+            public void onTrimMemory(int level) {
+                LogUtils.d("杀死一个进程以求更多内存(level) ---> " + level);
+            }
+
+            @Override
+            public void onLowMemory() {
+                LogUtils.e("内存不足,清理内存以获取更多内存");
+                RubbishUtils.clearMemory();
+            }
+
+            @Override
+            public void onConfigurationChanged(Configuration newConfig) {
+                StringBuilder status = new StringBuilder();
+                status.append("配置发生变化").append("\n");
+                Configuration cfg = app.getResources().getConfiguration();
+                status.append("fontScale:").append(cfg.fontScale).append("\n");
+                status.append("hardKeyboardHidden:").append(cfg.hardKeyboardHidden).append("\n");
+                status.append("keyboard:").append(cfg.keyboard).append("\n");
+                status.append("keyboardHidden:").append(cfg.keyboardHidden).append("\n");
+                status.append("locale:").append(cfg.locale).append("\n");
+                status.append("mcc:").append(cfg.mcc).append("\n");
+                status.append("mnc:").append(cfg.mnc).append("\n");
+                status.append("navigation:").append(cfg.navigation).append("\n");
+                status.append("navigationHidden:").append(cfg.navigationHidden).append("\n");
+                status.append("orientation:").append(cfg.orientation).append("\n");
+                status.append("screenHeightDp:").append(cfg.screenHeightDp).append("\n");
+                status.append("screenWidthDp:").append(cfg.screenWidthDp).append("\n");
+                status.append("screenLayout:").append(cfg.screenLayout).append("\n");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    status.append("densityDpi:").append(cfg.densityDpi).append("\n");
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    status.append("smallestScreenWidthDp:").append(cfg.densityDpi).append("\n");
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    status.append("touchscreen:").append(cfg.densityDpi).append("\n");
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    status.append("uiMode:").append(cfg.densityDpi).append("\n");
+                }
+                LogUtils.d(status.toString());
+            }
+        });
+    }
 
     /**
      * **********************************缓存**********************************

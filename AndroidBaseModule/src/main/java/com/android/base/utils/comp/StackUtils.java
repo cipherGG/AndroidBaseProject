@@ -1,8 +1,10 @@
 package com.android.base.utils.comp;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 
 import java.util.Stack;
 
@@ -22,6 +24,46 @@ public class StackUtils {
     public static void changeTask(Intent intent) {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+    }
+
+    // 监听所有activity的生命周期
+    public static void initApp(Application app) {
+        app.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                StackUtils.addActivity(activity);
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                StackUtils.removeActivity(activity);
+            }
+        });
     }
 
     private static Stack<Activity> STACK; // 任务栈
