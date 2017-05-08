@@ -3,7 +3,7 @@ package com.android.base.utils.view;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.android.base.base.BaseApp;
+import com.android.base.base.JApp;
 import com.android.base.utils.comp.ContextUtils;
 
 /**
@@ -16,7 +16,7 @@ public class ToastUtils {
 
     public static void show(final CharSequence message) {
         if (TextUtils.isEmpty(message)) return;
-        BaseApp.get().getHandler().post(new Runnable() {
+        JApp.get().getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (toast == null) {
@@ -35,7 +35,7 @@ public class ToastUtils {
     }
 
     public static void cancel() {
-        BaseApp.get().getHandler().post(new Runnable() {
+        JApp.get().getHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (toast == null) return;

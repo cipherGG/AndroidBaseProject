@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 
-import com.android.base.base.BaseApp;
+import com.android.base.base.JApp;
 import com.android.base.utils.comp.StackUtils;
 import com.android.base.utils.other.LogUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -39,7 +39,7 @@ public class RxPermUtils {
         request.subscribe(new Action1<Boolean>() {
             @Override
             public void call(final Boolean aBoolean) {
-                BaseApp.get().getHandler().post(new Runnable() {
+                JApp.get().getHandler().post(new Runnable() {
                     @Override
                     public void run() {
                         if (aBoolean) { // 同意使用权限

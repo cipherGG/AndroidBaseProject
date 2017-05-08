@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.android.base.base.BaseActivity;
+import com.android.base.base.JActivity;
 import com.android.base.utils.comp.ActivityUtils;
 import com.android.base.utils.comp.IntentUtils;
 import com.android.base.utils.media.GlideUtils;
@@ -33,7 +33,7 @@ import top.zibin.luban.OnCompressListener;
  * Created by JiangZhiGuo on 2016/06/01
  * describe 主界面
  */
-public class HomeActivity extends BaseActivity<HomeActivity> {
+public class HomeActivity extends JActivity<HomeActivity> {
 
     @BindView(R.id.btn1)
     Button btn1;

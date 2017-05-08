@@ -25,10 +25,10 @@ import butterknife.Unbinder;
  * Created by JiangZhiGuo on 2016-12-2.
  * describe Fragment的基类
  */
-public abstract class BaseFragment<T> extends Fragment {
+public abstract class JFragment<T> extends Fragment {
 
-    public BaseActivity mActivity;
-    public BaseFragment mFragment;
+    public JActivity mActivity;
+    public JFragment mFragment;
     public FragmentManager mFragmentManager;
     public boolean anim = true;
     public ProgressDialog loading;
@@ -38,10 +38,10 @@ public abstract class BaseFragment<T> extends Fragment {
     private Unbinder unbinder;
 
     /* 获取fragment实例demo */
-    private static BaseFragment newFragment() {
+    private static JFragment newFragment() {
         Bundle bundle = new Bundle();
         // bundle.putData();
-        return BaseFragment.newInstance(BaseFragment.class, bundle);
+        return JFragment.newInstance(JFragment.class, bundle);
     }
 
     /**
@@ -93,7 +93,7 @@ public abstract class BaseFragment<T> extends Fragment {
         mFragment = this;
         super.onAttach(context);
         if (context instanceof FragmentActivity) {
-            mActivity = (BaseActivity) context;
+            mActivity = (JActivity) context;
             mFragmentManager = mActivity.getSupportFragmentManager();
         }
         initAttach(mFragment);

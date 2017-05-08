@@ -1,8 +1,8 @@
 package com.jiangzg.project;
 
-import com.android.base.base.BaseApp;
+import com.android.base.base.JApp;
 
-public class MyApp extends BaseApp {
+public class MyApp extends JApp {
 
     @Override
     public void onCreate() {

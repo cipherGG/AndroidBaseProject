@@ -84,10 +84,15 @@ public class RunningUtils {
      * 退出应用程序
      */
     public void appExit() {
-        StackUtils.finishAll();
-        ActivityManager activityManager = ContextUtils.getActivityManager();
-        activityManager.killBackgroundProcesses(ContextUtils.get().getPackageName());
-        System.exit(0);
+        try {
+            StackUtils.finishAll();
+            ActivityManager activityManager = ContextUtils.getActivityManager();
+            activityManager.killBackgroundProcesses(ContextUtils.get().getPackageName());
+            System.exit(0);
+        } catch (Exception e) {
+            // 退出JVM(java虚拟机),释放所占内存资源,0表示正常退出(非0的都为异常退出)
+            System.exit(-1);
+        }
     }
 
 }

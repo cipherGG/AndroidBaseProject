@@ -37,9 +37,9 @@ import butterknife.Unbinder;
  * Created by JiangZhiGuo on 2016-12-2.
  * describe Activity的基类
  */
-public abstract class BaseActivity<T> extends AppCompatActivity {
+public abstract class JActivity<T> extends AppCompatActivity {
 
-    public BaseActivity mActivity;
+    public JActivity mActivity;
     public FragmentManager mFragmentManager;
     public View rootView;
     private ProgressDialog loading;
@@ -48,14 +48,14 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
 
     /* activity跳转demo */
     private static void goActivity(Activity from) {
-        Intent intent = new Intent(from, BaseActivity.class);
+        Intent intent = new Intent(from, JActivity.class);
         // intent.putExtra();
         ActivityUtils.startActivity(from, intent);
     }
 
     /* activity跳转demo */
     private static void goActivity(Fragment from) {
-        Intent intent = new Intent(from.getActivity(), BaseActivity.class);
+        Intent intent = new Intent(from.getActivity(), JActivity.class);
         // intent.putExtra();
         ActivityUtils.startActivity(from, intent);
     }

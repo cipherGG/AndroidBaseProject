@@ -27,9 +27,9 @@ import butterknife.ButterKnife;
  * Created by JiangZhiGuo on 2016-12-2.
  * describe Application的基类
  */
-public class BaseApp extends MultiDexApplication {
+public class JApp extends MultiDexApplication {
 
-    protected static BaseApp instance;  // MyApp实例
+    protected static JApp instance;  // MyApp实例
     protected Handler mainHandler; // 主线程handler
     protected ExecutorService threadPool; // 缓冲线程池
     protected Timer timer; // timer
@@ -50,7 +50,7 @@ public class BaseApp extends MultiDexApplication {
         AnalyUtils.initApp(); // 统计
     }
 
-    public static BaseApp get() {
+    public static JApp get() {
         return instance;
     }
 
