@@ -1,1 +1,1 @@
-include ':app', ':AndroidBaseModule', ':AndroidCustomView'
+include ':app', ':AndroidBaseNative', ':AndroidBaseView', ':AndroidBaseDepend'

@@ -7,9 +7,9 @@ import android.os.IBinder;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
-import com.android.base.utils.func.LocationUtils;
-import com.android.base.utils.func.RxPermUtils;
-import com.android.base.utils.view.ToastUtils;
+import com.android.base.func.LocationUtils;
+import com.android.base.view.ToastUtils;
+import com.android.depend.utils.RxPermUtils;
 import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
 import com.jiangzg.project.utils.third.MapUtils;

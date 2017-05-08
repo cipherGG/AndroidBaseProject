@@ -1,6 +1,7 @@
 package com.jiangzg.project;
 
-import com.android.base.base.JApp;
+
+import com.android.depend.base.JApp;
 
 public class MyApp extends JApp {
 

@@ -7,12 +7,12 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.v7.app.AlertDialog;
 
-import com.android.base.utils.comp.ActivityUtils;
-import com.android.base.utils.comp.IntentUtils;
-import com.android.base.utils.file.FileUtils;
-import com.android.base.utils.func.AppUtils;
-import com.android.base.utils.net.RetroUtils;
-import com.android.base.utils.view.DialogUtils;
+import com.android.base.comp.ActivityUtils;
+import com.android.base.comp.IntentUtils;
+import com.android.base.file.FileUtils;
+import com.android.base.func.AppUtils;
+import com.android.base.view.DialogUtils;
+import com.android.depend.utils.RetroUtils;
 import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
 import com.jiangzg.project.domain.Version;
@@ -100,12 +100,12 @@ public class UpdateService extends Service {
 
     /* 子线程下载 */
     private void newThreadDown(final Version version) {
-        MyApp.get().getThread().execute(new Runnable() {
-            @Override
-            public void run() {
-                downloadApk(version);
-            }
-        });
+//        MyApp.get().getThread().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                downloadApk(version);
+//            }
+//        });
     }
 
     /* 下载apk */
@@ -118,16 +118,16 @@ public class UpdateService extends Service {
             @Override
             public void onSuccess(final ResponseBody body) { // 回调也是子线程
                 if (body == null || body.byteStream() == null) return;
-                MyApp.get().getThread().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        File apkFile = ResUtils.createAPKInRes(version.getVersionName());
-                        FileUtils.writeFileFromIS(apkFile, body.byteStream(), false);
-                        // 启动安装
-                        Intent installIntent = IntentUtils.getInstall(apkFile);
-                        ActivityUtils.startActivity(UpdateService.this, installIntent);
-                    }
-                });
+//                MyApp.get().getThread().execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        File apkFile = ResUtils.createAPKInRes(version.getVersionName());
+//                        FileUtils.writeFileFromIS(apkFile, body.byteStream(), false);
+//                        // 启动安装
+//                        Intent installIntent = IntentUtils.getInstall(apkFile);
+//                        ActivityUtils.startActivity(UpdateService.this, installIntent);
+//                    }
+//                });
             }
 
             @Override

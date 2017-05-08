@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 
-import com.android.base.base.JActivity;
-import com.android.base.utils.view.BarUtils;
+import com.android.base.view.BarUtils;
+import com.android.depend.base.JActivity;
 import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
 
@@ -44,12 +44,12 @@ public class WelcomeActivity extends JActivity<WelcomeActivity> {
 
     /* 跳转主页 */
     private void goHome() {
-        MyApp.get().getHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+//        MyApp.get().getHandler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
                 HomeActivity.goActivity(mActivity);
-            }
-        }, 1000);
+//            }
+//        }, 1000);
     }
 
 }

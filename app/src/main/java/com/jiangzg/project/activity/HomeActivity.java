@@ -9,16 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.android.base.base.JActivity;
-import com.android.base.utils.comp.ActivityUtils;
-import com.android.base.utils.comp.IntentUtils;
-import com.android.base.utils.media.GlideUtils;
-import com.android.base.utils.media.ImgCompressUtils;
-import com.android.base.utils.media.ImgMediaUtils;
-import com.android.base.utils.other.ConvertUtils;
-import com.android.base.utils.other.LogUtils;
-import com.android.base.utils.time.TimeUtils;
-import com.android.base.utils.view.ToastUtils;
+import com.android.base.comp.ActivityUtils;
+import com.android.base.comp.IntentUtils;
+import com.android.base.media.ImgMediaUtils;
+import com.android.base.other.ConvertUtils;
+import com.android.base.time.TimeUtils;
+import com.android.base.view.ToastUtils;
+import com.android.depend.base.JActivity;
+import com.android.depend.utils.GlideUtils;
+import com.android.depend.utils.LogUtils;
+import com.android.depend.utils.LuBanUtils;
+import com.android.depend.utils.RxPermUtils;
 import com.jiangzg.project.R;
 import com.jiangzg.project.utils.ResUtils;
 import com.jiangzg.project.utils.ViewUtils;
@@ -70,9 +71,14 @@ public class HomeActivity extends JActivity<HomeActivity> {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn1:
-                jpgInRes = ResUtils.createJPGInRes();
-                Intent camera = IntentUtils.getCamera(jpgInRes);
-                ActivityUtils.startActivity(mActivity, camera, 11);
+                RxPermUtils.requestCamera(new RxPermUtils.PermissionListener() {
+                    @Override
+                    public void onAgree() {
+                        jpgInRes = ResUtils.createJPGInRes();
+                        Intent camera = IntentUtils.getCamera(jpgInRes);
+                        ActivityUtils.startActivity(mActivity, camera, 11);
+                    }
+                });
                 break;
             case R.id.btn2:
                 Intent picture = IntentUtils.getPicture();
@@ -100,7 +106,7 @@ public class HomeActivity extends JActivity<HomeActivity> {
     }
 
     private void compress() {
-        ImgCompressUtils.compress(mActivity, jpgInRes, new OnCompressListener() {
+        LuBanUtils.compress(mActivity, jpgInRes, new OnCompressListener() {
             @Override
             public void onStart() {
                 getLoading().show();

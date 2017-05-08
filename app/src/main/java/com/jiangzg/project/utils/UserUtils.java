@@ -2,11 +2,10 @@ package com.jiangzg.project.utils;
 
 import android.content.SharedPreferences;
 
-import com.android.base.utils.file.SPUtils;
-import com.android.base.utils.other.LogUtils;
-import com.android.base.utils.str.GsonUtils;
+import com.android.base.file.SPUtils;
+import com.android.depend.utils.GsonUtils;
+import com.android.depend.utils.LogUtils;
 import com.jiangzg.project.domain.User;
-
 
 /**
  * Created by Fan on 2017/3/2.
