@@ -52,20 +52,18 @@ public class HomeActivity extends JActivity<HomeActivity> {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        initView();
-        initData();
+    protected int initObj(Intent intent) {
+        return R.layout.activity_home;
     }
 
-    private void initView() {
+    @Override
+    protected void initView(Bundle savedInstanceState) {
         ViewUtils.initTop(mActivity, "主页面");
     }
 
-    protected void initData() {
+    @Override
+    protected void initData(Bundle savedInstanceState) {
         LogUtils.e("----------------");
-
     }
 
     @OnClick({R.id.btn1, R.id.btn2, R.id.btn3})

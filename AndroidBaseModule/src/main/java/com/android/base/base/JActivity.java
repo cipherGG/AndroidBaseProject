@@ -5,8 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Fade;
@@ -14,7 +12,6 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -53,13 +50,6 @@ public abstract class JActivity<T> extends AppCompatActivity {
         ActivityUtils.startActivity(from, intent);
     }
 
-    /* activity跳转demo */
-    private static void goActivity(Fragment from) {
-        Intent intent = new Intent(from.getActivity(), JActivity.class);
-        // intent.putExtra();
-        ActivityUtils.startActivity(from, intent);
-    }
-
     /**
      * @return 对话框(静态会混乱)
      */
@@ -89,33 +79,14 @@ public abstract class JActivity<T> extends AppCompatActivity {
         return (Class<T>) (((ParameterizedType) (type)).getActualTypeArguments()[0]);
     }
 
-    @Override
-    public void setContentView(@LayoutRes int layoutResID) {
-        super.setContentView(layoutResID);
-        unbinder = ButterKnife.bind(this);
-        // 需要重新initView()
-    }
+    /* 初始layout(setContent之前调用) */
+    protected abstract int initObj(Intent intent);
 
-    @Override
-    public void setContentView(View view) {
-        super.setContentView(view);
-        unbinder = ButterKnife.bind(this);
-        // 需要重新initView()
-    }
+    /* 实例化View */
+    protected abstract void initView(Bundle savedInstanceState);
 
-    @Override
-    public void setContentView(View view, ViewGroup.LayoutParams params) {
-        super.setContentView(view, params);
-        unbinder = ButterKnife.bind(this);
-        // 需要重新initView()
-    }
-
-    @Override
-    public void addContentView(View view, ViewGroup.LayoutParams params) {
-        super.addContentView(view, params);
-        unbinder = ButterKnife.bind(this);
-        // 需要重新initView()
-    }
+    /* 初始Data */
+    protected abstract void initData(Bundle savedInstanceState);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +94,11 @@ public abstract class JActivity<T> extends AppCompatActivity {
         initBeforeSuperCreate(mActivity);
         super.onCreate(savedInstanceState);
         mFragmentManager = getSupportFragmentManager();
+        setContentView(initObj(getIntent()));
+        // 每次setContentView之后都要bind一下
+        unbinder = ButterKnife.bind(this);
+        initView(savedInstanceState);
+        initData(savedInstanceState);
     }
 
     @Override

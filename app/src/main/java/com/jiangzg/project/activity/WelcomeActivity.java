@@ -1,5 +1,6 @@
 package com.jiangzg.project.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -20,10 +21,18 @@ public class WelcomeActivity extends JActivity<WelcomeActivity> {
     ImageView ivWelcome;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected int initObj(Intent intent) {
         BarUtils.hideStatusBar(this);
-        setContentView(R.layout.activity_welcome);
+        return R.layout.activity_welcome;
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void initData(Bundle savedInstanceState) {
         goHome();
     }
 
