@@ -62,6 +62,7 @@ public class ActivityUtils {
      * @param className   activity全路径类名
      */
     public static boolean isExists(String packageName, String className) {
+        if (packageName == null || className == null) return false;
         PackageManager packageManager = AppContext.getPackageManager();
         Intent intent = new Intent();
         intent.setClassName(packageName, className);
@@ -78,6 +79,7 @@ public class ActivityUtils {
      * @return launcher activity
      */
     public static String getLauncher(String packageName) {
+        if (packageName == null) return "";
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -88,7 +90,7 @@ public class ActivityUtils {
                 return info.activityInfo.name;
             }
         }
-        return "no " + packageName;
+        return "";
     }
 
     /**

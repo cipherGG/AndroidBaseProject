@@ -62,7 +62,7 @@ public class AppInfo {
             }
             PackageInfo piSign = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
             if (piSign != null) {
-                Signature[] signatures = pi.signatures;
+                Signature[] signatures = piSign.signatures;
                 instance.setSignature(signatures);
                 String sha1 = EncryptUtils.encryptSHA1ToString(signatures[0].toByteArray()).
                         replaceAll("(?<=[0-9A-F]{2})[0-9A-F]{2}", ":$0");

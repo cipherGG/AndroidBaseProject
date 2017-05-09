@@ -101,8 +101,8 @@ public class IntentUtils {
     /**
      * 获取打开当前App的意图
      */
-    public static Intent getApp(String appPackageManager) {
-        return AppContext.getPackageManager().getLaunchIntentForPackage(appPackageManager);
+    public static Intent getApp(String appPackageName) {
+        return AppContext.getPackageManager().getLaunchIntentForPackage(appPackageName);
     }
 
     /**

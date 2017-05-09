@@ -19,6 +19,7 @@ public class AppUtils {
      * @param packageName 项目包名 context.getPackageName
      */
     public static boolean isAppForeground(String packageName) {
+        if (packageName == null) return false;
         ActivityManager activityManager = AppContext.getActivityManager();
         List<ActivityManager.RunningAppProcessInfo> appProcesses =
                 activityManager.getRunningAppProcesses();

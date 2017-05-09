@@ -189,7 +189,7 @@ public class EncryptUtils {
      * @return 密文字节数组
      */
     public static byte[] encryptSHA1(byte[] data) {
-        return encryptAlgorithm(data, "SHA-1");
+        return encryptAlgorithm(data, "SHA1");
     }
 
     /**
@@ -320,6 +320,7 @@ public class EncryptUtils {
      * @return 密文字节数组
      */
     private static byte[] encryptAlgorithm(byte[] data, String algorithm) {
+        if (data == null || data.length <= 0) return null;
         try {
             MessageDigest md = MessageDigest.getInstance(algorithm);
             md.update(data);

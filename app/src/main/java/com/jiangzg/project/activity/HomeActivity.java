@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.android.base.component.activity.ActivityTrans;
+import com.android.base.component.application.AppInfo;
 import com.android.base.component.intent.IntentUtils;
 import com.android.base.func.PermUtils;
 import com.android.base.media.image.ImgMediaUtils;
