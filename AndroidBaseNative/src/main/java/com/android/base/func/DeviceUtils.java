@@ -10,7 +10,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 import com.android.base.str.StringUtils;
 
 /**
@@ -48,9 +48,9 @@ public class DeviceUtils {
         if (!StringUtils.isEmpty(deviceId)) return deviceId;
         String deviceId;
         if (isPhone()) {
-            deviceId = ContextUtils.getTelephonyManager().getDeviceId();
+            deviceId = AppContext.getTelephonyManager().getDeviceId();
         } else {
-            ContentResolver contentResolver = ContextUtils.get().getContentResolver();
+            ContentResolver contentResolver = AppContext.get().getContentResolver();
             deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID);
         }
         setDeviceId(deviceId);
@@ -64,7 +64,7 @@ public class DeviceUtils {
     @SuppressLint("HardwareIds")
     public String getPhoneNumber() {
         if (!StringUtils.isEmpty(phoneNumber)) return phoneNumber;
-        setPhoneNumber(ContextUtils.getTelephonyManager().getLine1Number());
+        setPhoneNumber(AppContext.getTelephonyManager().getLine1Number());
         return phoneNumber;
     }
 
@@ -75,7 +75,7 @@ public class DeviceUtils {
     @SuppressLint("HardwareIds")
     public String getSimSerial() {
         if (!StringUtils.isEmpty(simSerial)) return simSerial;
-        setSimSerial(ContextUtils.getTelephonyManager().getSimSerialNumber());
+        setSimSerial(AppContext.getTelephonyManager().getSimSerialNumber());
         return simSerial;
     }
 
@@ -89,7 +89,7 @@ public class DeviceUtils {
     @SuppressLint("HardwareIds")
     public String getMacAddress() {
         if (!StringUtils.isEmpty(macAddress)) return macAddress;
-        WifiManager wifi = (WifiManager) ContextUtils.get()
+        WifiManager wifi = (WifiManager) AppContext.get()
                 .getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo info = wifi.getConnectionInfo();
         if (info != null) {
@@ -103,7 +103,7 @@ public class DeviceUtils {
     }
 
     public boolean isPhone() {
-        setPhone(ContextUtils.getTelephonyManager().getPhoneType()
+        setPhone(AppContext.getTelephonyManager().getPhoneType()
                 != TelephonyManager.PHONE_TYPE_NONE);
         return isPhone;
     }
@@ -113,7 +113,7 @@ public class DeviceUtils {
     }
 
     public boolean isTable() {
-        int screenLayout = ContextUtils.get().getResources().getConfiguration().screenLayout;
+        int screenLayout = AppContext.get().getResources().getConfiguration().screenLayout;
         boolean xlarge = ((screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
         boolean large = ((screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==
                 Configuration.SCREENLAYOUT_SIZE_LARGE);

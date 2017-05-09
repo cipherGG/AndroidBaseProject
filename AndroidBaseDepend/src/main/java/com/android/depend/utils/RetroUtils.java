@@ -3,7 +3,7 @@ package com.android.depend.utils;
 import android.app.Dialog;
 
 import com.android.base.R;
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 import com.android.base.str.StringUtils;
 
 import java.io.IOException;
@@ -94,7 +94,7 @@ public class RetroUtils {
                     LogUtils.e(t.toString());
                 }
                 if (callBack == null) return;
-                callBack.onFailure(-1, ContextUtils.get().getString(error));
+                callBack.onFailure(-1, AppContext.get().getString(error));
             }
         });
     }

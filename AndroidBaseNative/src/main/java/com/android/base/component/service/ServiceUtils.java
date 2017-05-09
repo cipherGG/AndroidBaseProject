@@ -2,7 +2,7 @@ package com.android.base.component.service;
 
 import android.app.ActivityManager;
 
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class ServiceUtils {
      * @param serviceName 全路径类名 class.getName
      */
     public static boolean isServiceWork(String serviceName) {
-        List<ActivityManager.RunningServiceInfo> myList = ContextUtils
+        List<ActivityManager.RunningServiceInfo> myList = AppContext
                 .getActivityManager().getRunningServices(Integer.MAX_VALUE);
         if (myList == null || myList.size() < 1) return false;
         for (ActivityManager.RunningServiceInfo serviceInfo : myList) {

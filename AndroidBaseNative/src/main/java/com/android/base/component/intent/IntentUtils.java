@@ -11,7 +11,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 import com.android.base.file.FileUtils;
 import com.android.base.other.ConvertUtils;
 
@@ -23,21 +23,9 @@ import java.io.File;
  */
 public class IntentUtils {
 
-    private static Intent getComponentIntent(String packageName, String className) {
-        return getComponentIntent(packageName, className, null);
-    }
-
-    private static Intent getComponentIntent(String packageName, String className, Bundle bundle) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        if (bundle != null) {
-            intent.putExtras(bundle);
-        }
-        ComponentName cn = new ComponentName(packageName, className);
-        return intent.setComponent(cn);
-    }
-
     /**
-     * 拍照 ,不加保存路径，图片会被压缩(Permission)
+     * 拍照 ,不加保存路径，图片会被压缩
+     * (Permission)
      */
     public static Intent getCamera(File cameraFile) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -56,16 +44,12 @@ public class IntentUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-            if (intent.resolveActivity(ContextUtils.get().getPackageManager()) == null) {
+            if (intent.resolveActivity(AppContext.get().getPackageManager()) == null) {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
             }
         } else {
             intent.setAction(Intent.ACTION_GET_CONTENT);
         }
-//        if (intent.resolveActivity(ContextUtils.get().getPackageManager()) == null) {
-//            intent = new Intent(Intent.ACTION_PICK,
-//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        }
         intent.setType("image/*");
         return intent;
     }
@@ -115,6 +99,23 @@ public class IntentUtils {
     }
 
     /**
+     * 获取打开当前App的意图
+     */
+    public static Intent getApp(String appPackageManager) {
+        return AppContext.getPackageManager().getLaunchIntentForPackage(appPackageManager);
+    }
+
+    /**
+     * 回到Home
+     */
+    public static Intent getHome() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        return intent;
+    }
+
+    /**
      * 获取安装App的意图
      */
     public static Intent getInstall(File file) {
@@ -123,7 +124,7 @@ public class IntentUtils {
         intent.addCategory(Intent.CATEGORY_DEFAULT);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         String type;
-        if (Build.VERSION.SDK_INT < 23) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             type = "application/vnd.android.package-archive";
         } else {
             type = MimeTypeMap.getSingleton()
@@ -133,20 +134,20 @@ public class IntentUtils {
     }
 
     /**
-     * 获取打开当前App的意图
+     * 获取卸载App的意图
      */
-    public static Intent getApp(String appPackageManager) {
-        return ContextUtils.getPackageManager().getLaunchIntentForPackage(appPackageManager);
+    public static Intent getUninstall(String packageName) {
+        Intent intent = new Intent(Intent.ACTION_DELETE);
+        intent.setData(Uri.parse("package:" + packageName));
+        return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
     /**
-     * 获取分享文本的意图
+     * 获取分享意图
      */
-    public static Intent getShare(String content) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, content); // 设置分享信息
-        return intent;
+    public static Intent getShare(String content, File image) {
+        if (!FileUtils.isFileExists(image)) return null;
+        return getShare(content, Uri.fromFile(image));
     }
 
     public static Intent getShare(String content, Uri uri) {
@@ -158,9 +159,11 @@ public class IntentUtils {
         return intent;
     }
 
-    public static Intent getShare(String content, File image) {
-        if (!FileUtils.isFileExists(image)) return null;
-        return getShare(content, Uri.fromFile(image));
+    public static Intent getShare(String content) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, content); // 设置分享信息
+        return intent;
     }
 
     /**
@@ -172,7 +175,7 @@ public class IntentUtils {
 
     /**
      * 直接拨打phoneNumber
-     * <p>需添加权限 {@code <uses-permission android:name="android.permission.CALL_PHONE"/>}</p>
+     * (Permission)
      */
     public static Intent getCall(String phoneNumber) {
         Intent intent = new Intent();
@@ -214,13 +217,19 @@ public class IntentUtils {
     }
 
     /**
-     * 回到Home
+     * 跳转应用市场的意图
      */
-    public static Intent getHome() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-        return intent;
+    public static Intent getMarket() {
+        String str = "market://details?id=" + AppContext.get().getPackageName();
+        return new Intent("android.intent.action.VIEW", Uri.parse(str));
+    }
+
+    /**
+     * 获取打开浏览器的意图
+     */
+    public static Intent getWebBrowse(String url) {
+        Uri address = Uri.parse(url);
+        return new Intent(Intent.ACTION_VIEW, address);
     }
 
     /**
@@ -239,37 +248,29 @@ public class IntentUtils {
     }
 
     /**
-     * 跳转应用市场的意图
-     */
-    public static Intent getMarket() {
-        String str = "market://details?id=" + ContextUtils.get().getPackageName();
-        return new Intent("android.intent.action.VIEW", Uri.parse(str));
-    }
-
-    /**
-     * 获取卸载App的意图
-     */
-    public static Intent getUninstall(String packageName) {
-        Intent intent = new Intent(Intent.ACTION_DELETE);
-        intent.setData(Uri.parse("package:" + packageName));
-        return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    }
-
-    /**
-     * 获取打开浏览器的意图
-     */
-    public static Intent getWebBrowse(String url) {
-        Uri address = Uri.parse(url);
-        return new Intent(Intent.ACTION_VIEW, address);
-    }
-
-    /**
      * 打开Gps设置界面
      */
     public static Intent getGps() {
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
+    }
+
+    /**
+     * activity跳转intent
+     *
+     * @param packageName app包名
+     * @param className   Activity全名
+     * @param bundle      可为null
+     * @return 直接startActivity即可
+     */
+    private static Intent getComponent(String packageName, String className, Bundle bundle) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        ComponentName cn = new ComponentName(packageName, className);
+        return intent.setComponent(cn);
     }
 
 }

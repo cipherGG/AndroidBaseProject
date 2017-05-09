@@ -3,9 +3,9 @@ package com.android.depend.utils;
 import android.text.TextUtils;
 
 import com.android.base.R;
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 import com.android.base.file.FileUtils;
-import com.android.base.component.application.AppUtils;
+import com.android.base.component.application.AppInfo;
 import com.android.base.time.TimeUtils;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
@@ -20,7 +20,7 @@ import java.io.File;
 public class LogUtils {
 
     public static void initApp() {
-        String logTag = ContextUtils.get().getString(R.string.app_name);
+        String logTag = AppContext.get().getString(R.string.app_name);
         Logger.init(logTag) // 打印tag
                 .methodCount(0)// 3以上才能显示调用方法
                 .hideThreadInfo() // 隐藏线程显示
@@ -69,7 +69,7 @@ public class LogUtils {
      */
     public static void writeLog2File(String content) {
         if (TextUtils.isEmpty(content)) return;
-        String logDir = AppUtils.get().getLogDir();
+        String logDir = AppInfo.get().getLogDir();
         String logFileName = TimeUtils.genBillTime() + ".txt";
         File logFile = new File(logDir, logFileName);
         FileUtils.createFileByDeleteOldFile(logFile);

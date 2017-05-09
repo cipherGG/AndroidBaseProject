@@ -1,9 +1,9 @@
 package com.android.base.time;
 
 import com.android.base.R;
+import com.android.base.component.application.AppContext;
 import com.android.base.str.ConstantUtils;
 import com.android.base.str.StringUtils;
-import com.android.base.component.application.ContextUtils;
 
 import java.util.Calendar;
 
@@ -98,12 +98,12 @@ public class UnitUtils {
      * 获取间隔时间 eg: 1分钟，1小时，1天
      */
     public String getUnit() {
-        if (year > 0) return year + ContextUtils.get().getString(R.string.year);
-        if (month > 0) return month + ContextUtils.get().getString(R.string.month);
-        if (day > 0) return day + ContextUtils.get().getString(R.string.day);
-        if (hour > 0) return hour + ContextUtils.get().getString(R.string.hour);
-        if (minute > 0) return minute + ContextUtils.get().getString(R.string.minute);
-        if (second > 0) return second + ContextUtils.get().getString(R.string.second);
+        if (year > 0) return year + AppContext.get().getString(R.string.year);
+        if (month > 0) return month + AppContext.get().getString(R.string.month);
+        if (day > 0) return day + AppContext.get().getString(R.string.day);
+        if (hour > 0) return hour + AppContext.get().getString(R.string.hour);
+        if (minute > 0) return minute + AppContext.get().getString(R.string.minute);
+        if (second > 0) return second + AppContext.get().getString(R.string.second);
         return "";
     }
 
@@ -113,39 +113,39 @@ public class UnitUtils {
     public String getFull(boolean y, boolean mo, boolean d, boolean h, boolean mi, boolean s) {
         String yea = "";
         if (year > 0 && y) {
-            yea = year + ContextUtils.get().getString(R.string.year);
+            yea = year + AppContext.get().getString(R.string.year);
         }
         String mon = "";
         if (!StringUtils.isEmpty(yea) || (month > 0 && mo)) {
-            mon = month + ContextUtils.get().getString(R.string.month);
+            mon = month + AppContext.get().getString(R.string.month);
         }
         String day = "";
         if (!StringUtils.isEmpty(mon) || (this.day > 0 && d)) {
-            day = this.day + ContextUtils.get().getString(R.string.day);
+            day = this.day + AppContext.get().getString(R.string.day);
         }
         String hou = "";
         if (!StringUtils.isEmpty(hou) || (hour > 0 && h)) {
-            hou = hour + ContextUtils.get().getString(R.string.hour);
+            hou = hour + AppContext.get().getString(R.string.hour);
         }
         String min = "";
         if (!StringUtils.isEmpty(hou) || (minute > 0 && mi)) {
-            min = minute + ContextUtils.get().getString(R.string.minute);
+            min = minute + AppContext.get().getString(R.string.minute);
         }
         String sec = "";
         if (!StringUtils.isEmpty(hou) || (second > 0 && s)) {
-            sec = second + ContextUtils.get().getString(R.string.second);
+            sec = second + AppContext.get().getString(R.string.second);
         }
         return yea + mon + day + hou + min + sec;
     }
 
     @Override
     public String toString() {
-        return year + ContextUtils.get().getString(R.string.year) +
-                month + ContextUtils.get().getString(R.string.month) +
-                day + ContextUtils.get().getString(R.string.day) +
-                hour + ContextUtils.get().getString(R.string.hour) +
-                minute + ContextUtils.get().getString(R.string.minute) +
-                second + ContextUtils.get().getString(R.string.second);
+        return year + AppContext.get().getString(R.string.year) +
+                month + AppContext.get().getString(R.string.month) +
+                day + AppContext.get().getString(R.string.day) +
+                hour + AppContext.get().getString(R.string.hour) +
+                minute + AppContext.get().getString(R.string.minute) +
+                second + AppContext.get().getString(R.string.second);
     }
 
     public int getYear() {

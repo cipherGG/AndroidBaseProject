@@ -9,7 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 
 /**
  * Created by JiangZhiGuo on 2016/10/13.
@@ -36,7 +36,7 @@ public class InputUtils {
     public static boolean hideSoftInput(View focus) {
         if (focus == null) return false;
         focus.clearFocus();
-        InputMethodManager inputManager = ContextUtils.getInputManager();
+        InputMethodManager inputManager = AppContext.getInputManager();
         return inputManager.hideSoftInputFromWindow(focus.getWindowToken(), 0);
     }
 
@@ -48,7 +48,7 @@ public class InputUtils {
         focus.setFocusable(true);
         focus.setFocusableInTouchMode(true);
         focus.requestFocus();
-        InputMethodManager inputManager = ContextUtils.getInputManager();
+        InputMethodManager inputManager = AppContext.getInputManager();
         return inputManager.showSoftInput(focus, 0);
     }
 
@@ -60,7 +60,7 @@ public class InputUtils {
         focus.setFocusable(true);
         focus.setFocusableInTouchMode(true);
         focus.requestFocus();
-        InputMethodManager inputManager = ContextUtils.getInputManager();
+        InputMethodManager inputManager = AppContext.getInputManager();
         inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
@@ -70,7 +70,7 @@ public class InputUtils {
      */
     public static void copyText(String text) {
         ClipData myClip = ClipData.newPlainText("text", text);
-        ContextUtils.getClipboardManager().setPrimaryClip(myClip);
+        AppContext.getClipboardManager().setPrimaryClip(myClip);
     }
 
     /**
@@ -78,9 +78,9 @@ public class InputUtils {
      */
     public static CharSequence getCopy() {
         CharSequence copy = "";
-        ClipData clip = ContextUtils.getClipboardManager().getPrimaryClip();
+        ClipData clip = AppContext.getClipboardManager().getPrimaryClip();
         if (clip != null && clip.getItemCount() > 0)
-            copy = clip.getItemAt(0).coerceToText(ContextUtils.get());
+            copy = clip.getItemAt(0).coerceToText(AppContext.get());
         return copy;
     }
 
@@ -88,15 +88,15 @@ public class InputUtils {
      * 复制uri到剪贴板
      */
     public static void copyUri(Uri uri) {
-        ClipData clipData = ClipData.newUri(ContextUtils.get().getContentResolver(), "uri", uri);
-        ContextUtils.getClipboardManager().setPrimaryClip(clipData);
+        ClipData clipData = ClipData.newUri(AppContext.get().getContentResolver(), "uri", uri);
+        AppContext.getClipboardManager().setPrimaryClip(clipData);
     }
 
     /**
      * 获取剪贴板的uri
      */
     public static Uri getUri() {
-        ClipData clip = ContextUtils.getClipboardManager().getPrimaryClip();
+        ClipData clip = AppContext.getClipboardManager().getPrimaryClip();
         if (clip == null || clip.getItemCount() < 1) return null;
         return clip.getItemAt(0).getUri();
     }
@@ -106,14 +106,14 @@ public class InputUtils {
      */
     public static void copyIntent(Intent intent) {
         ClipData clipData = ClipData.newIntent("intent", intent);
-        ContextUtils.getClipboardManager().setPrimaryClip(clipData);
+        AppContext.getClipboardManager().setPrimaryClip(clipData);
     }
 
     /**
      * 获取剪贴板的意图
      */
     public static Intent getIntent() {
-        ClipData clip = ContextUtils.getClipboardManager().getPrimaryClip();
+        ClipData clip = AppContext.getClipboardManager().getPrimaryClip();
         if (clip == null || clip.getItemCount() < 1) return null;
         return clip.getItemAt(0).getIntent();
     }

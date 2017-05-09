@@ -18,9 +18,9 @@ import com.android.base.base.BaseApp;
 
 /**
  * Created by gg on 2017/4/4.
- * 上下文管理类
+ * Context管理类
  */
-public class ContextUtils {
+public class AppContext {
 
     public static Application get() {
         return BaseApp.get();

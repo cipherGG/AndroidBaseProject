@@ -1,7 +1,7 @@
 package com.android.base.time;
 
 import com.android.base.R;
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,19 +51,19 @@ public class CalendarUtils {
     public static String getWeek(int index) {
         switch (index) {
             case Calendar.MONDAY:
-                return ContextUtils.get().getString(R.string.day1);
+                return AppContext.get().getString(R.string.day1);
             case Calendar.TUESDAY:
-                return ContextUtils.get().getString(R.string.day2);
+                return AppContext.get().getString(R.string.day2);
             case Calendar.WEDNESDAY:
-                return ContextUtils.get().getString(R.string.day3);
+                return AppContext.get().getString(R.string.day3);
             case Calendar.THURSDAY:
-                return ContextUtils.get().getString(R.string.day4);
+                return AppContext.get().getString(R.string.day4);
             case Calendar.FRIDAY:
-                return ContextUtils.get().getString(R.string.day5);
+                return AppContext.get().getString(R.string.day5);
             case Calendar.SATURDAY:
-                return ContextUtils.get().getString(R.string.day6);
+                return AppContext.get().getString(R.string.day6);
             case Calendar.SUNDAY:
-                return ContextUtils.get().getString(R.string.day7);
+                return AppContext.get().getString(R.string.day7);
             default:
                 return "";
         }

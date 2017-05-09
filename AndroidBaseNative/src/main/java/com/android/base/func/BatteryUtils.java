@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
 
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 
 /**
  * Created by gg on 2017/4/3.
@@ -89,7 +89,7 @@ public class BatteryUtils {
      */
     public static int getPercent() {
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent intent = ContextUtils.get().registerReceiver(null, filter);
+        Intent intent = AppContext.get().registerReceiver(null, filter);
         if (intent == null) return ERROR;
         int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, ERROR);
         int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, ERROR);

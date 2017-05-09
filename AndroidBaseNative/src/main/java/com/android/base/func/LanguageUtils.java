@@ -4,7 +4,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 
 import java.util.Locale;
 
@@ -16,7 +16,7 @@ public class LanguageUtils {
 
     /* 语言环境 */
     private static Locale getLocale() {
-        return ContextUtils.get().getResources().getConfiguration().locale;
+        return AppContext.get().getResources().getConfiguration().locale;
     }
 
     /* 是否为英语环境 */
@@ -35,7 +35,7 @@ public class LanguageUtils {
      * 设置默认语言 eg:"en" 应在app中初始化调用
      */
     public static void setDefault(String name) {
-        Resources resources = ContextUtils.get().getResources();
+        Resources resources = AppContext.get().getResources();
         String language = resources.getConfiguration().locale.getLanguage();
         Configuration config = resources.getConfiguration();
         String languageToLoad;

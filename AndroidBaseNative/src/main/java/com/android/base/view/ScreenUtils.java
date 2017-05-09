@@ -10,7 +10,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 
 /**
  * Created by JiangZhiGuo on 2016/10/12.
@@ -102,7 +102,7 @@ public class ScreenUtils {
      * 判断当前手机是否处于锁屏(睡眠)状态
      */
     public static boolean isScreenLock() {
-        return ContextUtils.getKeyguardManager().inKeyguardRestrictedInputMode();
+        return AppContext.getKeyguardManager().inKeyguardRestrictedInputMode();
     }
 
     /**
@@ -111,11 +111,11 @@ public class ScreenUtils {
      * <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
      */
     public static void wakeUpAndUnlock(Context context) {
-        KeyguardManager.KeyguardLock kl = ContextUtils.getKeyguardManager()
+        KeyguardManager.KeyguardLock kl = AppContext.getKeyguardManager()
                 .newKeyguardLock("unLock");
         kl.disableKeyguard(); //解锁
         //获取PowerManager.WakeLock对象,后面的参数|表示同时传入两个值,最后的是LogCat里用的Tag
-        PowerManager.WakeLock wl = ContextUtils.getPowerManager()
+        PowerManager.WakeLock wl = AppContext.getPowerManager()
                 .newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP |
                         PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
         wl.acquire(); //点亮屏幕

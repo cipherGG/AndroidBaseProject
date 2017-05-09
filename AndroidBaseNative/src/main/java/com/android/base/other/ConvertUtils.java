@@ -19,7 +19,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 import com.android.base.file.FileUtils;
 import com.android.base.str.ConstantUtils;
 import com.android.base.str.StringUtils;
@@ -63,7 +63,7 @@ public class ConvertUtils {
         String data = null;
         if (scheme == null) data = uri.getPath();
         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT &&
-                DocumentsContract.isDocumentUri(ContextUtils.get(), uri)) { // KITKAT
+                DocumentsContract.isDocumentUri(AppContext.get(), uri)) { // KITKAT
             String docId = DocumentsContract.getDocumentId(uri);
             String[] split = docId.split(":");
             String type = split[0];
@@ -108,7 +108,7 @@ public class ConvertUtils {
 
     private static String getProviderColumnTop(Uri uri, String[] projection, String selection,
                                               String[] selectionArgs, String orderBy) {
-        Cursor cursor = ContextUtils.get().getContentResolver()
+        Cursor cursor = AppContext.get().getContentResolver()
                 .query(uri, projection, selection, selectionArgs, orderBy);
 
         if (cursor != null && cursor.moveToFirst()) {
@@ -501,7 +501,7 @@ public class ConvertUtils {
      * @param type eg: TypedValue.COMPLEX_UNIT_DIP
      */
     public static int getpx(int type, float value) {
-        DisplayMetrics metrics = ContextUtils.get().getResources().getDisplayMetrics();
+        DisplayMetrics metrics = AppContext.get().getResources().getDisplayMetrics();
         return (int) TypedValue.applyDimension(type, value, metrics);
     }
 
@@ -512,7 +512,7 @@ public class ConvertUtils {
      * @return px值
      */
     public static int dp2px(float dpValue) {
-        final float scale = ContextUtils.get().getResources().getDisplayMetrics().density;
+        final float scale = AppContext.get().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 
@@ -523,7 +523,7 @@ public class ConvertUtils {
      * @return dp值
      */
     public static int px2dp(float pxValue) {
-        final float scale = ContextUtils.get().getResources().getDisplayMetrics().density;
+        final float scale = AppContext.get().getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
@@ -534,7 +534,7 @@ public class ConvertUtils {
      * @return px值
      */
     public static int sp2px(float spValue) {
-        final float fontScale = ContextUtils.get().getResources().getDisplayMetrics().scaledDensity;
+        final float fontScale = AppContext.get().getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
 
@@ -545,7 +545,7 @@ public class ConvertUtils {
      * @return sp值
      */
     public static int px2sp(float pxValue) {
-        final float fontScale = ContextUtils.get().getResources().getDisplayMetrics().scaledDensity;
+        final float fontScale = AppContext.get().getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
     }
 

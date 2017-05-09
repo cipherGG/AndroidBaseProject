@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.v7.app.AlertDialog;
 
-import com.android.base.component.application.AppUtils;
+import com.android.base.component.application.AppInfo;
 import com.android.base.view.DialogUtils;
 import com.android.depend.utils.RetroUtils;
 import com.jiangzg.project.R;
@@ -47,7 +47,7 @@ public class UpdateService extends Service {
     }
 
     private void checkUpdate() {
-        final int code = AppUtils.get().getVersionCode();
+        final int code = AppInfo.get().getVersionCode();
         Call<Version> versionCall = new RetroUtils(API.BASE_URL)
                 .log(HttpLoggingInterceptor.Level.BODY)
                 .head(HttpUtils.getHead())

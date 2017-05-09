@@ -9,9 +9,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 import com.android.base.file.FileUtils;
-import com.android.base.component.application.AppUtils;
+import com.android.base.component.application.AppInfo;
 
 import java.util.Map;
 
@@ -30,7 +30,7 @@ public class WebUtils {
     }
 
     public void init(boolean js, boolean zoom, boolean cache) {
-        String resDir = AppUtils.get().getCacheDir();
+        String resDir = AppInfo.get().getCacheDir();
         cacheDir = resDir + "web_cache";
         FileUtils.createOrExistsFile(cacheDir);
         mWebView.requestFocusFromTouch(); // 支持获取手势焦点
@@ -125,7 +125,7 @@ public class WebUtils {
      * 带cookie的加载url
      */
     public void loadCookie(String url) {
-        CookieSyncManager.createInstance(ContextUtils.get());
+        CookieSyncManager.createInstance(AppContext.get());
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
         cookieManager.setCookie(url, cookie);  // cookies是要设置的cookie字符串

@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
 
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class ContactUtils {
      * 需添加权限 <uses-permission android:name="android.permission.READ_CONTACTS"/>
      */
     public static List<Map<String, String>> getContacts() {
-        ContentResolver resolver = ContextUtils.get().getContentResolver();
+        ContentResolver resolver = AppContext.get().getContentResolver();
 
         List<Map<String, String>> list = new ArrayList<>();
         Cursor cursorID = resolver.query(ContactsContract.Contacts.CONTENT_URI,
@@ -108,7 +108,7 @@ public class ContactUtils {
         list.add(addEmail);
 
         try {
-            ContextUtils.get().getContentResolver().applyBatch("com.android.contacts", list);
+            AppContext.get().getContentResolver().applyBatch("com.android.contacts", list);
             return true;
         } catch (RemoteException | OperationApplicationException e) {
             e.printStackTrace();
@@ -125,7 +125,7 @@ public class ContactUtils {
         if (data == null) return num;
         Uri uri = data.getData();
         // 创建内容解析者
-        ContentResolver contentResolver = ContextUtils.get().getContentResolver();
+        ContentResolver contentResolver = AppContext.get().getContentResolver();
         Cursor cursor = contentResolver.query(uri, null, null, null, null);
         if (cursor == null) return num;
         while (cursor.moveToNext()) {

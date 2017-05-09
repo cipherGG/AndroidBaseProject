@@ -10,7 +10,7 @@ import android.location.LocationProvider;
 import android.os.Bundle;
 
 import com.android.base.R;
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 import com.android.base.str.StringUtils;
 import com.android.base.view.ToastUtils;
 
@@ -54,7 +54,7 @@ public class LocationUtils {
     private static boolean starLocation(long minTime, long minDistance,
                                         OnLocationChangeListener listener) {
         mListener = listener;
-        LocationManager mLocationManager = ContextUtils.getLocationManager();
+        LocationManager mLocationManager = AppContext.getLocationManager();
         String provider = mLocationManager.getBestProvider(getCriteria(), true);
         Location location = mLocationManager.getLastKnownLocation(provider);
         if (location != null) {
@@ -76,7 +76,7 @@ public class LocationUtils {
      */
     public static void unregister() {
         if (myLocationListener != null) {
-            ContextUtils.getLocationManager().removeUpdates(myLocationListener);
+            AppContext.getLocationManager().removeUpdates(myLocationListener);
             myLocationListener = null;
         }
     }
@@ -103,7 +103,7 @@ public class LocationUtils {
      * @return {@link Address}
      */
     public static Address getAddress(double latitude, double longitude) {
-        Geocoder geocoder = new Geocoder(ContextUtils.get(), Locale.getDefault());
+        Geocoder geocoder = new Geocoder(AppContext.get(), Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
             if (addresses.size() > 0) return addresses.get(0);
@@ -175,7 +175,7 @@ public class LocationUtils {
 
     /* 判断定位是否可用 */
     private static boolean isLocationEnabled() {
-        LocationManager lm = ContextUtils.getLocationManager();
+        LocationManager lm = AppContext.getLocationManager();
         return lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
                 || lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }

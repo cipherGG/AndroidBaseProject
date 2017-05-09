@@ -9,7 +9,7 @@ import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
 import com.android.base.R;
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 import com.android.base.view.ToastUtils;
 
 import java.net.Inet6Address;
@@ -18,7 +18,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-import static com.android.base.component.application.ContextUtils.getConnectivityManager;
+import static com.android.base.component.application.AppContext.getConnectivityManager;
 
 /**
  * Created by jiang on 2016/10/12
@@ -85,7 +85,7 @@ public class NetUtils {
         NetworkInfo networkInfo = getNetworkInfo();
         boolean available = (networkInfo != null && getNetworkInfo().isAvailable());
         if (!available) {
-            String show = ContextUtils.get().getString(R.string.no_network_title);
+            String show = AppContext.get().getString(R.string.no_network_title);
             ToastUtils.show(show);
             return false;
         } else {
@@ -97,7 +97,7 @@ public class NetUtils {
      * 判断wifi是否连接状态
      */
     public static boolean isWifi() {
-        ConnectivityManager cm = ContextUtils.getConnectivityManager();
+        ConnectivityManager cm = AppContext.getConnectivityManager();
         return cm != null && cm.getActiveNetworkInfo() != null
                 && cm.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI;
     }
@@ -152,7 +152,7 @@ public class NetUtils {
      * @return 如中国联通、中国移动、中国电信
      */
     public static String getNetworkOperator() {
-        TelephonyManager tm = ContextUtils.getTelephonyManager();
+        TelephonyManager tm = AppContext.getTelephonyManager();
         return tm != null ? tm.getNetworkOperatorName() : null;
     }
 

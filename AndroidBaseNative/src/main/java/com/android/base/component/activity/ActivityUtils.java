@@ -8,7 +8,7 @@ import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.util.ArrayMap;
 
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -62,7 +62,7 @@ public class ActivityUtils {
      * @param className   activity全路径类名
      */
     public static boolean isExists(String packageName, String className) {
-        PackageManager packageManager = ContextUtils.getPackageManager();
+        PackageManager packageManager = AppContext.getPackageManager();
         Intent intent = new Intent();
         intent.setClassName(packageName, className);
         ResolveInfo resolveInfo = packageManager.resolveActivity(intent, 0);
@@ -81,7 +81,7 @@ public class ActivityUtils {
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        List<ResolveInfo> infos = ContextUtils.getPackageManager()
+        List<ResolveInfo> infos = AppContext.getPackageManager()
                 .queryIntentActivities(intent, 0);
         for (ResolveInfo info : infos) {
             if (info.activityInfo.packageName.equals(packageName)) {

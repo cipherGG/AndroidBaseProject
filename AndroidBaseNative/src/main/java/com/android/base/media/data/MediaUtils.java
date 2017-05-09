@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,7 +75,7 @@ public class MediaUtils {
                                                               String[] selectionArgs,
                                                               String orderBy) {
         List<Map<String, String>> list = new ArrayList<>();
-        Cursor cursor = ContextUtils.get().getContentResolver()
+        Cursor cursor = AppContext.get().getContentResolver()
                 .query(uri, projection, selection, selectionArgs, orderBy);
         if (null == cursor) return list;
         while (cursor.moveToNext()) {

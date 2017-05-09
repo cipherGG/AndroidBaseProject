@@ -6,7 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.app.NotificationCompat;
 
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 
 /**
  * Created by gg on 2017/4/3.
@@ -18,21 +18,21 @@ public class NotifyUtils {
      * @param id 显示通知，唯一标识
      */
     public static void showNotification(int id, Notification notification) {
-        ContextUtils.getNotificationManager().notify(id, notification);
+        AppContext.getNotificationManager().notify(id, notification);
     }
 
     /**
      * @param id 撤销通知，这么用
      */
     public static void cancelNotification(int id) {
-        ContextUtils.getNotificationManager().cancel(id);
+        AppContext.getNotificationManager().cancel(id);
     }
 
     /**
      * context 撤销所有通知
      */
     public static void cancelAll() {
-        ContextUtils.getNotificationManager().cancelAll();
+        AppContext.getNotificationManager().cancelAll();
     }
 
     /**
@@ -97,7 +97,7 @@ public class NotifyUtils {
     public static void updateProgress(NotificationCompat.Builder builder,
                                       int max, int progress, int id) {
         builder.setProgress(max, progress, false);
-        ContextUtils.getNotificationManager().notify(id, builder.build());
+        AppContext.getNotificationManager().notify(id, builder.build());
     }
 
 }

@@ -3,7 +3,7 @@ package com.android.base.view;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 
 /**
  * Created by JiangZhiGuo on 2016-10-31.
@@ -29,7 +29,7 @@ public class ToastUtils {
 
     public static void show(int resId) {
         if (resId == 0) return;
-        String toast = ContextUtils.get().getString(resId);
+        String toast = AppContext.get().getString(resId);
         show(toast);
     }
 
@@ -46,7 +46,7 @@ public class ToastUtils {
     /* 自定义Toast */
     private static void createToast() {
         if (toast != null) return;
-        toast = Toast.makeText(ContextUtils.get(), "", Toast.LENGTH_SHORT);
+        toast = Toast.makeText(AppContext.get(), "", Toast.LENGTH_SHORT);
     }
 
 }

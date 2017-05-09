@@ -9,8 +9,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.text.format.Formatter;
 
-import com.android.base.component.application.ContextUtils;
-import com.android.base.component.application.AppUtils;
+import com.android.base.component.application.AppContext;
+import com.android.base.component.application.AppInfo;
 import com.android.base.other.ConvertUtils;
 
 import java.io.File;
@@ -77,10 +77,10 @@ public class RubbishUtils {
      * 获取具有缓存的文件夹
      */
     public static List<String> getCacheFiles() {
-        String filesDir = AppUtils.get().getFilesDir("");
-        String cacheDir = AppUtils.get().getCacheDir();
-        File internalFilesDir = ContextUtils.get().getFilesDir();
-        File internalCacheDir = ContextUtils.get().getCacheDir();
+        String filesDir = AppInfo.get().getFilesDir("");
+        String cacheDir = AppInfo.get().getCacheDir();
+        File internalFilesDir = AppContext.get().getFilesDir();
+        File internalCacheDir = AppContext.get().getCacheDir();
 //        File cacheFile = GlideUtils.getCacheFile();
 
         List<String> filesList = new ArrayList<>();
@@ -128,7 +128,7 @@ public class RubbishUtils {
      * 获取资源文件夹
      */
     public static String getResFile() {
-        return AppUtils.get().getResDir();
+        return AppInfo.get().getResDir();
     }
 
     /**
@@ -195,7 +195,7 @@ public class RubbishUtils {
      */
     private static ActivityManager.MemoryInfo getMemoryInfo() {
         ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
-        ContextUtils.getActivityManager().getMemoryInfo(memoryInfo);
+        AppContext.getActivityManager().getMemoryInfo(memoryInfo);
         return memoryInfo;
     }
 

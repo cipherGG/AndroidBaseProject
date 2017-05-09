@@ -10,7 +10,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.android.base.component.application.ContextUtils;
+import com.android.base.component.application.AppContext;
 import com.android.base.file.FileUtils;
 import com.android.base.other.ConvertUtils;
 
@@ -78,7 +78,7 @@ public class ImgMediaUtils {
             String path = uri.getEncodedPath();
             if (path != null) {
                 path = Uri.decode(path);
-                ContentResolver cr = ContextUtils.get().getContentResolver();
+                ContentResolver cr = AppContext.get().getContentResolver();
                 String buff = "(" + MediaStore.Images.ImageColumns.DATA + "=" +
                         "'" + path + "'" + ")";
                 Cursor cur = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -109,7 +109,7 @@ public class ImgMediaUtils {
         Uri uri = getPictureUri(data);
         if (uri != null) {
             try {
-                InputStream stream = ContextUtils.get()
+                InputStream stream = AppContext.get()
                         .getContentResolver().openInputStream(uri);
                 picture = BitmapFactory.decodeStream(stream);
             } catch (FileNotFoundException e) {

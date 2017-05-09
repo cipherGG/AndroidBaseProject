@@ -7,8 +7,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.telephony.SmsManager;
 
+import com.android.base.component.application.AppContext;
 import com.android.base.str.StringUtils;
-import com.android.base.component.application.ContextUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ public class SMSUtils {
         List<Map<String, String>> list = new ArrayList<>();
         String[] pros = new String[]{"_id", "address", "person", "body", "date", "type"};
         Uri sms_uri = Uri.parse("content://sms");
-        Cursor cursor = ContextUtils.get().getContentResolver().query(sms_uri, pros, null, null, "date desc");
+        Cursor cursor = AppContext.get().getContentResolver().query(sms_uri, pros, null, null, "date desc");
 
         if (cursor == null) return null;
         while (cursor.moveToNext()) {
@@ -65,7 +65,7 @@ public class SMSUtils {
         values.put("date", String.valueOf(date));
         try {
             Uri sms_uri = Uri.parse("content://sms");
-            ContextUtils.get().getContentResolver().insert(sms_uri, values);
+            AppContext.get().getContentResolver().insert(sms_uri, values);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,7 +79,7 @@ public class SMSUtils {
      */
     public static void sendSMS(String phoneNumber, String content) {
         if (StringUtils.isEmpty(content)) return;
-        PendingIntent sentIntent = PendingIntent.getBroadcast(ContextUtils.get(), 0, new Intent(), 0);
+        PendingIntent sentIntent = PendingIntent.getBroadcast(AppContext.get(), 0, new Intent(), 0);
         SmsManager smsManager = SmsManager.getDefault();
         if (content.length() >= 70) {
             List<String> ms = smsManager.divideMessage(content);
