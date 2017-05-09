@@ -3,7 +3,7 @@ package com.android.depend.utils;
 import android.app.Dialog;
 
 import com.android.base.R;
-import com.android.base.comp.ContextUtils;
+import com.android.base.component.ContextUtils;
 import com.android.base.str.StringUtils;
 
 import java.io.IOException;

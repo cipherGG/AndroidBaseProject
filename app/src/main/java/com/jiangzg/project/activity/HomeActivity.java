@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.android.base.comp.ActivityTrans;
-import com.android.base.comp.IntentUtils;
+import com.android.base.component.activity.ActivityTrans;
+import com.android.base.component.IntentUtils;
 import com.android.base.media.ImgMediaUtils;
 import com.android.base.other.ConvertUtils;
 import com.android.base.time.TimeUtils;
@@ -60,6 +60,7 @@ public class HomeActivity extends ZActivity<HomeActivity> {
     @Override
     protected void initView(Bundle savedInstanceState) {
         ViewUtils.initTop(mActivity, "主页面");
+
     }
 
     @Override

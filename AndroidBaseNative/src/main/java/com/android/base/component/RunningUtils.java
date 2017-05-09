@@ -1,10 +1,12 @@
-package com.android.base.comp;
+package com.android.base.component;
 
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+
+import com.android.base.component.activity.ActivityStack;
 
 import java.util.List;
 

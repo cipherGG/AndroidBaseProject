@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.android.base.comp.ContextUtils;
+import com.android.base.component.ContextUtils;
 
 import java.util.HashMap;
 import java.util.Map;

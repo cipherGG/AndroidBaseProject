@@ -1,4 +1,4 @@
-package com.android.custom.view;
+package com.android.custom.other;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;

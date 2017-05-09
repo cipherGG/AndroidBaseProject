@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
-import com.android.base.comp.ActivityStack;
+import com.android.base.component.activity.ActivityStack;
 
 /**
  * Created by JiangZhiGuo on 2016-12-2.

@@ -1,18 +1,14 @@
 package com.android.base.base;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.Fade;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.android.base.comp.ActivityTrans;
+import com.android.base.component.activity.ActivityTrans;
 import com.android.base.func.InputUtils;
 import com.android.base.view.BarUtils;
 import com.android.base.view.ScreenUtils;
@@ -29,13 +25,6 @@ public abstract class JActivity<T> extends AppCompatActivity {
     public FragmentManager mFragmentManager;
     public View rootView;
 
-    /* activity跳转demo */
-    private static void goActivity(Activity from) {
-        Intent intent = new Intent(from, JActivity.class);
-        // intent.putExtra();
-        ActivityTrans.start(from, intent);
-    }
-
     /**
      * @return 获取当前类
      */
@@ -50,9 +39,7 @@ public abstract class JActivity<T> extends AppCompatActivity {
         InputUtils.initActivity(this); // 软键盘
         ScreenUtils.requestPortrait(this); // 竖屏
         BarUtils.requestNoTitle(this); // noTitle
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ActivityTrans.initActivity(this, new Fade());
-        }
+        ActivityTrans.initActivity(this); //  过渡动画
         super.onCreate(savedInstanceState);
         mFragmentManager = getSupportFragmentManager();
     }

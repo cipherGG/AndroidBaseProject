@@ -10,7 +10,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 
-import com.android.base.comp.ContextUtils;
+import com.android.base.component.ContextUtils;
 
 /**
  * Created by JiangZhiGuo on 2016/10/12.

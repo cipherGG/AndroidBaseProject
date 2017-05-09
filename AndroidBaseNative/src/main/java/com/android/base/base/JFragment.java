@@ -23,8 +23,6 @@ import java.lang.reflect.Type;
  */
 public abstract class JFragment<T> extends Fragment {
 
-    public JActivity mActivity;
-    public JFragment mFragment;
     public FragmentManager mFragmentManager;
     public boolean anim = true;
     public Bundle mBundle;
@@ -63,13 +61,12 @@ public abstract class JFragment<T> extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        mFragment = this;
         super.onAttach(context);
         if (context instanceof FragmentActivity) {
-            mActivity = (JActivity) context;
-            mFragmentManager = mActivity.getSupportFragmentManager();
+            FragmentActivity activity = (FragmentActivity) context;
+            mFragmentManager = activity.getSupportFragmentManager();
         }
-        initAttach(mFragment);
+        initAttach(this);
     }
 
     /* Activity中的onAttachFragment执行完后会执行,相当于onCreate */
@@ -77,7 +74,7 @@ public abstract class JFragment<T> extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBundle = getArguments(); // 取出Bundle
-        initCreate(mFragment);
+        initCreate(this);
     }
 
     /* 在这里返回绑定并View,从stack返回的时候也是先执行这个方法,相当于onStart */

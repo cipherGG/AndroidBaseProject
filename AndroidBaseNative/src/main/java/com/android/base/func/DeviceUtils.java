@@ -10,7 +10,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
-import com.android.base.comp.ContextUtils;
+import com.android.base.component.ContextUtils;
 import com.android.base.str.StringUtils;
 
 /**

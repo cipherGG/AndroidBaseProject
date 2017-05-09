@@ -9,7 +9,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.android.base.comp.ContextUtils;
+import com.android.base.component.ContextUtils;
 import com.android.base.file.FileUtils;
 import com.android.base.func.AppUtils;
 

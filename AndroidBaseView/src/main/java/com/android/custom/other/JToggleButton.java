@@ -1,4 +1,4 @@
-package com.android.custom.view;
+package com.android.custom.other;
 
 import android.content.Context;
 import android.graphics.Bitmap;

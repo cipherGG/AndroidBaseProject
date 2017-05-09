@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 
-import com.android.base.comp.ContextUtils;
+import com.android.base.component.ContextUtils;
 import com.android.base.other.ConvertUtils;
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;

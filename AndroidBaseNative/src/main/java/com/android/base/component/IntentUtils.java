@@ -1,4 +1,4 @@
-package com.android.base.comp;
+package com.android.base.component;
 
 import android.content.Intent;
 import android.graphics.Bitmap;

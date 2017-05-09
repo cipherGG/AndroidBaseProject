@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 
-import com.android.base.comp.ActivityStack;
+import com.android.base.component.activity.ActivityStack;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import rx.Observable;

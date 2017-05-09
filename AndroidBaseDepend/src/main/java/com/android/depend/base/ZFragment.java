@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.base.base.JFragment;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -25,7 +27,7 @@ import butterknife.Unbinder;
  * Created by JiangZhiGuo on 2016-12-2.
  * describe Fragment的基类
  */
-public abstract class ZFragment<T> extends Fragment {
+public abstract class ZFragment<T> extends JFragment<T> {
 
     public ZActivity mActivity;
     public ZFragment mFragment;

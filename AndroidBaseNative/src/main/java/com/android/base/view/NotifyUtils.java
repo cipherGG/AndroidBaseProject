@@ -6,7 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.app.NotificationCompat;
 
-import com.android.base.comp.ContextUtils;
+import com.android.base.component.ContextUtils;
 
 /**
  * Created by gg on 2017/4/3.

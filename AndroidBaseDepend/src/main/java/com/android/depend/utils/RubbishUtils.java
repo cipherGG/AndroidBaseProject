@@ -9,7 +9,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.text.format.Formatter;
 
-import com.android.base.comp.ContextUtils;
+import com.android.base.component.ContextUtils;
 import com.android.base.file.FileUtils;
 import com.android.base.func.AppUtils;
 import com.android.base.other.ConvertUtils;

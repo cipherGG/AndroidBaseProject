@@ -10,7 +10,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.android.base.comp.ContextUtils;
+import com.android.base.component.ContextUtils;
 import com.android.base.file.FileUtils;
 import com.android.base.other.ConvertUtils;
 

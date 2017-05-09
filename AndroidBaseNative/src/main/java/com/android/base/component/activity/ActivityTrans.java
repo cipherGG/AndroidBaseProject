@@ -1,4 +1,4 @@
-package com.android.base.comp;
+package com.android.base.component.activity;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
@@ -13,48 +13,47 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
 import android.transition.Fade;
-import android.transition.Slide;
-import android.transition.Transition;
 import android.view.View;
 import android.view.Window;
 
 /**
  * Created by JiangZhiGuo on 2016/10/13.
- * describe Activity管理工具类
+ * describe Activity跳转工具类
  */
 public class ActivityTrans {
 
-    private static int animIn = android.R.anim.fade_in; // 默认
-    private static int animOut = android.R.anim.fade_out; // 默认
+    /* activity跳转demo */
+    public static void goActivity(Activity from, Class<?> to) {
+        Intent intent = new Intent(from, to);
+        // intent.putExtra();
+        ActivityTrans.start(from, intent);
+    }
+
+    private static int animIn, animOut; // 4.4跳转效果
 
     /**
      * activity过渡动画初始化, 要在setContentView之前调用
      */
-    public static void initActivity(Activity activity, Transition trans) {
+    public static void initActivity(Activity activity) {
         Window window = activity.getWindow();
         // 专门的跳转方式才会有过场效果
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-            window.setEnterTransition(trans); // 下一个activity进场
-            window.setExitTransition(trans); //  当前activity向后时退场
-            // window.setReenterTransition(trans); // 上一个activity进场
-            // window.setReturnTransition(trans); // 当前activity向前时退场
+            window.setEnterTransition(new Fade()); // 下一个activity进场
+            window.setExitTransition(new Fade()); //  当前activity向后时退场
+            // window.setReenterTransition(new Fade()); // 上一个activity进场
+            // window.setReturnTransition(new Fade()); // 当前activity向前时退场
         }
-        if (trans instanceof Fade) { // 渐变
-            animIn = android.R.anim.fade_in;
-            animOut = android.R.anim.fade_out;
-        } else if (trans instanceof Slide) { // 侧滑
-            animIn = android.R.anim.slide_in_left;
-            animOut = android.R.anim.slide_out_right;
-        }
+        animIn = android.R.anim.fade_in;
+        animOut = android.R.anim.fade_out;
     }
 
     /**
      * 分享元素过渡动画，一般在目标activity里的create中调用
      */
-    public static void setShareElement(View target, String tag) {
-        if (target == null || tag == null) return;
-        ViewCompat.setTransitionName(target, tag);
+    public static void setShareElement(View share, String tag) {
+        if (share == null || tag == null) return;
+        ViewCompat.setTransitionName(share, tag);
     }
 
     /**
@@ -85,15 +84,14 @@ public class ActivityTrans {
         }
     }
 
-    public static void start(Context from, Intent intent, boolean anim,
-                             Pair<View, String>... sharedElements) {
+    public static void start(Context from, Intent intent, Pair<View, String>... sharedElements) {
         if (from instanceof Activity) {
             Activity activity = (Activity) from;
-            if (anim && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 startShareElement(activity, intent, sharedElements);
             } else {
                 activity.startActivity(intent);
-                appendAnim(activity, anim);
+                appendAnim(activity, true);
             }
         } else {
             startFromContext(from, intent);

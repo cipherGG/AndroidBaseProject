@@ -7,7 +7,7 @@ import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 
-import com.android.base.comp.ContextUtils;
+import com.android.base.component.ContextUtils;
 import com.android.base.file.FileUtils;
 import com.android.base.str.StringUtils;
 

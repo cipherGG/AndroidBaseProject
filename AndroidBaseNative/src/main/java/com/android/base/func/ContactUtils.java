@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
 
-import com.android.base.comp.ContextUtils;
+import com.android.base.component.ContextUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
 
-import com.android.base.comp.ContextUtils;
+import com.android.base.component.ContextUtils;
 
 /**
  * Created by gg on 2017/4/3.

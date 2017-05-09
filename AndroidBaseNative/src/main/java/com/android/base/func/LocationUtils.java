@@ -10,7 +10,7 @@ import android.location.LocationProvider;
 import android.os.Bundle;
 
 import com.android.base.R;
-import com.android.base.comp.ContextUtils;
+import com.android.base.component.ContextUtils;
 import com.android.base.str.StringUtils;
 import com.android.base.view.ToastUtils;
 
