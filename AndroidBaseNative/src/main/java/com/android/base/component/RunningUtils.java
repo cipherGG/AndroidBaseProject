@@ -17,37 +17,6 @@ import java.util.List;
 public class RunningUtils {
 
     /**
-     * 获取top的Activity的ComponentName
-     */
-    public static ComponentName getTopActivityName() {
-        ActivityManager localActivityManager = ContextUtils.getActivityManager();
-        if (localActivityManager != null) {
-            List<ActivityManager.RunningTaskInfo> localList =
-                    localActivityManager.getRunningTasks(1);
-            if (localList != null && localList.size() > 0) {
-                return localList.get(0).topActivity;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 判断是否存在Activity
-     *
-     * @param packageName 项目包名
-     * @param className   activity全路径类名
-     */
-    public static boolean isActivityRegister(String packageName, String className) {
-        PackageManager packageManager = ContextUtils.getPackageManager();
-        Intent intent = new Intent();
-        intent.setClassName(packageName, className);
-        ResolveInfo resolveInfo = packageManager.resolveActivity(intent, 0);
-        ComponentName componentName = intent.resolveActivity(packageManager);
-        int size = packageManager.queryIntentActivities(intent, 0).size();
-        return !(resolveInfo == null || componentName == null || size == 0);
-    }
-
-    /**
      * 判断服务是否运行
      *
      * @param serviceName 全路径类名 class.getName

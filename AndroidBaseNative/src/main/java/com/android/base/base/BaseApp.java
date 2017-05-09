@@ -4,15 +4,17 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.android.base.component.activity.ActivityLifecycle;
 import com.android.base.component.activity.ActivityStack;
+import com.android.base.file.RubbishUtils;
 
 /**
  * Created by JiangZhiGuo on 2016-12-2.
  * describe Application的基类
  */
-public class JApp extends MultiDexApplication {
+public class BaseApp extends MultiDexApplication {
 
-    protected static JApp instance;
+    private static BaseApp instance;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -23,12 +25,13 @@ public class JApp extends MultiDexApplication {
 
     @Override
     public void onCreate() {
-        super.onCreate();
         instance = this;
-        ActivityStack.initApp(this);
+        super.onCreate();
+        ActivityLifecycle.initApp(this);
+        RubbishUtils.initApp(this);
     }
 
-    public static JApp get() {
+    public static BaseApp get() {
         return instance;
     }
 }

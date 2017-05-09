@@ -1,4 +1,4 @@
-package com.android.base.base;
+package com.android.depend.base;
 
 import android.content.Context;
 import android.os.Build;
@@ -17,16 +17,22 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * Created by JiangZhiGuo on 2016-12-2.
  * describe Fragment的基类
  */
 public abstract class JFragment<T> extends Fragment {
 
+    public JActivity mActivity;
+    public JFragment mFragment;
     public FragmentManager mFragmentManager;
     public boolean anim = true;
     public Bundle mBundle;
     public View rootView;
+    private Unbinder unbinder;
 
     /* 获取fragment实例demo */
     private static JFragment newFragment() {
@@ -61,10 +67,11 @@ public abstract class JFragment<T> extends Fragment {
 
     @Override
     public void onAttach(Context context) {
+        mFragment = this;
         super.onAttach(context);
         if (context instanceof FragmentActivity) {
-            FragmentActivity activity = (FragmentActivity) context;
-            mFragmentManager = activity.getSupportFragmentManager();
+            mActivity = (JActivity) context;
+            mFragmentManager = mActivity.getSupportFragmentManager();
         }
         initAttach(this);
     }
@@ -84,6 +91,7 @@ public abstract class JFragment<T> extends Fragment {
         if (rootView == null) {
             int layoutId = initObj(savedInstanceState);
             rootView = inflater.inflate(layoutId, container, false);
+            unbinder = ButterKnife.bind(mFragment, rootView);
         }
         return rootView;
     }
@@ -113,6 +121,14 @@ public abstract class JFragment<T> extends Fragment {
             }
         }
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
     }
 
     /* 反射生成对象实例 */

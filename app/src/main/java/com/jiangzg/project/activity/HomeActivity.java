@@ -15,7 +15,7 @@ import com.android.base.media.ImgMediaUtils;
 import com.android.base.other.ConvertUtils;
 import com.android.base.time.TimeUtils;
 import com.android.base.view.ToastUtils;
-import com.android.depend.base.ZActivity;
+import com.android.depend.base.JActivity;
 import com.android.depend.utils.GlideUtils;
 import com.android.depend.utils.LogUtils;
 import com.android.depend.utils.LuBanUtils;
@@ -34,7 +34,7 @@ import top.zibin.luban.OnCompressListener;
  * Created by JiangZhiGuo on 2016/06/01
  * describe 主界面
  */
-public class HomeActivity extends ZActivity<HomeActivity> {
+public class HomeActivity extends JActivity<HomeActivity> {
 
     @BindView(R.id.btn1)
     Button btn1;
@@ -58,13 +58,12 @@ public class HomeActivity extends ZActivity<HomeActivity> {
     }
 
     @Override
-    protected void initView(Bundle savedInstanceState) {
+    protected void initView(Bundle state) {
         ViewUtils.initTop(mActivity, "主页面");
-
     }
 
     @Override
-    protected void initData(Bundle savedInstanceState) {
+    protected void initData(Bundle state) {
         LogUtils.e("----------------");
     }
 
@@ -110,19 +109,19 @@ public class HomeActivity extends ZActivity<HomeActivity> {
         LuBanUtils.compress(mActivity, jpgInRes, new OnCompressListener() {
             @Override
             public void onStart() {
-                getLoading().show();
+//                getLoading().show();
             }
 
             @Override
             public void onSuccess(File file) {
-                getLoading().dismiss();
+//                getLoading().dismiss();
                 ToastUtils.show(file.getAbsolutePath());
                 GlideUtils.load(mActivity, file, ivMain);
             }
 
             @Override
             public void onError(Throwable e) {
-                getLoading().dismiss();
+//                getLoading().dismiss();
             }
         });
     }

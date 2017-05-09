@@ -1,8 +1,11 @@
 package com.android.depend.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 
 import com.android.base.component.ContextUtils;
+import com.android.base.component.activity.ActivityLifecycle;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -15,19 +18,51 @@ public class AnalyUtils {
     public static void initApp() {
         MobclickAgent.setScenarioType(ContextUtils.get(), MobclickAgent.EScenarioType.E_UM_NORMAL);
         MobclickAgent.setCatchUncaughtExceptions(true);
+        ActivityLifecycle.addLifecycleListener("Analy", new ActivityLifecycle.LifecycleListener() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+                AnalyUtils.analysisOnResume(activity);
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+                AnalyUtils.analysisOnPause(activity);
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+
+            }
+        });
     }
 
-    /**
-     * 数据统计(崩溃日志) 在activity中的OnResume中调用
-     */
-    public static void analysisOnResume(Context context) {
+    /* 数据统计(崩溃日志) 在activity中的OnResume中调用 */
+    private static void analysisOnResume(Context context) {
         MobclickAgent.onResume(context);
     }
 
-    /**
-     * 数据统计(崩溃日志) 在activity中的OnPause中调用
-     */
-    public static void analysisOnPause(Context context) {
+    /* 数据统计(崩溃日志) 在activity中的OnPause中调用 */
+    private static void analysisOnPause(Context context) {
         MobclickAgent.onPause(context);
     }
 

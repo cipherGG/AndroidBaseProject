@@ -1,11 +1,10 @@
 package com.android.base.component.activity;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -26,46 +25,6 @@ public class ActivityStack {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
     }
 
-    // 监听所有activity的生命周期
-    public static void initApp(Application app) {
-        app.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                ActivityStack.addActivity(activity);
-            }
-
-            @Override
-            public void onActivityStarted(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityResumed(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityPaused(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityStopped(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-            }
-
-            @Override
-            public void onActivityDestroyed(Activity activity) {
-                ActivityStack.removeActivity(activity);
-            }
-        });
-    }
-
     private static Stack<Activity> STACK; // 任务栈
 
     public static Stack<Activity> getStack() {
@@ -75,33 +34,17 @@ public class ActivityStack {
         return STACK;
     }
 
-    public static boolean addActivity(Activity activity) {
-        return getStack().add(activity);
-    }
-
-    public static boolean removeActivity(Activity activity) {
-        return getStack().remove(activity);
-    }
-
-    /**
-     * 获取当前Activity栈中元素个数
-     */
-    public int getCount() {
-        return getStack().size();
-    }
-
     /**
      * 获取Activity
      */
-    public Activity getActivity(Class<?> cls) {
-        Activity activity = null;
-        for (Activity aty : getStack()) {
-            if (aty.getClass().equals(cls)) {
-                activity = aty;
-                break;
+    public List<Activity> getActivity(Class<?> cls) {
+        List<Activity> activities = new ArrayList<>();
+        for (Activity activity : getStack()) {
+            if (activity.getClass().equals(cls)) {
+                activities.add(activity);
             }
         }
-        return activity;
+        return activities;
     }
 
     /**
@@ -134,7 +77,7 @@ public class ActivityStack {
     }
 
     /**
-     * 关闭除了指定activity以外的全部activity 如果cls不存在于栈中，则栈全部清空
+     * 关闭除了指定activity以外的全部activity
      */
     public void finishOthersActivity(Class<?> cls) {
         for (Activity activity : getStack()) {
@@ -142,26 +85,6 @@ public class ActivityStack {
                 finishActivity(activity);
             }
         }
-    }
-
-    /**
-     * 关闭前台的activity
-     */
-    public static void finishTop() {
-        Stack<Activity> stack = getStack();
-        if (stack.isEmpty()) return;
-        Activity activity = stack.lastElement();
-        finishActivity(activity);
-    }
-
-    /**
-     * 关闭最底下的activity
-     */
-    public static void finishBottom() {
-        Stack<Activity> stack = getStack();
-        if (stack.isEmpty()) return;
-        Activity activity = stack.firstElement();
-        finishActivity(activity);
     }
 
     /**
@@ -185,22 +108,13 @@ public class ActivityStack {
         getStack().clear();
     }
 
-    private static void finishActivity(Activity activity) {
-        if (activity == null) return;
-        removeActivity(activity);
-        activity.finish();
-    }
-
     /**
      * 关闭activity
      */
-    public static void finish(Activity activity) {
+    private static void finishActivity(Activity activity) {
         if (activity == null) return;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity.finishAndRemoveTask();
-        } else {
-            activity.finish();
-        }
+        getStack().remove(activity);
+        activity.finish();
     }
 
 }

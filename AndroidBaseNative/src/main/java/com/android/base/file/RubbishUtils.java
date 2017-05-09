@@ -1,4 +1,4 @@
-package com.android.depend.utils;
+package com.android.base.file;
 
 import android.app.ActivityManager;
 import android.app.Application;
@@ -10,7 +10,6 @@ import android.os.Environment;
 import android.text.format.Formatter;
 
 import com.android.base.component.ContextUtils;
-import com.android.base.file.FileUtils;
 import com.android.base.func.AppUtils;
 import com.android.base.other.ConvertUtils;
 
@@ -29,12 +28,12 @@ public class RubbishUtils {
         app.registerComponentCallbacks(new ComponentCallbacks2() {
             @Override
             public void onTrimMemory(int level) {
-                LogUtils.d("杀死一个进程以求更多内存(level) ---> " + level);
+//                LogUtils.d("杀死一个进程以求更多内存(level) ---> " + level);
             }
 
             @Override
             public void onLowMemory() {
-                LogUtils.e("内存不足,清理内存以获取更多内存");
+//                LogUtils.e("内存不足,清理内存以获取更多内存");
                 RubbishUtils.clearMemory();
             }
 
@@ -68,7 +67,7 @@ public class RubbishUtils {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     status.append("uiMode:").append(cfg.densityDpi).append("\n");
                 }
-                LogUtils.d(status.toString());
+//                LogUtils.d(status.toString());
             }
         });
     }
@@ -82,14 +81,14 @@ public class RubbishUtils {
         String cacheDir = AppUtils.get().getCacheDir();
         File internalFilesDir = ContextUtils.get().getFilesDir();
         File internalCacheDir = ContextUtils.get().getCacheDir();
-        File cacheFile = GlideUtils.getCacheFile();
+//        File cacheFile = GlideUtils.getCacheFile();
 
         List<String> filesList = new ArrayList<>();
         filesList.add(filesDir);
         filesList.add(cacheDir);
         filesList.add(internalFilesDir.getAbsolutePath());
         filesList.add(internalCacheDir.getAbsolutePath());
-        filesList.add(cacheFile.getAbsolutePath());
+//        filesList.add(cacheFile.getAbsolutePath());
         return filesList;
     }
 
@@ -121,7 +120,7 @@ public class RubbishUtils {
         for (String cache : cacheFiles) {
             FileUtils.deleteFilesAndDirInDir(new File(cache));
         }
-        GlideUtils.clearCache();
+//        GlideUtils.clearCache();
     }
 
     /**
@@ -186,7 +185,7 @@ public class RubbishUtils {
      * 清理内存
      */
     public static void clearMemory() {
-        GlideUtils.clearMemory();
+//        GlideUtils.clearMemory();
         System.gc();
         // 也可以清理掉一些优先级低的进程
     }

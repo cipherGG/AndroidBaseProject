@@ -1,5 +1,6 @@
-package com.android.base.base;
+package com.android.depend.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,9 +13,13 @@ import com.android.base.component.activity.ActivityTrans;
 import com.android.base.func.InputUtils;
 import com.android.base.view.BarUtils;
 import com.android.base.view.ScreenUtils;
+import com.android.depend.utils.AnalyUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by JiangZhiGuo on 2016-12-2.
@@ -22,8 +27,19 @@ import java.lang.reflect.Type;
  */
 public abstract class JActivity<T> extends AppCompatActivity {
 
+    public JActivity mActivity;
     public FragmentManager mFragmentManager;
     public View rootView;
+    private Unbinder unbinder;
+
+    /* 初始layout(setContent之前调用) */
+    protected abstract int initObj(Intent intent);
+
+    /* 实例化View */
+    protected abstract void initView(Bundle state);
+
+    /* 初始Data */
+    protected abstract void initData(Bundle state);
 
     /**
      * @return 获取当前类
@@ -36,12 +52,18 @@ public abstract class JActivity<T> extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mActivity = this;
         InputUtils.initActivity(this); // 软键盘
         ScreenUtils.requestPortrait(this); // 竖屏
         BarUtils.requestNoTitle(this); // noTitle
         ActivityTrans.initActivity(this); //  过渡动画
         super.onCreate(savedInstanceState);
         mFragmentManager = getSupportFragmentManager();
+        setContentView(initObj(getIntent()));
+        // 每次setContentView之后都要bind一下
+        unbinder = ButterKnife.bind(this);
+        initView(savedInstanceState);
+        initData(savedInstanceState);
     }
 
     /*
@@ -55,6 +77,14 @@ public abstract class JActivity<T> extends AppCompatActivity {
         // 控制DecorView的大小来控制activity的大小，可做窗口activity
         rootView = getWindow().getDecorView();
         // setFinishOnTouchOutside(true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
     }
 
     /* 触摸事件 */
