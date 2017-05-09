@@ -4,7 +4,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
-import com.android.base.component.ContextUtils;
+import com.android.base.component.application.ContextUtils;
 
 import java.util.Locale;
 

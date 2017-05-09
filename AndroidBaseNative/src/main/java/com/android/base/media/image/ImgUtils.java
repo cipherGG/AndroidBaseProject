@@ -1,4 +1,4 @@
-package com.android.base.media;
+package com.android.base.media.image;
 
 import android.app.Activity;
 import android.content.Context;

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.android.base.component.ContextUtils;
+import com.android.base.component.application.ContextUtils;
 import com.android.base.component.activity.ActivityLifecycle;
 import com.umeng.analytics.MobclickAgent;
 

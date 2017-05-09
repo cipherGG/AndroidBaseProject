@@ -10,8 +10,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.android.base.component.activity.ActivityTrans;
-import com.android.base.component.IntentUtils;
-import com.android.base.media.ImgMediaUtils;
+import com.android.base.component.intent.IntentUtils;
+import com.android.base.func.PermUtils;
+import com.android.base.media.image.ImgMediaUtils;
 import com.android.base.other.ConvertUtils;
 import com.android.base.time.TimeUtils;
 import com.android.base.view.ToastUtils;
@@ -71,12 +72,17 @@ public class HomeActivity extends JActivity<HomeActivity> {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn1:
-                RxPermUtils.requestCamera(new RxPermUtils.PermissionListener() {
+                PermUtils.requestPermissions(mActivity, 11, PermUtils.camera, new PermUtils.OnPermissionListener() {
                     @Override
-                    public void onAgree() {
+                    public void onPermissionGranted(String[] permissions) {
                         jpgInRes = ResUtils.createJPGInRes();
                         Intent camera = IntentUtils.getCamera(jpgInRes);
                         ActivityTrans.startRequest(mActivity, camera, 11);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(String[] permissions) {
+
                     }
                 });
                 break;

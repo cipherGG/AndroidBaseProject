@@ -1,4 +1,4 @@
-package com.android.base.media;
+package com.android.base.media.music;
 
 /**
  * Created by gg on 2017/4/3.

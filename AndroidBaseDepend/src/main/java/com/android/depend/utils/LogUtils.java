@@ -3,9 +3,9 @@ package com.android.depend.utils;
 import android.text.TextUtils;
 
 import com.android.base.R;
-import com.android.base.component.ContextUtils;
+import com.android.base.component.application.ContextUtils;
 import com.android.base.file.FileUtils;
-import com.android.base.func.AppUtils;
+import com.android.base.component.application.AppUtils;
 import com.android.base.time.TimeUtils;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;

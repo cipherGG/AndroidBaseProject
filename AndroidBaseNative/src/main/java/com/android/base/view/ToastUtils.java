@@ -3,7 +3,7 @@ package com.android.base.view;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.android.base.component.ContextUtils;
+import com.android.base.component.application.ContextUtils;
 
 /**
  * Created by JiangZhiGuo on 2016-10-31.

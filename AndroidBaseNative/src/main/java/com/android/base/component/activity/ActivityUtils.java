@@ -8,7 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Build;
 
-import com.android.base.component.ContextUtils;
+import com.android.base.component.application.ContextUtils;
 
 import java.util.List;
 

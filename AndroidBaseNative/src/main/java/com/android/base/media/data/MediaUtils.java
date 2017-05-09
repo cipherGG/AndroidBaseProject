@@ -1,10 +1,10 @@
-package com.android.base.media;
+package com.android.base.media.data;
 
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.android.base.component.ContextUtils;
+import com.android.base.component.application.ContextUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

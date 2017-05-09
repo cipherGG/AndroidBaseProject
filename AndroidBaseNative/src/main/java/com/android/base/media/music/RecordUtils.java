@@ -1,4 +1,4 @@
-package com.android.base.media;
+package com.android.base.media.music;
 
 import android.media.MediaRecorder;
 

@@ -1,5 +1,6 @@
-package com.android.base.func;
+package com.android.base.component.application;
 
+import android.app.ActivityManager;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -7,11 +8,12 @@ import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 
-import com.android.base.component.ContextUtils;
+import com.android.base.component.activity.ActivityStack;
 import com.android.base.file.FileUtils;
 import com.android.base.str.StringUtils;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by JiangZhiGuo on 2016/10/12.
@@ -204,6 +206,41 @@ public class AppUtils {
      */
     public boolean isSDCardEnable() {
         return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
+    }
+
+    /**
+     * 判断App是否在前台运行
+     *
+     * @param packageName 项目包名 context.getPackageName
+     */
+    public static boolean isAppForeground(String packageName) {
+        ActivityManager activityManager = ContextUtils.getActivityManager();
+        List<ActivityManager.RunningAppProcessInfo> appProcesses =
+                activityManager.getRunningAppProcesses();
+        if (appProcesses != null && appProcesses.size() > 0) {
+            for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+                if (appProcess.importance ==
+                        ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+                        && appProcess.processName.equals(packageName))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 退出应用程序
+     */
+    public void appExit() {
+        try {
+            ActivityStack.finishAll();
+            ActivityManager activityManager = ContextUtils.getActivityManager();
+            activityManager.killBackgroundProcesses(ContextUtils.get().getPackageName());
+            System.exit(0);
+        } catch (Exception e) {
+            // 退出JVM(java虚拟机),释放所占内存资源,0表示正常退出(非0的都为异常退出)
+            System.exit(-1);
+        }
     }
 
 }

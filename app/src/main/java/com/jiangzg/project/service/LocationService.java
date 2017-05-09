@@ -17,14 +17,16 @@ import com.jiangzg.project.utils.third.MapUtils;
 public class LocationService extends Service {
 
     public static void startService(final Context from, final boolean once) {
-        RxPermUtils.requestMap(new RxPermUtils.PermissionListener() {
-            @Override
-            public void onAgree() {
-                Intent intent = new Intent(from, LocationService.class);
-                intent.putExtra("once", once);
-                from.startService(intent);
-            }
-        });
+//        RxPermUtils.requestMap(new RxPermUtils.PermissionListener() {
+//            @Override
+//            public void onAgree() {
+//
+//            }
+//        });
+
+        Intent intent = new Intent(from, LocationService.class);
+        intent.putExtra("once", once);
+        from.startService(intent);
     }
 
     @Override

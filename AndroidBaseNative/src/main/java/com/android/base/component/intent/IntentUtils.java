@@ -1,4 +1,4 @@
-package com.android.base.component;
+package com.android.base.component.intent;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,8 +9,8 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
+import com.android.base.component.application.ContextUtils;
 import com.android.base.file.FileUtils;
-import com.android.base.func.AppUtils;
 import com.android.base.other.ConvertUtils;
 
 import java.io.File;
@@ -216,22 +216,10 @@ public class IntentUtils {
     }
 
     /**
-     * 打开app系统设置
+     * 获取App系统设置
      */
-    public static Intent getSettings() {
-        Intent intent = new Intent();
-        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
-        String packageName = AppUtils.get().getPackageName();
-        intent.setData(Uri.parse("package:" + packageName));
-        return intent;
-    }
-
-    /**
-     * 获取App信息的意图
-     */
-    public static Intent getAppInfo(String packageName) {
-        Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
+    public static Intent getSetings(String packageName) {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         return intent.setData(Uri.parse("package:" + packageName));
     }
 

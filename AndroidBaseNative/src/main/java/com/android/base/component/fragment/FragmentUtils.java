@@ -1,4 +1,4 @@
-package com.android.base.component;
+package com.android.base.component.fragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,8 +7,7 @@ import android.text.TextUtils;
 
 /**
  * Created by Jiang on 2016/0/01
- * <p/>
- * Fragment处理类, 包括FragmentManager的获取
+ * Fragment处理类
  */
 public class FragmentUtils {
 

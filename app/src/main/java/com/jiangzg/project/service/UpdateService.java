@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.v7.app.AlertDialog;
 
-import com.android.base.func.AppUtils;
+import com.android.base.component.application.AppUtils;
 import com.android.base.view.DialogUtils;
 import com.android.depend.utils.RetroUtils;
 import com.jiangzg.project.R;

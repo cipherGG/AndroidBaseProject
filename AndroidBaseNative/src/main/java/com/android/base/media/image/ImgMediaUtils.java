@@ -1,4 +1,4 @@
-package com.android.base.media;
+package com.android.base.media.image;
 
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -10,7 +10,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.android.base.component.ContextUtils;
+import com.android.base.component.application.ContextUtils;
 import com.android.base.file.FileUtils;
 import com.android.base.other.ConvertUtils;
 

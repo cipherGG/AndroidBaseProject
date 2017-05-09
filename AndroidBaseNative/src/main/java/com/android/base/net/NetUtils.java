@@ -9,7 +9,7 @@ import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
 import com.android.base.R;
-import com.android.base.component.ContextUtils;
+import com.android.base.component.application.ContextUtils;
 import com.android.base.view.ToastUtils;
 
 import java.net.Inet6Address;
@@ -18,7 +18,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-import static com.android.base.component.ContextUtils.getConnectivityManager;
+import static com.android.base.component.application.ContextUtils.getConnectivityManager;
 
 /**
  * Created by jiang on 2016/10/12

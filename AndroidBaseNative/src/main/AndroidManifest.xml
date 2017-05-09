@@ -1,34 +1,34 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.android.base">
 
+    <!-- 任务 -->
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <!-- 系统配置 -->
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
     <!-- 访问网络 -->
     <uses-permission android:name="android.permission.INTERNET"/>
-    <!-- 访问网络状态 -->
+    <!-- 网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <!-- 访问WIFI状态 -->
+    <!-- WIFI状态 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <!-- 获取wifi权限 -->
+    <!-- 更改wifi -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <!-- 向扩展卡读写数据 -->
+    <!-- 向扩展卡读写数据(动态) -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.MOUNT_FORMAT_FILESYSTEMS"/>
-    <!-- 读取手机状态(deviceId) -->
+    <!-- 读取手机状态(动态) -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <!-- 读取手机号码 -->
+    <!-- 读取手机号码(动态) -->
     <uses-permission android:name="android.permission.READ_SMS"/>
-    <!-- 全局对话框权限 -->
+    <!-- 全局对话框权限(动态) -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <!-- 用于进行网络定位 -->
+    <!-- 用于进行网络定位(动态) -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <!-- 用于访问GPS定位 -->
+    <!-- 用于访问GPS定位(动态) -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <!-- 系统配置变更 -->
-    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
-    <!-- 任务 -->
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    <!-- 相机 -->
+    <!-- 相机(动态) -->
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <uses-feature

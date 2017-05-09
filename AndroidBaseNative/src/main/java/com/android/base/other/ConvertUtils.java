@@ -19,7 +19,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
-import com.android.base.component.ContextUtils;
+import com.android.base.component.application.ContextUtils;
 import com.android.base.file.FileUtils;
 import com.android.base.str.ConstantUtils;
 import com.android.base.str.StringUtils;
