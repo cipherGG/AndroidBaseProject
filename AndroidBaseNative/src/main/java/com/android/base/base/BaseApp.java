@@ -5,8 +5,7 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.android.base.component.activity.ActivityLifecycle;
-import com.android.base.component.activity.ActivityStack;
-import com.android.base.file.RubbishUtils;
+import com.android.base.file.CleanUtils;
 
 /**
  * Created by JiangZhiGuo on 2016-12-2.
@@ -28,7 +27,7 @@ public class BaseApp extends MultiDexApplication {
         instance = this;
         super.onCreate();
         ActivityLifecycle.initApp(this);
-        RubbishUtils.initApp(this);
+        CleanUtils.initApp(this);
     }
 
     public static BaseApp get() {

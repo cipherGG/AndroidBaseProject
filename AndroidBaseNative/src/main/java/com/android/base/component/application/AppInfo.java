@@ -1,5 +1,6 @@
 package com.android.base.component.application;
 
+import android.annotation.SuppressLint;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -8,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Environment;
 
 import com.android.base.file.FileUtils;
+import com.android.base.str.EncryptUtils;
 import com.android.base.str.StringUtils;
 
 import java.io.File;
@@ -27,6 +29,7 @@ public class AppInfo {
     private String versionName; // 版本
     private int versionCode; // 版本
     private Signature[] signature; // 签名
+    private String SHA1; // 地图的sha1值
     private boolean isSystem; // 是否是用户级别
     private String resDir; // SDCard/包名/
     private String logDir; // SDCard/包名/log/
@@ -37,29 +40,46 @@ public class AppInfo {
      * 获取当前App信息
      * (Permission)
      */
+    @SuppressLint("PackageManagerGetSignatures")
     public static AppInfo get() {
         if (instance != null) return instance;
         instance = new AppInfo();
+        String packageName = AppContext.get().getPackageName();
         PackageManager pm = AppContext.get().getPackageManager();
         try { // packageName可换成其他的app包名
-            PackageInfo pi = pm.getPackageInfo(AppContext.get().getPackageName(), 0);
-            ApplicationInfo ai = pi.applicationInfo;
-            Signature[] signatures = pi.signatures;
-            boolean isSystem = (ApplicationInfo.FLAG_SYSTEM & ai.flags)
-                    == ApplicationInfo.FLAG_SYSTEM;
-            // 赋初始值(不需要权限)
-            instance.setName(ai.loadLabel(pm).toString());
-            instance.setIcon(ai.loadIcon(pm));
+            PackageInfo pi = pm.getPackageInfo(packageName, 0);
             instance.setPackageName(pi.packageName);
-            instance.setPackagePath(ai.sourceDir);
             instance.setVersionCode(pi.versionCode);
             instance.setVersionName(pi.versionName);
-            instance.setSignature(signatures);
-            instance.setSystem(isSystem);
+            ApplicationInfo ai = pi.applicationInfo;
+            if (ai != null) {
+                boolean isSystem = (ApplicationInfo.FLAG_SYSTEM & ai.flags)
+                        == ApplicationInfo.FLAG_SYSTEM;
+                instance.setSystem(isSystem);
+                instance.setName(ai.loadLabel(pm).toString());
+                instance.setIcon(ai.loadIcon(pm));
+                instance.setPackagePath(ai.sourceDir);
+            }
+            PackageInfo piSign = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
+            if (piSign != null) {
+                Signature[] signatures = pi.signatures;
+                instance.setSignature(signatures);
+                String sha1 = EncryptUtils.encryptSHA1ToString(signatures[0].toByteArray()).
+                        replaceAll("(?<=[0-9A-F]{2})[0-9A-F]{2}", ":$0");
+                instance.setSHA1(sha1);
+            }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
         return instance;
+    }
+
+    public String getSHA1() {
+        return SHA1;
+    }
+
+    public void setSHA1(String SHA1) {
+        this.SHA1 = SHA1;
     }
 
     public Signature[] getSignature() {

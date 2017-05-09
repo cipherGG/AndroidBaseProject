@@ -21,7 +21,7 @@ import java.util.List;
  * Created by gg on 2017/4/9.
  * 垃圾管理类
  */
-public class RubbishUtils {
+public class CleanUtils {
 
     public static void initApp(final Application app) {
         // 监听当前app的内存 和 配置,可撤销
@@ -34,7 +34,7 @@ public class RubbishUtils {
             @Override
             public void onLowMemory() {
 //                LogUtils.e("内存不足,清理内存以获取更多内存");
-                RubbishUtils.clearMemory();
+                CleanUtils.clearMemory();
             }
 
             @Override

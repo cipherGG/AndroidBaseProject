@@ -1,7 +1,6 @@
 package com.android.base.component.application;
 
 import android.app.ActivityManager;
-import android.content.Intent;
 
 import com.android.base.component.activity.ActivityStack;
 import com.android.base.component.intent.IntentUtils;
@@ -23,13 +22,11 @@ public class AppUtils {
         ActivityManager activityManager = AppContext.getActivityManager();
         List<ActivityManager.RunningAppProcessInfo> appProcesses =
                 activityManager.getRunningAppProcesses();
-        if (appProcesses != null && appProcesses.size() > 0) {
-            for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
-                if (appProcess.importance ==
-                        ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
-                        && appProcess.processName.equals(packageName))
-                    return true;
-            }
+        if (appProcesses == null || appProcesses.size() == 0) return false;
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.importance == ActivityManager
+                    .RunningAppProcessInfo.IMPORTANCE_FOREGROUND)
+                return appProcess.processName.equals(packageName);
         }
         return false;
     }
@@ -55,18 +52,8 @@ public class AppUtils {
      * @param packageName 包名
      * @return {@code true}: 已安装<br>{@code false}: 未安装
      */
-    public static boolean isInstallApp(String packageName) {
+    public static boolean isAppInstall(String packageName) {
         return !isSpace(packageName) && IntentUtils.getApp(packageName) != null;
-    }
-
-    /**
-     * 获取打开App的意图
-     *
-     * @param packageName 包名
-     * @return intent
-     */
-    public static Intent getLaunchAppIntent(String packageName) {
-        return AppContext.getPackageManager().getLaunchIntentForPackage(packageName);
     }
 
     private static boolean isSpace(String s) {
