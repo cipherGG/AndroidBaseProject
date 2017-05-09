@@ -1,16 +1,19 @@
 package com.android.base.component.activity;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Build;
+import android.util.ArrayMap;
 
 import com.android.base.component.application.ContextUtils;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by gg on 2017/5/9.
@@ -19,16 +22,35 @@ import java.util.List;
 public class ActivityUtils {
 
     /**
-     * 获取top的Activity的ComponentName
+     * 获取栈顶Activity
+     *
+     * @return 栈顶Activity
      */
-    public static ComponentName getTopActivityName() {
-        ActivityManager localActivityManager = ContextUtils.getActivityManager();
-        if (localActivityManager != null) {
-            List<ActivityManager.RunningTaskInfo> localList =
-                    localActivityManager.getRunningTasks(1);
-            if (localList != null && localList.size() > 0) {
-                return localList.get(0).topActivity;
+    public static Activity getTop() {
+        try {
+            Class activityThreadClass = Class.forName("android.app.ActivityThread");
+            @SuppressWarnings("unchecked")
+            Object activityThread = activityThreadClass.getMethod("currentActivityThread").invoke(null);
+            Field activitiesField = activityThreadClass.getDeclaredField("mActivities");
+            activitiesField.setAccessible(true);
+            Map activities = null;
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                activities = (HashMap) activitiesField.get(activityThread);
+            } else {
+                activities = (ArrayMap) activitiesField.get(activityThread);
             }
+            for (Object activityRecord : activities.values()) {
+                Class activityRecordClass = activityRecord.getClass();
+                Field pausedField = activityRecordClass.getDeclaredField("paused");
+                pausedField.setAccessible(true);
+                if (!pausedField.getBoolean(activityRecord)) {
+                    Field activityField = activityRecordClass.getDeclaredField("activity");
+                    activityField.setAccessible(true);
+                    return (Activity) activityField.get(activityRecord);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -39,7 +61,7 @@ public class ActivityUtils {
      * @param packageName 项目包名
      * @param className   activity全路径类名
      */
-    public static boolean isActivityRegister(String packageName, String className) {
+    public static boolean isExists(String packageName, String className) {
         PackageManager packageManager = ContextUtils.getPackageManager();
         Intent intent = new Intent();
         intent.setClassName(packageName, className);
@@ -47,6 +69,26 @@ public class ActivityUtils {
         ComponentName componentName = intent.resolveActivity(packageManager);
         int size = packageManager.queryIntentActivities(intent, 0).size();
         return !(resolveInfo == null || componentName == null || size == 0);
+    }
+
+    /**
+     * 获取launcher activity
+     *
+     * @param packageName 包名
+     * @return launcher activity
+     */
+    public static String getLauncher(String packageName) {
+        Intent intent = new Intent(Intent.ACTION_MAIN, null);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        List<ResolveInfo> infos = ContextUtils.getPackageManager()
+                .queryIntentActivities(intent, 0);
+        for (ResolveInfo info : infos) {
+            if (info.activityInfo.packageName.equals(packageName)) {
+                return info.activityInfo.name;
+            }
+        }
+        return "no " + packageName;
     }
 
     /**

@@ -1,9 +1,11 @@
 package com.android.base.component.intent;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -20,6 +22,19 @@ import java.io.File;
  * 意图管理
  */
 public class IntentUtils {
+
+    private static Intent getComponentIntent(String packageName, String className) {
+        return getComponentIntent(packageName, className, null);
+    }
+
+    private static Intent getComponentIntent(String packageName, String className, Bundle bundle) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        ComponentName cn = new ComponentName(packageName, className);
+        return intent.setComponent(cn);
+    }
 
     /**
      * 拍照 ,不加保存路径，图片会被压缩(Permission)
