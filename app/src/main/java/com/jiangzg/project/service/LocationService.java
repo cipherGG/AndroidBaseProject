@@ -7,10 +7,9 @@ import android.os.IBinder;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
+import com.android.base.component.application.AppContext;
 import com.android.base.func.LocationUtils;
 import com.android.base.view.ToastUtils;
-import com.android.depend.utils.RxPermUtils;
-import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
 import com.jiangzg.project.utils.third.MapUtils;
 
@@ -64,7 +63,7 @@ public class LocationService extends Service {
                     @Override
                     public void onFailed(AMapLocation aMapLocation) {
                         int errorCode = aMapLocation.getErrorCode();
-                        String toast = MyApp.get().getString(R.string.location_error);
+                        String toast = AppContext.get().getString(R.string.location_error);
                         ToastUtils.show(toast + errorCode);
                     }
                 });

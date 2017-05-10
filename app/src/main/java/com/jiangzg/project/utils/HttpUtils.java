@@ -1,8 +1,8 @@
 package com.jiangzg.project.utils;
 
+import com.android.base.component.application.AppContext;
 import com.android.base.str.StringUtils;
 import com.android.base.view.ToastUtils;
-import com.jiangzg.project.MyApp;
 import com.jiangzg.project.R;
 import com.jiangzg.project.service.UpdateService;
 
@@ -34,7 +34,7 @@ public class HttpUtils {
             case 409: // 用户版本过低, 应该禁止用户登录，并提示用户升级
                 ToastUtils.show(R.string.http_response_error_409);
                 UserUtils.clearUser();
-                UpdateService.goService(MyApp.get());
+                UpdateService.goService(AppContext.get());
                 break;
             case 410: // 用户被禁用,请求数据的时候得到该 ErrorCode, 应该退出应用
                 ToastUtils.show(R.string.http_response_error_410);

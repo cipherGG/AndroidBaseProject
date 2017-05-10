@@ -16,11 +16,11 @@ import com.android.base.media.image.ImgMediaUtils;
 import com.android.base.other.ConvertUtils;
 import com.android.base.time.TimeUtils;
 import com.android.base.view.ToastUtils;
-import com.android.depend.base.JActivity;
 import com.android.depend.utils.GlideUtils;
 import com.android.depend.utils.LogUtils;
 import com.android.depend.utils.LuBanUtils;
 import com.jiangzg.project.R;
+import com.jiangzg.project.base.JActivity;
 import com.jiangzg.project.utils.ResUtils;
 import com.jiangzg.project.utils.ViewUtils;
 

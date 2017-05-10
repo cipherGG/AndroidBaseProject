@@ -27,7 +27,6 @@ import com.amap.api.services.geocoder.RegeocodeResult;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.android.depend.utils.LogUtils;
-import com.jiangzg.project.MyApp;
 
 import java.util.ArrayList;
 

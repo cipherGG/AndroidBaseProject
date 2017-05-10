@@ -1,4 +1,4 @@
-package com.android.depend.base;
+package com.jiangzg.project.base;
 
 import android.content.Context;
 import android.os.Build;

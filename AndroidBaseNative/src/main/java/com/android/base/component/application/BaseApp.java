@@ -1,4 +1,4 @@
-package com.android.base.base;
+package com.android.base.component.application;
 
 import android.content.Context;
 import android.support.multidex.MultiDex;

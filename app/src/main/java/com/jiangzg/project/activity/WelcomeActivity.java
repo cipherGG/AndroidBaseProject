@@ -6,8 +6,8 @@ import android.os.Handler;
 import android.widget.ImageView;
 
 import com.android.base.view.BarUtils;
-import com.android.depend.base.JActivity;
 import com.jiangzg.project.R;
+import com.jiangzg.project.base.JActivity;
 
 import butterknife.BindView;
 

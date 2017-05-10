@@ -14,8 +14,6 @@ import android.telephony.TelephonyManager;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-import com.android.base.base.BaseApp;
-
 /**
  * Created by gg on 2017/4/4.
  * AppContext管理类

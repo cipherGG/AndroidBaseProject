@@ -1,9 +1,11 @@
-package com.android.depend.base;
+package com.jiangzg.project.base;
 
 import android.os.Handler;
 import android.os.Looper;
 
-import com.android.base.base.BaseApp;
+import com.android.base.component.activity.ActivityLifecycle;
+import com.android.base.component.application.BaseApp;
+import com.android.base.file.CleanUtils;
 import com.android.depend.utils.AnalyUtils;
 import com.android.depend.utils.LogUtils;
 
@@ -19,17 +21,20 @@ import butterknife.ButterKnife;
  */
 public class JApp extends BaseApp {
 
-    protected Handler mainHandler; // 主线程handler
-    protected ExecutorService threadPool; // 缓冲线程池
-    protected Timer timer; // timer
-
     @Override
     public void onCreate() {
         super.onCreate();
-        ButterKnife.setDebug(true); // 注解
-        LogUtils.initApp(); // 打印
-        AnalyUtils.initApp(); // 统计
+        ActivityLifecycle.initApp(this);
+        CleanUtils.initApp(this);
+        ButterKnife.setDebug(true);
+        LogUtils.initApp();
+        AnalyUtils.initApp();
+//        ScanUtils.initApp(this);
     }
+
+    private Handler mainHandler; // 主线程handler
+    private ExecutorService threadPool; // 缓冲线程池
+    private Timer timer; // timer
 
     public Handler getHandler() {
         if (null == mainHandler) {
