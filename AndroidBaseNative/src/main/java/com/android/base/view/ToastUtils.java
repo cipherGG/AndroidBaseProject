@@ -15,7 +15,7 @@ public class ToastUtils {
 
     public static void show(final CharSequence message) {
         if (TextUtils.isEmpty(message)) return;
-//        BaseApp.get().getHandler().post(new Runnable() {
+//        AppNative.get().getHandler().post(new Runnable() {
 //            @Override
 //            public void run() {
 //                if (toast == null) {
@@ -34,7 +34,7 @@ public class ToastUtils {
     }
 
     public static void cancel() {
-//        BaseApp.get().getHandler().post(new Runnable() {
+//        AppNative.get().getHandler().post(new Runnable() {
 //            @Override
 //            public void run() {
 //                if (toast == null) return;

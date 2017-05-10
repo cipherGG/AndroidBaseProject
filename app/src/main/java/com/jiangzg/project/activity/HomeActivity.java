@@ -20,7 +20,7 @@ import com.android.depend.utils.GlideUtils;
 import com.android.depend.utils.LogUtils;
 import com.android.depend.utils.LuBanUtils;
 import com.jiangzg.project.R;
-import com.jiangzg.project.base.JActivity;
+import com.jiangzg.project.base.BaseActivity;
 import com.jiangzg.project.utils.ResUtils;
 import com.jiangzg.project.utils.ViewUtils;
 
@@ -34,7 +34,7 @@ import top.zibin.luban.OnCompressListener;
  * Created by JiangZhiGuo on 2016/06/01
  * describe 主界面
  */
-public class HomeActivity extends JActivity<HomeActivity> {
+public class HomeActivity extends BaseActivity<HomeActivity> {
 
     @BindView(R.id.btn1)
     Button btn1;

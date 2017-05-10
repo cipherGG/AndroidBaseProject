@@ -26,9 +26,9 @@ import butterknife.Unbinder;
  * Created by JiangZhiGuo on 2016-12-2.
  * describe Activity的基类
  */
-public abstract class JActivity<T> extends AppCompatActivity {
+public abstract class BaseActivity<T> extends AppCompatActivity {
 
-    public JActivity mActivity;
+    public BaseActivity mActivity;
     public FragmentManager mFragmentManager;
     public View rootView;
     private Unbinder unbinder;

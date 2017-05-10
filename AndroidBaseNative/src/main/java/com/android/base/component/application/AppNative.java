@@ -11,9 +11,9 @@ import com.android.base.file.CleanUtils;
  * Created by JiangZhiGuo on 2016-12-2.
  * describe Application的基类
  */
-public class BaseApp extends MultiDexApplication {
+public class AppNative extends MultiDexApplication {
 
-    private static BaseApp instance;
+    private static AppNative instance;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -30,7 +30,7 @@ public class BaseApp extends MultiDexApplication {
         CleanUtils.initApp(this);
     }
 
-    public static BaseApp get() {
+    public static AppNative get() {
         return instance;
     }
 }

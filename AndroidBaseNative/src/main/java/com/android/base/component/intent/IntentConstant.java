@@ -11,6 +11,14 @@ import android.provider.Settings;
  */
 public class IntentConstant {
 
+    /**
+     * 1.显式方式 直接设置目标组件的ComponentName，用于一个应用内部的消息传递，比如启动另一个Activity或者一个services。
+     *           通过Intent的setComponent和setClass来制定目标组件的ComponentName。
+     * 2.隐式方式 ComponentName为空，用于调用其他应用中的组件。
+     *           需要包含足够的信息，这样系统才能根据这些信息使用intent filter在所有的组件中
+     *           过滤action、data或者category来匹配目标组件。
+     */
+
     /***********************************Action*******************************************/
     // 关机
     public static final String action_boot = Intent.ACTION_BOOT_COMPLETED;

@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import com.android.base.view.BarUtils;
 import com.jiangzg.project.R;
-import com.jiangzg.project.base.JActivity;
+import com.jiangzg.project.base.BaseActivity;
 
 import butterknife.BindView;
 
@@ -15,7 +15,7 @@ import butterknife.BindView;
  * Created by JiangZhiGuo on 2016/06/01
  * describe 启动界面
  */
-public class WelcomeActivity extends JActivity<WelcomeActivity> {
+public class WelcomeActivity extends BaseActivity<WelcomeActivity> {
 
     @BindView(R.id.ivWelcome)
     ImageView ivWelcome;

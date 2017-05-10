@@ -21,7 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 public class AppContext {
 
     public static Application get() {
-        return BaseApp.get();
+        return AppNative.get();
     }
 
     public static WindowManager getWindowManager() {

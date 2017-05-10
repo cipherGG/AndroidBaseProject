@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.android.base.component.activity.ActivityLifecycle;
-import com.android.base.component.application.BaseApp;
+import com.android.base.component.application.AppNative;
 import com.android.base.file.CleanUtils;
 import com.android.depend.utils.AnalyUtils;
 import com.android.depend.utils.LogUtils;
@@ -19,13 +19,11 @@ import butterknife.ButterKnife;
  * Created by JiangZhiGuo on 2016-12-2.
  * describe Application的基类
  */
-public class JApp extends BaseApp {
+public class BaseApp extends AppNative {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        ActivityLifecycle.initApp(this);
-        CleanUtils.initApp(this);
         ButterKnife.setDebug(true);
         LogUtils.initApp();
         AnalyUtils.initApp();
