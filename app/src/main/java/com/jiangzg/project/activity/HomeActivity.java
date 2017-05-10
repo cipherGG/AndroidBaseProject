@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.android.base.component.activity.ActivityTrans;
-import com.android.base.component.application.AppInfo;
 import com.android.base.component.intent.IntentUtils;
 import com.android.base.func.PermUtils;
 import com.android.base.media.image.ImgMediaUtils;
@@ -21,7 +20,6 @@ import com.android.depend.base.JActivity;
 import com.android.depend.utils.GlideUtils;
 import com.android.depend.utils.LogUtils;
 import com.android.depend.utils.LuBanUtils;
-import com.android.depend.utils.RxPermUtils;
 import com.jiangzg.project.R;
 import com.jiangzg.project.utils.ResUtils;
 import com.jiangzg.project.utils.ViewUtils;

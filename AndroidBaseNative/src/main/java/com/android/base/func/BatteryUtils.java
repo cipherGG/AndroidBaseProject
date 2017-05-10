@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 
 import com.android.base.component.application.AppContext;
+import com.android.base.component.intent.IntentConstant;
 
 /**
  * Created by gg on 2017/4/3.
@@ -35,7 +36,8 @@ public class BatteryUtils {
      */
     public void registerReceiver(Context context, BatteryListener listener) {
         mListener = listener;
-        context.registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        IntentFilter intentFilter = new IntentFilter(IntentConstant.action_battery);
+        context.registerReceiver(batteryReceiver, intentFilter);
     }
 
     /**

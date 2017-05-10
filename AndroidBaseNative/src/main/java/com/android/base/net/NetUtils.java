@@ -10,6 +10,7 @@ import android.telephony.TelephonyManager;
 
 import com.android.base.R;
 import com.android.base.component.application.AppContext;
+import com.android.base.component.intent.IntentConstant;
 import com.android.base.view.ToastUtils;
 
 import java.net.Inet6Address;
@@ -53,7 +54,7 @@ public class NetUtils {
      */
     public void registerReceiver(Context context, ConnectListener listener) {
         mListener = listener;
-        context.registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        context.registerReceiver(receiver, new IntentFilter(IntentConstant.action_connectivity));
     }
 
     /**

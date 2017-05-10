@@ -48,25 +48,29 @@ public class AppInfo {
         PackageManager pm = AppContext.get().getPackageManager();
         try { // packageName可换成其他的app包名
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
-            instance.setPackageName(pi.packageName);
-            instance.setVersionCode(pi.versionCode);
-            instance.setVersionName(pi.versionName);
-            ApplicationInfo ai = pi.applicationInfo;
-            if (ai != null) {
-                boolean isSystem = (ApplicationInfo.FLAG_SYSTEM & ai.flags)
-                        == ApplicationInfo.FLAG_SYSTEM;
-                instance.setSystem(isSystem);
-                instance.setName(ai.loadLabel(pm).toString());
-                instance.setIcon(ai.loadIcon(pm));
-                instance.setPackagePath(ai.sourceDir);
+            if (pi != null) {
+                instance.setPackageName(pi.packageName);
+                instance.setVersionCode(pi.versionCode);
+                instance.setVersionName(pi.versionName);
+                ApplicationInfo ai = pi.applicationInfo;
+                if (ai != null) {
+                    boolean isSystem = (ApplicationInfo.FLAG_SYSTEM & ai.flags)
+                            == ApplicationInfo.FLAG_SYSTEM;
+                    instance.setSystem(isSystem);
+                    instance.setName(ai.loadLabel(pm).toString());
+                    instance.setIcon(ai.loadIcon(pm));
+                    instance.setPackagePath(ai.sourceDir);
+                }
             }
             PackageInfo piSign = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
             if (piSign != null) {
                 Signature[] signatures = piSign.signatures;
                 instance.setSignature(signatures);
-                String sha1 = EncryptUtils.encryptSHA1ToString(signatures[0].toByteArray()).
-                        replaceAll("(?<=[0-9A-F]{2})[0-9A-F]{2}", ":$0");
-                instance.setSHA1(sha1);
+                if (signatures.length > 0) {
+                    String sha1 = EncryptUtils.encryptSHA1ToString(signatures[0].toByteArray()).
+                            replaceAll("(?<=[0-9A-F]{2})[0-9A-F]{2}", ":$0");
+                    instance.setSHA1(sha1);
+                }
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();

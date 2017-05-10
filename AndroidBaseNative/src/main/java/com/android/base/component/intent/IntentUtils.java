@@ -6,8 +6,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
@@ -19,7 +17,7 @@ import java.io.File;
 
 /**
  * Created by gg on 2017/3/13.
- * 意图管理
+ * 原生意图获取
  */
 public class IntentUtils {
 
@@ -28,11 +26,11 @@ public class IntentUtils {
      * (Permission)
      */
     public static Intent getCamera(File cameraFile) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+        Intent intent = new Intent(IntentConstant.action_capture);
+        intent.putExtra(IntentConstant.extra_image_orientation, 0);
         if (cameraFile == null) return intent;
         Uri uri = ConvertUtils.File2URI(cameraFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        intent.putExtra(IntentConstant.extra_media_output, uri);
         return intent;
     }
 
@@ -42,25 +40,29 @@ public class IntentUtils {
     public static Intent getPicture() {
         Intent intent = new Intent();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setAction(IntentConstant.action_open_document);
+            intent.addCategory(IntentConstant.category_openable);
             if (intent.resolveActivity(AppContext.get().getPackageManager()) == null) {
-                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setAction(IntentConstant.action_get_content);
             }
         } else {
-            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.setAction(IntentConstant.action_get_content);
         }
-        intent.setType("image/*");
+        intent.setType(IntentConstant.type_image);
         return intent;
     }
 
     /**
      * 裁剪(通用) 1.启动拍照/相册 2.在onActivityForResult里调用此方法，启动裁剪功能
+     *
+     * @param from    源文件
+     * @param save    保存文件
+     * @param aspectX 比例长 0：随意
+     * @param aspectY 比例宽 0：随意
+     * @param outputX 输出长
+     * @param outputY 输出宽
+     * @return intent
      */
-    public static Intent getCrop(File from, File save) {
-        return getCrop(from, save, 0, 0, 300, 300);
-    }
-
     public static Intent getCrop(File from, File save, int aspectX, int aspectY,
                                  int outputX, int outputY) {
         if (FileUtils.isFileEmpty(from)) { // 源文件不存在
@@ -75,26 +77,26 @@ public class IntentUtils {
 
     public static Intent getCrop(Uri from, Uri save, int aspectX, int aspectY,
                                  int outputX, int outputY) {
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(from, "image/*");
-        intent.putExtra("crop", "true");
+        Intent intent = new Intent(IntentConstant.action_crop);
+        intent.setDataAndType(from, IntentConstant.type_image);
+        intent.putExtra(IntentConstant.extra_crop, "true");
         // 裁剪框比例
         if (aspectX != 0 && aspectY != 0) {
-            intent.putExtra("aspectX", aspectX);
-            intent.putExtra("aspectY", aspectY);
+            intent.putExtra(IntentConstant.extra_aspect_x, aspectX);
+            intent.putExtra(IntentConstant.extra_aspect_y, aspectY);
         }
         // 输出图片大小(太大会传输失败)
         if (outputX != 0 && outputY != 0) {
-            intent.putExtra("outputX", outputX);
-            intent.putExtra("outputY", outputY);
+            intent.putExtra(IntentConstant.extra_output_x, outputX);
+            intent.putExtra(IntentConstant.extra_output_y, outputY);
         }
         // 裁剪选项
-        intent.putExtra("scale", true);
-        intent.putExtra("noFaceDetection", true);
+        intent.putExtra(IntentConstant.extra_scale, true);
+        intent.putExtra(IntentConstant.extra_no_face, true);
         // 数据返回
-        intent.putExtra("return-data", false); // 不从intent里面拿
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, save);
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra(IntentConstant.extra_return_data, false); // 不从intent里面拿
+        intent.putExtra(IntentConstant.extra_media_output, save);
+        intent.putExtra(IntentConstant.extra_output_format, Bitmap.CompressFormat.JPEG.toString());
         return intent;
     }
 
@@ -109,9 +111,9 @@ public class IntentUtils {
      * 回到Home
      */
     public static Intent getHome() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        Intent intent = new Intent(IntentConstant.action_main);
+        intent.addCategory(IntentConstant.category_home);
+        intent.addFlags(IntentConstant.flag_new_task | IntentConstant.flag_reset_task);
         return intent;
     }
 
@@ -120,15 +122,15 @@ public class IntentUtils {
      */
     public static Intent getInstall(File file) {
         if (file == null) return null;
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent = new Intent(IntentConstant.action_view);
+        intent.addCategory(IntentConstant.category_default);
+        intent.addFlags(IntentConstant.flag_new_task);
         String type;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            type = "application/vnd.android.package-archive";
+            type = IntentConstant.type_archive;
         } else {
-            type = MimeTypeMap.getSingleton()
-                    .getMimeTypeFromExtension(FileUtils.getFileExtension(file));
+            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(FileUtils
+                    .getFileExtension(file));
         }
         return intent.setDataAndType(Uri.fromFile(file), type);
     }
@@ -137,9 +139,9 @@ public class IntentUtils {
      * 获取卸载App的意图
      */
     public static Intent getUninstall(String packageName) {
-        Intent intent = new Intent(Intent.ACTION_DELETE);
+        Intent intent = new Intent(IntentConstant.action_delete);
         intent.setData(Uri.parse("package:" + packageName));
-        return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intent.addFlags(IntentConstant.flag_new_task);
     }
 
     /**
@@ -152,17 +154,17 @@ public class IntentUtils {
 
     public static Intent getShare(String content, Uri uri) {
         if (uri == null) return getShare(content);
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, content);
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
-        intent.setType("image/*");
+        Intent intent = new Intent(IntentConstant.action_send);
+        intent.putExtra(IntentConstant.extra_text, content);
+        intent.putExtra(IntentConstant.extra_stream, uri);
+        intent.setType(IntentConstant.type_image);
         return intent;
     }
 
     public static Intent getShare(String content) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, content); // 设置分享信息
+        Intent intent = new Intent(IntentConstant.action_send);
+        intent.setType(IntentConstant.type_text);
+        intent.putExtra(IntentConstant.extra_text, content); // 设置分享信息
         return intent;
     }
 
@@ -170,7 +172,7 @@ public class IntentUtils {
      * 跳至填充好phoneNumber的拨号界面
      */
     public static Intent getDial(String phoneNumber) {
-        return new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
+        return new Intent(IntentConstant.action_dial, Uri.parse("tel:" + phoneNumber));
     }
 
     /**
@@ -179,7 +181,7 @@ public class IntentUtils {
      */
     public static Intent getCall(String phoneNumber) {
         Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_CALL);
+        intent.setAction(IntentConstant.action_call);
         intent.setData(Uri.parse("tel:" + phoneNumber));
         return intent;
     }
@@ -189,8 +191,8 @@ public class IntentUtils {
      */
     public static Intent getSMS(String phoneNumber, String content) {
         Uri uri = Uri.parse("smsto:" + (TextUtils.isEmpty(phoneNumber) ? "" : phoneNumber));
-        Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
-        intent.putExtra("sms_body", TextUtils.isEmpty(content) ? "" : content);
+        Intent intent = new Intent(IntentConstant.action_send_to, uri);
+        intent.putExtra(IntentConstant.extra_sms_body, TextUtils.isEmpty(content) ? "" : content);
         return intent;
     }
 
@@ -199,8 +201,8 @@ public class IntentUtils {
      */
     public static Intent getSMS(String phoneNumber, String content, File img) {
         Intent intent = getSMS(phoneNumber, content);
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(img));
-        intent.setType("image/png");
+        intent.putExtra(IntentConstant.extra_stream, Uri.fromFile(img));
+        intent.setType(IntentConstant.type_png);
         return intent;
     }
 
@@ -211,8 +213,8 @@ public class IntentUtils {
      */
     public static Intent getContacts() {
         Intent intent = new Intent();
-        intent.setAction("android.intent.action.PICK");
-        intent.setType("vnd.android.cursor.dir/phone_v2");
+        intent.setAction(IntentConstant.action_pick);
+        intent.setType(IntentConstant.type_phone);
         return intent;
     }
 
@@ -221,7 +223,7 @@ public class IntentUtils {
      */
     public static Intent getMarket() {
         String str = "market://details?id=" + AppContext.get().getPackageName();
-        return new Intent("android.intent.action.VIEW", Uri.parse(str));
+        return new Intent(IntentConstant.action_view, Uri.parse(str));
     }
 
     /**
@@ -229,21 +231,21 @@ public class IntentUtils {
      */
     public static Intent getWebBrowse(String url) {
         Uri address = Uri.parse(url);
-        return new Intent(Intent.ACTION_VIEW, address);
+        return new Intent(IntentConstant.action_view, address);
     }
 
     /**
      * 打开网络设置界面
      */
     public static Intent getNetSettings() {
-        return new Intent(Settings.ACTION_SETTINGS);
+        return new Intent(IntentConstant.action_settings);
     }
 
     /**
      * 获取App系统设置
      */
     public static Intent getSetings(String packageName) {
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Intent intent = new Intent(IntentConstant.action_app_settings);
         return intent.setData(Uri.parse("package:" + packageName));
     }
 
@@ -251,8 +253,8 @@ public class IntentUtils {
      * 打开Gps设置界面
      */
     public static Intent getGps() {
-        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent = new Intent(IntentConstant.action_location_settings);
+        intent.setFlags(IntentConstant.flag_new_task);
         return intent;
     }
 
@@ -265,7 +267,7 @@ public class IntentUtils {
      * @return 直接startActivity即可
      */
     private static Intent getComponent(String packageName, String className, Bundle bundle) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Intent intent = new Intent(IntentConstant.action_view);
         if (bundle != null) {
             intent.putExtras(bundle);
         }

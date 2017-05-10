@@ -18,7 +18,7 @@ import com.android.base.base.BaseApp;
 
 /**
  * Created by gg on 2017/4/4.
- * Context管理类
+ * AppContext管理类
  */
 public class AppContext {
 

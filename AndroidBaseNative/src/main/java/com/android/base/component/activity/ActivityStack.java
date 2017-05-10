@@ -3,6 +3,8 @@ package com.android.base.component.activity;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.android.base.component.intent.IntentConstant;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -21,8 +23,8 @@ public class ActivityStack {
      * 4.FLAG_ACTIVITY_NO_ANIMATION rootActivity不能有切换动画
      */
     public static void changeTask(Intent intent) {
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.addFlags(IntentConstant.flag_new_task);
+        intent.addFlags(IntentConstant.flag_no_anim);
     }
 
     private static Stack<Activity> STACK; // 任务栈
