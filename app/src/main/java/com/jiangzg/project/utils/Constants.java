@@ -1,6 +1,6 @@
 package com.jiangzg.project.utils;
 
-import com.android.base.str.ConstantUtils;
+import com.android.base.string.ConstantUtils;
 
 /**
  * Created by Jiang on 5/26/16.

@@ -9,8 +9,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Environment;
 
 import com.android.base.file.FileUtils;
-import com.android.base.str.EncryptUtils;
-import com.android.base.str.StringUtils;
+import com.android.base.string.EncryptUtils;
+import com.android.base.string.StringUtils;
 
 import java.io.File;
 

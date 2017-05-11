@@ -4,7 +4,7 @@ import android.app.Dialog;
 
 import com.android.base.R;
 import com.android.base.component.application.AppContext;
-import com.android.base.str.StringUtils;
+import com.android.base.string.StringUtils;
 
 import java.io.IOException;
 import java.util.HashMap;

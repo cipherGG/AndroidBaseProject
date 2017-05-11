@@ -15,10 +15,10 @@ import android.view.View;
 import android.view.Window;
 
 import com.android.base.component.activity.ActivityTrans;
-import com.android.base.func.InputUtils;
-import com.android.base.func.PermUtils;
-import com.android.base.view.BarUtils;
-import com.android.base.view.ScreenUtils;
+import com.android.base.function.InputUtils;
+import com.android.base.function.PermUtils;
+import com.android.base.view.device.BarUtils;
+import com.android.base.view.device.ScreenUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

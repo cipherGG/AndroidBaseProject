@@ -1,4 +1,4 @@
-package com.android.base.view;
+package com.android.base.view.device;
 
 import android.app.Activity;
 import android.app.KeyguardManager;

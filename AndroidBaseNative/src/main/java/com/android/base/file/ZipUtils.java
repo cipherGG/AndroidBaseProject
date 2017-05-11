@@ -1,6 +1,6 @@
 package com.android.base.file;
 
-import com.android.base.str.StringUtils;
+import com.android.base.string.StringUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -18,7 +18,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-import static com.android.base.str.ConstantUtils.KB;
+import static com.android.base.string.ConstantUtils.KB;
 
 /**
  * Created by gg on 2017/3/24.

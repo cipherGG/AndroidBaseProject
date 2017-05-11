@@ -2,8 +2,8 @@ package com.android.base.file;
 
 import android.text.TextUtils;
 
-import com.android.base.other.ConvertUtils;
-import com.android.base.str.EncryptUtils;
+import com.android.base.string.ConvertUtils;
+import com.android.base.string.EncryptUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.android.base.str.ConstantUtils.KB;
+import static com.android.base.string.ConstantUtils.KB;
 
 /**
  * Created by Jiang on 2016/10/12

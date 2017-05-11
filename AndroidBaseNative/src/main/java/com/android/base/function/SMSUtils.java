@@ -1,4 +1,4 @@
-package com.android.base.func;
+package com.android.base.function;
 
 import android.app.PendingIntent;
 import android.content.ContentValues;
@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.telephony.SmsManager;
 
 import com.android.base.component.application.AppContext;
-import com.android.base.str.StringUtils;
+import com.android.base.string.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

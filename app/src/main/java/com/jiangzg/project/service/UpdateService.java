@@ -8,7 +8,7 @@ import android.os.IBinder;
 import android.support.v7.app.AlertDialog;
 
 import com.android.base.component.application.AppInfo;
-import com.android.base.view.DialogUtils;
+import com.android.base.view.widget.DialogUtils;
 import com.android.depend.utils.RetroUtils;
 import com.jiangzg.project.R;
 import com.jiangzg.project.domain.Version;

@@ -3,7 +3,7 @@ package com.android.depend.utils;
 import android.app.Activity;
 
 import com.android.base.component.activity.ActivityStack;
-import com.android.base.func.PermUtils;
+import com.android.base.function.PermUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import rx.Observable;

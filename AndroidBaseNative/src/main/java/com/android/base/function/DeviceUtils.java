@@ -1,4 +1,4 @@
-package com.android.base.func;
+package com.android.base.function;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -11,7 +11,7 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
 import com.android.base.component.application.AppContext;
-import com.android.base.str.StringUtils;
+import com.android.base.string.StringUtils;
 
 /**
  * Created by jiang on 2016/10/12

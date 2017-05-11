@@ -14,7 +14,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.android.base.view.WebUtils;
+import com.android.base.view.widget.WebUtils;
 
 /**
  * Created by JiangZhiGuo on 2016-11-7.

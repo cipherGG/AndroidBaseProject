@@ -30,7 +30,7 @@ import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 
 import com.android.base.file.FileUtils;
-import com.android.base.view.ScreenUtils;
+import com.android.base.view.device.ScreenUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

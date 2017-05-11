@@ -11,7 +11,7 @@ import android.webkit.MimeTypeMap;
 
 import com.android.base.component.application.AppContext;
 import com.android.base.file.FileUtils;
-import com.android.base.other.ConvertUtils;
+import com.android.base.string.ConvertUtils;
 
 import java.io.File;
 

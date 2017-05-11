@@ -8,7 +8,7 @@ import java.util.concurrent.ScheduledExecutorService;
  * Created by gg on 2017/5/8.
  * 线程管理类
  */
-public class JThread {
+public class ThreadUtils {
 
     private void test() {
         ExecutorService executorService = Executors.newCachedThreadPool();

@@ -1,4 +1,4 @@
-package com.android.base.view;
+package com.android.base.view.widget;
 
 import android.app.Notification;
 import android.app.PendingIntent;

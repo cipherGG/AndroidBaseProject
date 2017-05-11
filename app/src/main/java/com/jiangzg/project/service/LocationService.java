@@ -8,8 +8,8 @@ import android.os.IBinder;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.android.base.component.application.AppContext;
-import com.android.base.func.LocationUtils;
-import com.android.base.view.ToastUtils;
+import com.android.base.function.LocationUtils;
+import com.android.base.view.widget.ToastUtils;
 import com.jiangzg.project.R;
 import com.jiangzg.project.utils.third.MapUtils;
 

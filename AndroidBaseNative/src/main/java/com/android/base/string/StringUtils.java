@@ -1,21 +1,21 @@
-package com.android.base.str;
+package com.android.base.string;
 
 import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import static com.android.base.str.ConstantUtils.REGEX_CHZ;
-import static com.android.base.str.ConstantUtils.REGEX_DATE;
-import static com.android.base.str.ConstantUtils.REGEX_EMAIL;
-import static com.android.base.str.ConstantUtils.REGEX_IDCARD15;
-import static com.android.base.str.ConstantUtils.REGEX_IDCARD18;
-import static com.android.base.str.ConstantUtils.REGEX_IP;
-import static com.android.base.str.ConstantUtils.REGEX_MOBILE;
-import static com.android.base.str.ConstantUtils.REGEX_NUMBER;
-import static com.android.base.str.ConstantUtils.REGEX_PASSWORD;
-import static com.android.base.str.ConstantUtils.REGEX_POST_CODE;
-import static com.android.base.str.ConstantUtils.REGEX_TEL;
-import static com.android.base.str.ConstantUtils.REGEX_URL;
+import static com.android.base.string.ConstantUtils.REGEX_CHZ;
+import static com.android.base.string.ConstantUtils.REGEX_DATE;
+import static com.android.base.string.ConstantUtils.REGEX_EMAIL;
+import static com.android.base.string.ConstantUtils.REGEX_IDCARD15;
+import static com.android.base.string.ConstantUtils.REGEX_IDCARD18;
+import static com.android.base.string.ConstantUtils.REGEX_IP;
+import static com.android.base.string.ConstantUtils.REGEX_MOBILE;
+import static com.android.base.string.ConstantUtils.REGEX_NUMBER;
+import static com.android.base.string.ConstantUtils.REGEX_PASSWORD;
+import static com.android.base.string.ConstantUtils.REGEX_POST_CODE;
+import static com.android.base.string.ConstantUtils.REGEX_TEL;
+import static com.android.base.string.ConstantUtils.REGEX_URL;
 
 /**
  * Created by jiang on 2016/10/13

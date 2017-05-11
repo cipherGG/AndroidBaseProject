@@ -1,4 +1,4 @@
-package com.android.base.net;
+package com.android.base.function;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.telephony.TelephonyManager;
 import com.android.base.R;
 import com.android.base.component.application.AppContext;
 import com.android.base.component.intent.IntentConstant;
-import com.android.base.view.ToastUtils;
+import com.android.base.view.widget.ToastUtils;
 
 import java.net.Inet6Address;
 import java.net.InetAddress;

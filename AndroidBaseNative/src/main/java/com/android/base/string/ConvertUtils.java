@@ -1,4 +1,4 @@
-package com.android.base.other;
+package com.android.base.string;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -21,9 +21,9 @@ import android.util.TypedValue;
 
 import com.android.base.component.application.AppContext;
 import com.android.base.file.FileUtils;
-import com.android.base.str.ConstantUtils;
-import com.android.base.str.StringUtils;
-import com.android.base.view.ToastUtils;
+import com.android.base.string.ConstantUtils;
+import com.android.base.string.StringUtils;
+import com.android.base.view.widget.ToastUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -34,10 +34,10 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
-import static com.android.base.str.ConstantUtils.BYTE;
-import static com.android.base.str.ConstantUtils.GB;
-import static com.android.base.str.ConstantUtils.KB;
-import static com.android.base.str.ConstantUtils.MB;
+import static com.android.base.string.ConstantUtils.BYTE;
+import static com.android.base.string.ConstantUtils.GB;
+import static com.android.base.string.ConstantUtils.KB;
+import static com.android.base.string.ConstantUtils.MB;
 
 /**
  * Created by JiangZhiGuo on 2016/10/12.

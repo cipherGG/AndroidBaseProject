@@ -1,4 +1,4 @@
-package com.android.base.func;
+package com.android.base.function;
 
 import android.app.Activity;
 import android.content.ClipData;

@@ -11,7 +11,7 @@ import android.text.format.Formatter;
 
 import com.android.base.component.application.AppContext;
 import com.android.base.component.application.AppInfo;
-import com.android.base.other.ConvertUtils;
+import com.android.base.string.ConvertUtils;
 
 import java.io.File;
 import java.util.ArrayList;

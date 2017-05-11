@@ -1,4 +1,4 @@
-package com.android.base.view;
+package com.android.base.view.widget;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -15,6 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.android.base.R;
+import com.android.base.view.device.BarUtils;
 
 import java.util.Calendar;
 

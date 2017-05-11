@@ -2,7 +2,7 @@ package com.jiangzg.project.utils;
 
 import com.android.base.component.application.AppInfo;
 import com.android.base.file.FileUtils;
-import com.android.base.str.StringUtils;
+import com.android.base.string.StringUtils;
 
 import java.io.File;
 

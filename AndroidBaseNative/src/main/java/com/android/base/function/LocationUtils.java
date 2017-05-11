@@ -1,4 +1,4 @@
-package com.android.base.func;
+package com.android.base.function;
 
 import android.location.Address;
 import android.location.Criteria;
@@ -11,8 +11,8 @@ import android.os.Bundle;
 
 import com.android.base.R;
 import com.android.base.component.application.AppContext;
-import com.android.base.str.StringUtils;
-import com.android.base.view.ToastUtils;
+import com.android.base.string.StringUtils;
+import com.android.base.view.widget.ToastUtils;
 
 import java.io.IOException;
 import java.util.List;

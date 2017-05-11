@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.base.other.ConvertUtils;
+import com.android.base.string.ConvertUtils;
 
 import java.util.List;
 

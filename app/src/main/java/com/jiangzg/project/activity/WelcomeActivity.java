@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
 
-import com.android.base.view.BarUtils;
+import com.android.base.view.device.BarUtils;
 import com.jiangzg.project.R;
 import com.jiangzg.project.base.BaseActivity;
 

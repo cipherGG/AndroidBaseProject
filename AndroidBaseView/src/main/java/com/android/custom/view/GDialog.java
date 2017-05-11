@@ -3,7 +3,7 @@ package com.android.custom.view;
 import android.app.Activity;
 import android.app.ProgressDialog;
 
-import com.android.base.view.DialogUtils;
+import com.android.base.view.widget.DialogUtils;
 import com.android.custom.R;
 
 /**

@@ -11,7 +11,7 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class JHandler {
+public class HandlerUtils {
 
     private final Handler.Callback mCallback; // hard reference to Callback. We need to keep callback in memory
     private final ExecHandler mExec;
@@ -27,7 +27,7 @@ public class JHandler {
      * If this thread does not have a looper, this handler won't be able to receive messages
      * so an exception is thrown.
      */
-    public JHandler() {
+    public HandlerUtils() {
         mCallback = null;
         mExec = new ExecHandler();
     }
@@ -42,7 +42,7 @@ public class JHandler {
      *
      * @param callback The callback interface in which to handle messages, or null.
      */
-    public JHandler(@Nullable Handler.Callback callback) {
+    public HandlerUtils(@Nullable Handler.Callback callback) {
         mCallback = callback; // Hard referencing body
         mExec = new ExecHandler(new WeakReference<>(callback)); // Weak referencing inside ExecHandler
     }
@@ -52,7 +52,7 @@ public class JHandler {
      *
      * @param looper The looper, must not be null.
      */
-    public JHandler(@NonNull Looper looper) {
+    public HandlerUtils(@NonNull Looper looper) {
         mCallback = null;
         mExec = new ExecHandler(looper);
     }
@@ -64,7 +64,7 @@ public class JHandler {
      * @param looper   The looper, must not be null.
      * @param callback The callback interface in which to handle messages, or null.
      */
-    public JHandler(@NonNull Looper looper, @NonNull Handler.Callback callback) {
+    public HandlerUtils(@NonNull Looper looper, @NonNull Handler.Callback callback) {
         mCallback = callback;
         mExec = new ExecHandler(looper, new WeakReference<>(callback));
     }

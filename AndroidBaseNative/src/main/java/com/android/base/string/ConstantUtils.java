@@ -1,4 +1,4 @@
-package com.android.base.str;
+package com.android.base.string;
 
 /**
  * Created by JiangZhiGuo on 2016/10/11.

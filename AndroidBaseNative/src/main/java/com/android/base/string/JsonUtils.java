@@ -1,4 +1,4 @@
-package com.android.base.str;
+package com.android.base.string;
 
 import android.text.TextUtils;
 

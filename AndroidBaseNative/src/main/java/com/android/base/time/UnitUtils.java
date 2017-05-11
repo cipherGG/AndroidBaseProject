@@ -2,8 +2,8 @@ package com.android.base.time;
 
 import com.android.base.R;
 import com.android.base.component.application.AppContext;
-import com.android.base.str.ConstantUtils;
-import com.android.base.str.StringUtils;
+import com.android.base.string.ConstantUtils;
+import com.android.base.string.StringUtils;
 
 import java.util.Calendar;
 

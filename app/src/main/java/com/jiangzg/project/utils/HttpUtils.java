@@ -1,8 +1,8 @@
 package com.jiangzg.project.utils;
 
 import com.android.base.component.application.AppContext;
-import com.android.base.str.StringUtils;
-import com.android.base.view.ToastUtils;
+import com.android.base.string.StringUtils;
+import com.android.base.view.widget.ToastUtils;
 import com.jiangzg.project.R;
 import com.jiangzg.project.service.UpdateService;
 

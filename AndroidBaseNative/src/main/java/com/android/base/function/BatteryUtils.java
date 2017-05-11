@@ -1,4 +1,4 @@
-package com.android.base.func;
+package com.android.base.function;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

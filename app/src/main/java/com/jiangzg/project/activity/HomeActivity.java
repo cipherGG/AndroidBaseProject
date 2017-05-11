@@ -11,11 +11,11 @@ import android.widget.ImageView;
 
 import com.android.base.component.activity.ActivityTrans;
 import com.android.base.component.intent.IntentUtils;
-import com.android.base.func.PermUtils;
+import com.android.base.function.PermUtils;
 import com.android.base.media.image.ImgMediaUtils;
-import com.android.base.other.ConvertUtils;
+import com.android.base.string.ConvertUtils;
 import com.android.base.time.TimeUtils;
-import com.android.base.view.ToastUtils;
+import com.android.base.view.widget.ToastUtils;
 import com.android.depend.utils.GlideUtils;
 import com.android.depend.utils.LogUtils;
 import com.android.depend.utils.LuBanUtils;

@@ -1,4 +1,4 @@
-package com.android.base.str;
+package com.android.base.string;
 
 import com.android.base.file.FileUtils;
 
@@ -14,8 +14,8 @@ import java.security.SecureRandom;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import static com.android.base.other.ConvertUtils.bytes2HexString;
-import static com.android.base.other.ConvertUtils.hexString2Bytes;
+import static com.android.base.string.ConvertUtils.bytes2HexString;
+import static com.android.base.string.ConvertUtils.hexString2Bytes;
 
 /**
  * Created by JiangZhiGuo on 2016/10/12.
