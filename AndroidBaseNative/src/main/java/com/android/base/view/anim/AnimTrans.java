@@ -23,7 +23,8 @@ import android.view.animation.LinearInterpolator;
  * Created by gg on 2017/5/9.
  * 过渡动画(5.0布局之间切换的高级动画)
  */
-public class AnimTransUtils {
+public class AnimTrans {
+
     // trans的标志
     public static final int TRANS_EXPLODE = 1;  // 随机边缘进出
     public static final int TRANS_SLIDE = 2;    // 指定边缘进出
@@ -61,7 +62,7 @@ public class AnimTransUtils {
         }
         set.addTransition(new ChangeBounds()); // 捕捉到边界
         set.addTransition(new ChangeTransform()); // 捕捉到旋转
-        set.addTransition(new ChangeImageTransform());  // 捕捉Matrix
+        set.addTransition(new ChangeImageTransform()); // 捕捉Matrix
         set.addTransition(new ChangeClipBounds()); //  捕捉裁剪
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             set.addTransition(new ChangeScroll()); // 捕捉滚动

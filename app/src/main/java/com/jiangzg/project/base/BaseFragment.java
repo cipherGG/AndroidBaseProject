@@ -7,7 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.transition.AutoTransition;
+import android.transition.ChangeBounds;
+import android.transition.Fade;
+import android.transition.TransitionSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +31,6 @@ public abstract class BaseFragment<T> extends Fragment {
     public BaseActivity mActivity;
     public BaseFragment mFragment;
     public FragmentManager mFragmentManager;
-    public boolean anim = true;
-    public Bundle mBundle;
     public View rootView;
     private Unbinder unbinder;
 
@@ -42,18 +42,9 @@ public abstract class BaseFragment<T> extends Fragment {
     }
 
     /**
-     * @return 获取当前类(影响性能, 所以需要被动获取)
-     */
-    @SuppressWarnings("unchecked")
-    protected Class<T> getCls() {
-        Type type = this.getClass().getGenericSuperclass();
-        return (Class<T>) (((ParameterizedType) (type)).getActualTypeArguments()[0]);
-    }
-
-    /**
      * 初始layout
      */
-    protected abstract int initObj(Bundle state);
+    protected abstract int initObj(Bundle data);
 
     /**
      * 实例化View/设置监听器
@@ -73,15 +64,14 @@ public abstract class BaseFragment<T> extends Fragment {
             mActivity = (BaseActivity) context;
             mFragmentManager = mActivity.getSupportFragmentManager();
         }
-        initAttach(this);
+        initTransAnim(this);
     }
 
     /* Activity中的onAttachFragment执行完后会执行,相当于onCreate */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBundle = getArguments(); // 取出Bundle
-        initCreate(this);
+        setHasOptionsMenu(true);// Fragment与ActionBar和MenuItem集成
     }
 
     /* 在这里返回绑定并View,从stack返回的时候也是先执行这个方法,相当于onStart */
@@ -89,7 +79,7 @@ public abstract class BaseFragment<T> extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = super.onCreateView(inflater, container, savedInstanceState);
         if (rootView == null) {
-            int layoutId = initObj(savedInstanceState);
+            int layoutId = initObj(getArguments()); // 取出Bundle
             rootView = inflater.inflate(layoutId, container, false);
             unbinder = ButterKnife.bind(mFragment, rootView);
         }
@@ -131,6 +121,15 @@ public abstract class BaseFragment<T> extends Fragment {
         }
     }
 
+    /**
+     * @return 获取当前类(影响性能, 所以需要被动获取)
+     */
+    @SuppressWarnings("unchecked")
+    protected Class<T> getCls() {
+        Type type = this.getClass().getGenericSuperclass();
+        return (Class<T>) (((ParameterizedType) (type)).getActualTypeArguments()[0]);
+    }
+
     /* 反射生成对象实例 */
     protected static <T> T newInstance(Class<T> clz, Bundle args) {
         T fragment = null;
@@ -154,20 +153,22 @@ public abstract class BaseFragment<T> extends Fragment {
         return fragment;
     }
 
-    /* 初始化fragment */
-    private void initAttach(Fragment fragment) {
+    /* 过渡动画 */
+    private void initTransAnim(Fragment fragment) {
         // 只要进的动画就好，出的有时候执行不完全会bug
-        if (anim && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            fragment.setEnterTransition(new AutoTransition());
-            // fragment.setExitTransition(new AutoTransition());
-            fragment.setReenterTransition(new AutoTransition());
-            // fragment.setReturnTransition(new AutoTransition());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            TransitionSet trans = new TransitionSet();
+            trans.setOrdering(TransitionSet.ORDERING_TOGETHER)
+                    .addTransition(new Fade(Fade.OUT))
+                    .addTransition(new ChangeBounds())
+                    .addTransition(new Fade(Fade.IN));
+            // 压栈
+            fragment.setEnterTransition(trans);
+            // fragment.setExitTransition(trans);
+            // 弹栈
+            fragment.setReenterTransition(trans);
+            // fragment.setReturnTransition(trans);
         }
-    }
-
-    /* 初始化fragment */
-    private void initCreate(Fragment fragment) {
-        fragment.setHasOptionsMenu(true);// Fragment与ActionBar和MenuItem集成
     }
 
 }

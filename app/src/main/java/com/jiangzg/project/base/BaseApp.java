@@ -24,10 +24,12 @@ public class BaseApp extends AppNative {
     @Override
     public void onCreate() {
         super.onCreate();
+        ActivityLifecycle.initApp(this);
+        CleanUtils.initApp(this);
+
         ButterKnife.setDebug(true);
         LogUtils.initApp();
         AnalyUtils.initApp();
-//        ScanUtils.initApp(this);
     }
 
     private Handler mainHandler; // 主线程handler

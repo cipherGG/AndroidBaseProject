@@ -57,6 +57,10 @@
             android:enabled="true"
             android:exported="true"/>
 
+        <activity android:name=".activity.SecondActivity">
+        </activity>
+        <activity android:name=".activity.FragActivity">
+        </activity>
     </application>
 
 </manifest>

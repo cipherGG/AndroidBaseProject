@@ -76,7 +76,7 @@ public class HomeActivity extends BaseActivity<HomeActivity> {
                     public void onPermissionGranted(String[] permissions) {
                         jpgInRes = ResUtils.createJPGInRes();
                         Intent camera = IntentUtils.getCamera(jpgInRes);
-                        ActivityTrans.startRequest(mActivity, camera, 11);
+                        ActivityTrans.startResult(mActivity, camera, 11);
                     }
 
                     @Override
@@ -87,9 +87,10 @@ public class HomeActivity extends BaseActivity<HomeActivity> {
                 break;
             case R.id.btn2:
                 Intent picture = IntentUtils.getPicture();
-                ActivityTrans.startRequest(mActivity, picture, 22);
+                ActivityTrans.startResult(mActivity, picture, 22);
                 break;
             case R.id.btn3:
+               FragActivity.goActivity(mActivity);
                 break;
         }
     }

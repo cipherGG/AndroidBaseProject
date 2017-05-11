@@ -2,12 +2,13 @@ package com.android.base.component.fragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Jiang on 2016/0/01
- * Fragment处理类
+ * Fragment工具类
  */
 public class FragmentUtils {
 
@@ -26,109 +27,22 @@ public class FragmentUtils {
     }
 
     /**
-     * 添加，会遮挡主后面的
+     * 用于双层fragment里获取FragmentManager
+     *
+     * @param fragment 2层以上的fragment
      */
-    public static void add(FragmentManager manager, Fragment fragment, int addID) {
-        add(manager, fragment, addID, "", false);
-    }
-
-    public static void add(FragmentManager manager, Fragment fragment,
-                           int addId, String tag, boolean stack) {
-        if (fragment == null) return;
-        if (fragment.isAdded()) return;
-        FragmentTransaction transaction = manager.beginTransaction();
-        if (TextUtils.isEmpty(tag)) {
-            transaction.add(addId, fragment);
-        } else {
-            transaction.add(addId, fragment, tag);
-        }
-        commit(manager, transaction, stack, false);
+    public static FragmentManager getChildManager(Fragment fragment) {
+        return fragment.getChildFragmentManager();
     }
 
     /**
-     * 使用另一个Fragment替换当前的，实际上就是remove()然后add()的合体
+     * 获取所有栈中的fragment
      */
-    public static void replace(FragmentManager manager, Fragment fragment, int replaceId) {
-        replace(manager, fragment, replaceId, "", false);
-    }
-
-    public static void replace(FragmentManager manager, Fragment fragment,
-                               int replaceId, String tag, boolean stack) {
-        if (fragment == null) return;
-        if (fragment.isVisible()) return;
-        if (fragment.isAdded()) { // isAdd 则显示(但不会刷新)
-            show(manager, fragment, stack);
-            return;
-        }
-        FragmentTransaction transaction = manager.beginTransaction();
-        if (TextUtils.isEmpty(tag)) {
-            transaction.replace(replaceId, fragment);
-        } else {
-            transaction.replace(replaceId, fragment, tag);
-        }
-        commit(manager, transaction, stack, false);
-    }
-
-    /**
-     * remove会执行到detach
-     */
-    public static void remove(FragmentManager manager, Fragment fragment, boolean stack) {
-        if (fragment == null) return;
-        if (!fragment.isAdded()) return;
-        if (fragment.isRemoving()) return;
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.remove(fragment);
-        commit(manager, transaction, stack, false);
-    }
-
-    /**
-     * 可以保存状态哦, 先add/replace/show再hide
-     * 只执行onPrepareOptionsMenu
-     */
-    public static void hide(FragmentManager manager, Fragment fragment, boolean stack) {
-        if (fragment == null) return;
-        if (!fragment.isVisible()) return;
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.hide(fragment);
-        commit(manager, transaction, stack, false);
-    }
-
-    /**
-     * show出来之后还是之前的状态, 先hide后show
-     * 只执行onPrepareOptionsMenu和onResume
-     */
-    public static void show(FragmentManager manager, Fragment fragment, boolean stack) {
-        if (fragment == null) return;
-        if (!fragment.isAdded()) return;
-        if (!fragment.isHidden()) return;
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.show(fragment);
-        commit(manager, transaction, stack, false);
-    }
-
-    /* 事物提交 最后要commit */
-    private static void commit(FragmentManager manager, FragmentTransaction transaction,
-                               boolean stack, boolean multi) {
-        if (stack) {
-            transaction.addToBackStack(null); // 加入栈
-            // transaction.commit();
-            transaction.commitAllowingStateLoss(); // 允许状态丢失
-            if (multi)  // 多次提交操作在同一个时间点一起执行
-                manager.executePendingTransactions();
-        } else {
-            // transaction.commitNow();
-            transaction.commitNowAllowingStateLoss(); // 允许状态丢失
-        }
-    }
-
-    /* onBackPress里已经处理了 */
-    public static boolean goBack(FragmentManager manager) {
-        if (manager != null && manager.getBackStackEntryCount() > 0) {
-            manager.popBackStack(); // fragment栈中有fragment时，回退fragment
-            // manager.popBackStackImmediate();
-            return true;
-        }
-        return false;
+    private static List<Fragment> getFragmentsInStack(FragmentManager fragmentManager) {
+        if (fragmentManager == null) return Collections.emptyList();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        if (fragments == null || fragments.isEmpty()) return Collections.emptyList();
+        return fragments;
     }
 
 }

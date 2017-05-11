@@ -21,10 +21,6 @@ public class BroadCastUtils {
 //        AppContext.get().sendOrderedBroadcast();
 //        AppContext.get().sendStickyBroadcast();
 //
-//        AppContext.get().startService();
-//
-//        AppContext.get().bindService();
-//        AppContext.get().unbindService();
     }
 
 }

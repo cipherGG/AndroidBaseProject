@@ -27,4 +27,10 @@ public class ServiceUtils {
         return false;
     }
 
+
+//        AppContext.get().startService();
+//
+//        AppContext.get().bindService();
+//        AppContext.get().unbindService();
+
 }

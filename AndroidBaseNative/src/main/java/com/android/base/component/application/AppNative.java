@@ -18,16 +18,13 @@ public class AppNative extends MultiDexApplication {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        // 大项目需要分包
-        MultiDex.install(this);
+        MultiDex.install(this); // 大项目需要分包
     }
 
     @Override
     public void onCreate() {
         instance = this;
         super.onCreate();
-        ActivityLifecycle.initApp(this);
-        CleanUtils.initApp(this);
     }
 
     public static AppNative get() {
