@@ -18,7 +18,6 @@ import android.view.WindowManager;
  */
 public class BarUtils {
 
-    
     /**
      * 无actionBar, 要在setContentView之前调用
      */
