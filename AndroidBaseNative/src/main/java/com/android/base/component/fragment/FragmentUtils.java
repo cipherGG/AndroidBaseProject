@@ -38,9 +38,9 @@ public class FragmentUtils {
     /**
      * 获取所有栈中的fragment
      */
-    private static List<Fragment> getFragmentsInStack(FragmentManager fragmentManager) {
-        if (fragmentManager == null) return Collections.emptyList();
-        List<Fragment> fragments = fragmentManager.getFragments();
+    private static List<Fragment> getFragmentsInStack(FragmentManager manager) {
+        if (manager == null) return Collections.emptyList();
+        List<Fragment> fragments = manager.getFragments();
         if (fragments == null || fragments.isEmpty()) return Collections.emptyList();
         return fragments;
     }

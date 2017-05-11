@@ -29,11 +29,6 @@ public class LocationService extends Service {
     }
 
     @Override
-    public void onCreate() {
-    }
-
-    /* startService才走这个 不走下面的 */
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         final boolean once = intent.getBooleanExtra("once", true);
         MapUtils.get().initLocation(this, once);
@@ -71,7 +66,6 @@ public class LocationService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    /* bindService不走上面的 走这个 */
     @Override
     public IBinder onBind(Intent intent) {
         throw null;

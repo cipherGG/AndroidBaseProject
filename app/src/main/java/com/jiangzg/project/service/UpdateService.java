@@ -34,13 +34,6 @@ public class UpdateService extends Service {
         checkUpdate();
     }
 
-    /* startService才走这个 不走下面的 */
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    /* bindService不走上面的 走这个 */
     @Override
     public IBinder onBind(Intent intent) {
         throw null;

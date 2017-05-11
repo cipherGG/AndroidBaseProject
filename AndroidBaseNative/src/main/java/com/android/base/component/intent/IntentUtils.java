@@ -22,6 +22,23 @@ import java.io.File;
 public class IntentUtils {
 
     /**
+     * activity跳转intent,也可以setClass来设置
+     *
+     * @param packageName app包名
+     * @param className   Activity全名
+     * @param bundle      可为null
+     * @return 直接startActivity即可
+     */
+    private static Intent getComponent(String packageName, String className, Bundle bundle) {
+        Intent intent = new Intent(IntentConstant.action_view);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        ComponentName cn = new ComponentName(packageName, className);
+        return intent.setComponent(cn);
+    }
+
+    /**
      * 拍照 ,不加保存路径，图片会被压缩
      * (Permission)
      */
@@ -256,23 +273,6 @@ public class IntentUtils {
         Intent intent = new Intent(IntentConstant.action_location_settings);
         intent.setFlags(IntentConstant.flag_new_task);
         return intent;
-    }
-
-    /**
-     * activity跳转intent
-     *
-     * @param packageName app包名
-     * @param className   Activity全名
-     * @param bundle      可为null
-     * @return 直接startActivity即可
-     */
-    private static Intent getComponent(String packageName, String className, Bundle bundle) {
-        Intent intent = new Intent(IntentConstant.action_view);
-        if (bundle != null) {
-            intent.putExtras(bundle);
-        }
-        ComponentName cn = new ComponentName(packageName, className);
-        return intent.setComponent(cn);
     }
 
 }
