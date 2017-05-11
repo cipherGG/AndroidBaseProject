@@ -14,7 +14,7 @@ import android.view.WindowManager;
 
 /**
  * Created by gg on 2017/4/19.
- * BarUtils
+ * 状态栏工具类
  */
 public class BarUtils {
 

@@ -14,7 +14,7 @@ import com.android.base.component.application.AppContext;
 
 /**
  * Created by JiangZhiGuo on 2016/10/12.
- * describe 屏幕管理工具类
+ * describe 屏幕工具类
  */
 public class ScreenUtils {
 
