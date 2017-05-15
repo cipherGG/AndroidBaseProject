@@ -3,7 +3,8 @@ package com.jiangzg.project.base;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.android.base.component.activity.ActivityLifecycle;
+import com.android.base.component.activity.ActivityStack;
+import com.android.base.component.application.AppListener;
 import com.android.base.component.application.AppNative;
 import com.android.base.file.CleanUtils;
 import com.android.depend.utils.AnalyUtils;
@@ -24,8 +25,9 @@ public class BaseApp extends AppNative {
     @Override
     public void onCreate() {
         super.onCreate();
-        ActivityLifecycle.initApp(this);
-        CleanUtils.initApp(this);
+        AppListener.initApp(this);
+        ActivityStack.initApp();
+        CleanUtils.initApp();
 
         ButterKnife.setDebug(true);
         LogUtils.initApp();

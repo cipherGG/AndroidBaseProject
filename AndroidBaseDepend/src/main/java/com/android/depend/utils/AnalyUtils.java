@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.android.base.component.application.AppContext;
-import com.android.base.component.activity.ActivityLifecycle;
+import com.android.base.component.application.AppListener;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -14,11 +14,11 @@ import com.umeng.analytics.MobclickAgent;
  */
 public class AnalyUtils {
 
-    /* c收集奔溃日志 */
+    /* 收集奔溃日志 */
     public static void initApp() {
         MobclickAgent.setScenarioType(AppContext.get(), MobclickAgent.EScenarioType.E_UM_NORMAL);
         MobclickAgent.setCatchUncaughtExceptions(true);
-        ActivityLifecycle.addLifecycleListener("Analy", new ActivityLifecycle.LifecycleListener() {
+        AppListener.addActivityListener("AnalyUtils", new AppListener.ActivityListener() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
 

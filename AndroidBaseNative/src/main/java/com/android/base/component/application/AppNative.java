@@ -4,14 +4,13 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
-import com.android.base.component.activity.ActivityLifecycle;
-import com.android.base.file.CleanUtils;
-
 /**
  * Created by JiangZhiGuo on 2016-12-2.
  * describe Application的基类
  */
 public class AppNative extends MultiDexApplication {
+
+    public static final String LOG_TAG = "AndroidBaseNative";
 
     private static AppNative instance;
 

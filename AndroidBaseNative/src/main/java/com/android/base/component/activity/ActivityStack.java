@@ -2,7 +2,11 @@ package com.android.base.component.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 
+import com.android.base.component.application.AppListener;
+import com.android.base.component.application.AppNative;
 import com.android.base.component.intent.IntentConstant;
 
 import java.util.ArrayList;
@@ -34,6 +38,47 @@ public class ActivityStack {
             STACK = new Stack<>();
         }
         return STACK;
+    }
+
+    /* 管理Activity栈 */
+    public static void initApp() {
+        AppListener.addActivityListener("ActivityStack", new AppListener.ActivityListener() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                getStack().add(activity);
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+                Log.d(AppNative.LOG_TAG, "ActivityStack数量:" + getStack().size()
+                        + "--当前taskId:" + activity.getTaskId());
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                getStack().remove(activity);
+            }
+        });
     }
 
     /**

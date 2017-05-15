@@ -1,16 +1,17 @@
 package com.android.base.file;
 
 import android.app.ActivityManager;
-import android.app.Application;
-import android.content.ComponentCallbacks2;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Environment;
 import android.text.format.Formatter;
+import android.util.Log;
 
 import com.android.base.component.application.AppContext;
 import com.android.base.component.application.AppInfo;
+import com.android.base.component.application.AppListener;
+import com.android.base.component.application.AppNative;
 import com.android.base.string.ConvertUtils;
 
 import java.io.File;
@@ -19,29 +20,28 @@ import java.util.List;
 
 /**
  * Created by gg on 2017/4/9.
- * 垃圾管理类
+ * 清理工具类
  */
 public class CleanUtils {
 
-    public static void initApp(final Application app) {
-        // 监听当前app的内存 和 配置,可撤销
-        app.registerComponentCallbacks(new ComponentCallbacks2() {
+    public static void initApp() {
+        AppListener.addComponentListener("CleanUtils", new AppListener.ComponentListener() {
             @Override
             public void onTrimMemory(int level) {
-//                LogUtils.d("杀死一个进程以求更多内存(level) ---> " + level);
+                Log.d(AppNative.LOG_TAG, "清理内存，级别:" + level);
             }
 
             @Override
-            public void onLowMemory() {
+            public void onConfigurationChanged(Configuration newConfig) {
 //                LogUtils.e("内存不足,清理内存以获取更多内存");
                 CleanUtils.clearMemory();
             }
 
             @Override
-            public void onConfigurationChanged(Configuration newConfig) {
+            public void onLowMemory() {
                 StringBuilder status = new StringBuilder();
                 status.append("配置发生变化").append("\n");
-                Configuration cfg = app.getResources().getConfiguration();
+                Configuration cfg = AppNative.get().getResources().getConfiguration();
                 status.append("fontScale:").append(cfg.fontScale).append("\n");
                 status.append("hardKeyboardHidden:").append(cfg.hardKeyboardHidden).append("\n");
                 status.append("keyboard:").append(cfg.keyboard).append("\n");
