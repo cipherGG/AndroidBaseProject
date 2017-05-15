@@ -32,15 +32,15 @@ public class ActivityTrans {
     public static void start(Context from, Intent intent, Pair<View, String>... sharedElements) {
         if (from instanceof Activity) {
             Activity activity = (Activity) from;
-            try {
-                if (sharedElements == null || sharedElements.length < 1) {
-                    startShareElement(activity, intent);
-                } else {
-                    startShareElement(activity, intent, sharedElements);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (sharedElements == null || sharedElements.length < 1) {
                 activity.startActivity(intent);
+            } else {
+                try {
+                    startElement(activity, intent, sharedElements);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    activity.startActivity(intent);
+                }
             }
         } else {
             startFromContext(from, intent);
@@ -52,16 +52,15 @@ public class ActivityTrans {
      */
     @SafeVarargs
     public static void start(Fragment from, Intent intent, Pair<View, String>... sharedElements) {
-        try {
-            FragmentActivity activity = from.getActivity();
-            if (sharedElements == null || sharedElements.length < 1) {
-                startShareElement(activity, intent);
-            } else {
-                startShareElement(activity, intent, sharedElements);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (sharedElements == null || sharedElements.length < 1) {
             from.startActivity(intent);
+        } else {
+            try {
+                startElement(from.getActivity(), intent, sharedElements);
+            } catch (Exception e) {
+                e.printStackTrace();
+                from.startActivity(intent);
+            }
         }
     }
 
@@ -71,15 +70,15 @@ public class ActivityTrans {
     @SafeVarargs
     public static void startResult(Activity from, Intent intent, int requestCode,
                                    Pair<View, String>... sharedElements) {
-        try {
-            if (sharedElements == null || sharedElements.length < 1) {
-                startShareElement(from, intent, requestCode);
-            } else {
-                startShareElement(from, intent, requestCode, sharedElements);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (sharedElements == null || sharedElements.length < 1) {
             from.startActivityForResult(intent, requestCode);
+        } else {
+            try {
+                startElement(from, intent, requestCode, sharedElements);
+            } catch (Exception e) {
+                e.printStackTrace();
+                from.startActivityForResult(intent, requestCode);
+            }
         }
     }
 
@@ -89,16 +88,15 @@ public class ActivityTrans {
     @SafeVarargs
     public static void startResult(Fragment from, Intent intent, int requestCode,
                                    Pair<View, String>... sharedElements) {
-        try {
-            FragmentActivity activity = from.getActivity();
-            if (sharedElements == null || sharedElements.length < 1) {
-                startShareElement(activity, intent, requestCode);
-            } else {
-                startShareElement(activity, intent, requestCode, sharedElements);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (sharedElements == null || sharedElements.length < 1) {
             from.startActivityForResult(intent, requestCode);
+        } else {
+            try {
+                startElement(from.getActivity(), intent, requestCode, sharedElements);
+            } catch (Exception e) {
+                e.printStackTrace();
+                from.startActivityForResult(intent, requestCode);
+            }
         }
     }
 
@@ -109,15 +107,17 @@ public class ActivityTrans {
     public static void startResultFragment(Fragment from, Intent intent, int requestCode,
                                            Pair<View, String>... sharedElements) {
         FragmentActivity activity = from.getActivity();
-        try {
-            if (sharedElements == null || sharedElements.length < 1) {
-                startShareElement(activity, intent, requestCode);
-            } else {
-                startShareElement(activity, intent, requestCode, sharedElements);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (activity == null) return;
+        if (sharedElements == null || sharedElements.length < 1) {
+//                startElement(activity, intent, requestCode);
             activity.startActivityFromFragment(from, intent, requestCode);
+        } else {
+            try {
+                startElement(activity, intent, requestCode, sharedElements);
+            } catch (Exception e) {
+                e.printStackTrace();
+                activity.startActivityFromFragment(from, intent, requestCode);
+            }
         }
     }
 
@@ -128,36 +128,20 @@ public class ActivityTrans {
         from.startActivity(intent);
     }
 
-    /* 5.0过渡跳转(没有分享元素) */
-    @SuppressWarnings("unchecked")
-    private static void startShareElement(Activity from, Intent intent) {
-        if (from == null || intent == null) return;
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(from);
-        from.startActivity(intent, options.toBundle());
-    }
-
     /* 5.0过渡跳转(有分享元素) */
     @SafeVarargs
-    private static void startShareElement(Activity from, Intent intent,
-                                          Pair<View, String>... sharedElements) {
+    private static void startElement(Activity from, Intent intent,
+                                     Pair<View, String>... sharedElements) throws Exception {
         if (from == null || intent == null) return;
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(from, sharedElements);
         from.startActivity(intent, options.toBundle());
     }
 
-    /* 5.0过渡跳转(没有分享元素) */
-    @SuppressWarnings("unchecked")
-    private static void startShareElement(Activity from, Intent intent, int requestCode) {
-        if (from == null || intent == null) return;
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(from);
-        from.startActivityForResult(intent, requestCode, options.toBundle());
-    }
-
     /* 5.0过渡跳转(有分享元素) */
     @SafeVarargs
-    private static void startShareElement(Activity from, Intent intent, int requestCode,
-                                          Pair<View, String>... sharedElements) {
+    private static void startElement(Activity from, Intent intent, int requestCode,
+                                     Pair<View, String>... sharedElements) throws Exception {
         if (from == null || intent == null) return;
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(from, sharedElements);

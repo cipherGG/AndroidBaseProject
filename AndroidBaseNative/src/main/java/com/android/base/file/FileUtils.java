@@ -28,7 +28,6 @@ import static com.android.base.string.ConstantUtils.KB;
 
 /**
  * Created by Jiang on 2016/10/12
- * <p/>
  * 文件相关工具类
  */
 public class FileUtils {

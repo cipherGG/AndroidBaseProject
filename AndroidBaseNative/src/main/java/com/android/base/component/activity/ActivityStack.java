@@ -94,9 +94,9 @@ public class ActivityStack {
      */
     public static void finishTask(int taskId) {
         for (Activity activity : getStack()) {
-            int id = activity.getTaskId();
-            if (taskId != id) continue;
-            finishActivity(activity);
+            if (taskId == activity.getTaskId()) {
+                finishActivity(activity);
+            }
         }
     }
 
