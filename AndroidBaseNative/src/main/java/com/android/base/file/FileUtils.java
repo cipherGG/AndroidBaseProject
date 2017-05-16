@@ -655,42 +655,6 @@ public class FileUtils {
     }
 
     /**
-     * 获取文件大小
-     */
-    public static String getFileSize(String filePath) {
-        return getFileSize(getFileByPath(filePath));
-    }
-
-    /**
-     * 获取文件大小
-     */
-    public static String getFileSize(File file) {
-        if (!isFileExists(file)) return "";
-        return ConvertUtils.byte2FitSize(file.length());
-    }
-
-    /**
-     * 获取文件大小
-     */
-    public static String getFileSize(long length) {
-        return ConvertUtils.byte2FitSize(length);
-    }
-
-    /**
-     * 获取文件的MD5校验码
-     */
-    public static String getFileMD5(String filePath) {
-        return getFileMD5(getFileByPath(filePath));
-    }
-
-    /**
-     * 获取文件的MD5校验码
-     */
-    public static String getFileMD5(File file) {
-        return EncryptUtils.encryptMD5File2String(file);
-    }
-
-    /**
      * 关闭IO
      */
     public static void closeIO(Closeable... closeables) {
@@ -704,40 +668,6 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * 获取全路径中的最长目录
-     */
-    public static String getDirName(File file) {
-        if (file == null) return null;
-        return getDirName(file.getPath());
-    }
-
-    /**
-     * 获取全路径中的最长目录
-     */
-    public static String getDirName(String filePath) {
-        if (TextUtils.isEmpty(filePath)) return filePath;
-        int lastSep = filePath.lastIndexOf(File.separator);
-        return lastSep == -1 ? "" : filePath.substring(0, lastSep + 1);
-    }
-
-    /**
-     * 获取全路径中的文件名
-     */
-    public static String getFileName(File file) {
-        if (file == null) return null;
-        return getFileName(file.getPath());
-    }
-
-    /**
-     * 获取全路径中的文件名
-     */
-    public static String getFileName(String filePath) {
-        if (TextUtils.isEmpty(filePath)) return filePath;
-        int lastSep = filePath.lastIndexOf(File.separator);
-        return lastSep == -1 ? filePath : filePath.substring(lastSep + 1);
     }
 
     /**

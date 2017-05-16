@@ -99,7 +99,7 @@ public class CleanUtils {
     }
 
     /**
-     * 获取具有缓存的文件大小
+     * 获取资源的文件大小
      */
     public static long getResLength() {
         File resDir = new File(getResFile());
@@ -107,7 +107,7 @@ public class CleanUtils {
     }
 
     /**
-     * 获取具有缓存的文件大小
+     * 获取资源的文件大小
      */
     public static String getResSize() {
         long resLength = getResLength();

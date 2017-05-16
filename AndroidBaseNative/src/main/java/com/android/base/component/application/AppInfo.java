@@ -6,8 +6,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
 
+import com.android.base.file.EnvironUtils;
 import com.android.base.file.FileUtils;
 import com.android.base.string.EncryptUtils;
 import com.android.base.string.StringUtils;
@@ -154,13 +154,7 @@ public class AppInfo {
      */
     public String getResDir() {
         if (!StringUtils.isEmpty(resDir)) return resDir;
-        String dir;
-        if (isSDCardEnable()) {
-            dir = getSDCardPath() + packageName + File.separator;
-        } else {
-            dir = getRootPath() + packageName + File.separator;
-        }
-        resDir = dir;
+        resDir = EnvironUtils.getRealSDCardPath() + packageName + File.separator;
         FileUtils.createOrExistsDir(resDir); // 并创建
         return resDir;
     }
@@ -181,7 +175,7 @@ public class AppInfo {
      */
     public String getFilesDir(String dirName) {
         File dir;
-        if (isSDCardEnable()) {
+        if (EnvironUtils.isSDCardEnable()) {
             dir = AppContext.get().getExternalFilesDir(dirName);
         } else {
             dir = AppContext.get().getFilesDir();
@@ -199,7 +193,7 @@ public class AppInfo {
     public String getCacheDir() {
         if (!StringUtils.isEmpty(cacheDir)) return cacheDir;
         File dir;
-        if (isSDCardEnable()) {
+        if (EnvironUtils.isSDCardEnable()) {
             dir = AppContext.get().getExternalCacheDir();
         } else {
             dir = AppContext.get().getCacheDir();
@@ -208,27 +202,6 @@ public class AppInfo {
             cacheDir = dir.getAbsolutePath();
         }
         return cacheDir;
-    }
-
-    /**
-     * 获取根目录
-     */
-    public String getRootPath() {
-        return Environment.getRootDirectory() + File.separator;
-    }
-
-    /**
-     * 获取SD卡路径 一般是/storage/emulated/0/
-     */
-    public String getSDCardPath() {
-        return Environment.getExternalStorageDirectory().getPath() + File.separator;
-    }
-
-    /**
-     * 判断SD卡是否可用
-     */
-    public boolean isSDCardEnable() {
-        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
     }
 
 }

@@ -227,7 +227,7 @@ public class ConvertUtils {
     }
 
     /**
-     * 以unit为单位的size转字节数
+     * 以unit为单位的size转字节数 也可以Formatter.formatFileSize
      *
      * @param size 大小
      */
@@ -247,7 +247,7 @@ public class ConvertUtils {
     }
 
     /**
-     * 字节数转合适大小
+     * 字节数转合适大小 也可以Formatter.formatFileSize
      * <p>保留3位小数</p>
      *
      * @param byteNum 字节数
