@@ -87,9 +87,9 @@ public class IntentUtils {
             FileUtils.deleteFile(save);
             return null;
         }
-        Uri uri1 = ConvertUtils.File2URI(from);
-        Uri uri2 = ConvertUtils.File2URI(save);
-        return getCrop(uri1, uri2, aspectX, aspectY, outputX, outputY);
+        Uri uriFrom = ConvertUtils.File2URI(from);
+        Uri uriTo = ConvertUtils.File2URI(save);
+        return getCrop(uriFrom, uriTo, aspectX, aspectY, outputX, outputY);
     }
 
     public static Intent getCrop(Uri from, Uri save, int aspectX, int aspectY,

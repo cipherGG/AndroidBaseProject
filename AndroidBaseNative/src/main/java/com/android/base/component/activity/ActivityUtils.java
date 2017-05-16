@@ -23,8 +23,6 @@ public class ActivityUtils {
 
     /**
      * 获取栈顶Activity
-     *
-     * @return 栈顶Activity
      */
     @SuppressWarnings("unchecked")
     public static Activity getTop() {
@@ -75,8 +73,8 @@ public class ActivityUtils {
     /**
      * 获取launcher activity
      *
-     * @param packageName 包名
-     * @return launcher activity
+     * @param packageName 项目包名
+     * @return launcher activity全路径类名
      */
     public static String getLauncher(String packageName) {
         if (packageName == null) return "";

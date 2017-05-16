@@ -31,6 +31,7 @@ public class UpdateService extends Service {
 
     @Override
     public void onCreate() {
+        // TODO: 2017/5/16  permission
         checkUpdate();
     }
 

@@ -38,10 +38,9 @@ public class AppInfo {
 
     /**
      * 获取当前App信息
-     * (Permission)
      */
     @SuppressLint("PackageManagerGetSignatures")
-    public static AppInfo get() {
+    public static AppInfo get() throws SecurityException {
         if (instance != null) return instance;
         instance = new AppInfo();
         String packageName = AppContext.get().getPackageName();

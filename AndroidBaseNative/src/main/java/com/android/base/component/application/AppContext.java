@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.PowerManager;
@@ -23,10 +24,10 @@ public class AppContext {
     public static Application get() {
         return AppNative.get();
     }
-
-    public static WindowManager getWindowManager() {
-        return (WindowManager) get().getSystemService(Context.WINDOW_SERVICE);
-    }
+//
+//    public static Resources getResources() {
+//        return get().getResources();
+//    }
 
     public static PackageManager getPackageManager() {
         return get().getPackageManager();
@@ -34,6 +35,10 @@ public class AppContext {
 
     public static ActivityManager getActivityManager() {
         return (ActivityManager) get().getSystemService(Context.ACTIVITY_SERVICE);
+    }
+
+    public static WindowManager getWindowManager() {
+        return (WindowManager) get().getSystemService(Context.WINDOW_SERVICE);
     }
 
     public static ConnectivityManager getConnectivityManager() {

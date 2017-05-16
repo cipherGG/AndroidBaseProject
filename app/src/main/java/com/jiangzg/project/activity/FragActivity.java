@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.RelativeLayout;
 
 import com.android.base.component.activity.ActivityTrans;
+import com.android.base.component.application.AppInfo;
 import com.android.base.component.fragment.FragmentTrans;
 import com.jiangzg.project.R;
 import com.jiangzg.project.base.BaseActivity;
@@ -44,6 +45,13 @@ public class FragActivity extends BaseActivity<FragActivity> {
         bigFragment = BigFragment.newFragment();
         smallFragment = SmallFragment.newFragment();
         FragmentTrans.replace(mFragmentManager, smallFragment, R.id.rlFragment);
+
+        AppInfo appInfo = AppInfo.get();
+        String packageName = appInfo.getPackageName();
+        String cacheDir = appInfo.getCacheDir();
+        String filesDir = appInfo.getFilesDir("");
+        String resDir = appInfo.getResDir();
+        String logDir = appInfo.getLogDir();
     }
 
     @OnClick(R.id.btnTrans)
